@@ -46,4 +46,6 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 }
