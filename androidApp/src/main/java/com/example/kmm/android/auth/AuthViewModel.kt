@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kmm.auth.LoginUseCase
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -17,6 +17,7 @@ class AuthViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
     fun login(email: String, password: String) {
         if (email.isBlank() || password.isBlank()) {
             _loginState.value = "❌ Email or password cannot be empty."
+            resetMessage()
             return
         }
 
@@ -27,6 +28,7 @@ class AuthViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
                 } else {
                     mapFirebaseError(result.exceptionOrNull())
                 }
+                resetMessage()
             }
         }
     }
@@ -37,6 +39,13 @@ class AuthViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
         return when (error) {
             is FirebaseAuthInvalidCredentialsException -> "❌ Email or password is incorrect."
             else -> "❌ Login failed. Please try again."
+        }
+    }
+
+    private fun resetMessage() {
+        viewModelScope.launch {
+            delay(2000)
+            _loginState.value = null
         }
     }
 }
