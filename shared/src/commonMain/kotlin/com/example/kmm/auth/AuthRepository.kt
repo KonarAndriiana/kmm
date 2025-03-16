@@ -14,4 +14,9 @@ class AuthRepository {
         val user = auth.signInWithEmailAndPassword(email, password).user
         emit(Result.success(user))
     }.catch { emit(Result.failure(it)) }
+
+    fun register(email: String, password: String): Flow<Result<FirebaseUser?>> = flow {
+        val user = auth.createUserWithEmailAndPassword(email, password).user
+        emit(Result.success(user))
+    }.catch { emit(Result.failure(it)) }
 }
