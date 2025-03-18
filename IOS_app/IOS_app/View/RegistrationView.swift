@@ -9,17 +9,16 @@ import SwiftUI
 
 struct RegistrationView: View {
     
-    @State var email = ""
-    @State var password = ""
+    @StateObject var viewModel = RegistrationViewViewModel()
     
     var body: some View {
         VStack {
             Form {
-                TextField("Email" , text: $email)
+                TextField("Email" , text: $viewModel.email)
                     .autocapitalization(.none)
                     .autocorrectionDisabled()
                 
-                SecureField("Password" , text: $password)
+                SecureField("Password" , text: $viewModel.password)
                 
                 ButtonView(color: .blue, title: "Create account") {
                     //registration
