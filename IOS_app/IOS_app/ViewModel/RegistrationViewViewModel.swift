@@ -9,8 +9,10 @@ import FirebaseAuth
 import Foundation
 
 class RegistrationViewViewModel: ObservableObject {
+    @Published var name = " "
     @Published var email = " "
     @Published var password = " "
+    @Published var errorMessage = " "
     
     init() {
         
@@ -30,22 +32,26 @@ class RegistrationViewViewModel: ObservableObject {
     }
     
     private func insertUserRrecord(id: String) {
-        
     }
     
     
     
     private func validate() -> Bool {
-        guard !email.trimmingCharacters(in: .whitespaces).isEmpty,
+        guard !name.trimmingCharacters(in: .whitespaces).isEmpty,
+              !email.trimmingCharacters(in: .whitespaces).isEmpty,
               !password.trimmingCharacters(in: .whitespaces).isEmpty else {
+            
+            errorMessage = "Please fill in all fields"
             return false
         }
         
         guard email.contains("@")  && email.contains(".") else {
+            errorMessage = "Please enter valid email."
             return false
         }
         
         guard email.count >= 6 else {
+            errorMessage = "Please create password that has more that 5 Characters"
             return false
         }
         

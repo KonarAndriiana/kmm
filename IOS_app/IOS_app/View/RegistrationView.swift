@@ -14,6 +14,10 @@ struct RegistrationView: View {
     var body: some View {
         VStack {
             Form {
+                TextField("Name" , text: $viewModel.name)
+                    .autocapitalization(.none)
+                    .autocorrectionDisabled()
+                
                 TextField("Email" , text: $viewModel.email)
                     .autocapitalization(.none)
                     .autocorrectionDisabled()
@@ -21,7 +25,13 @@ struct RegistrationView: View {
                 SecureField("Password" , text: $viewModel.password)
                 
                 ButtonView(color: .blue, title: "Create account") {
-                    //registration
+                    viewModel.registration()
+                }
+                
+                if !viewModel.errorMessage.isEmpty {
+                    Text(viewModel.errorMessage)
+                        .foregroundColor(Color.orange)
+                        .multilineTextAlignment(.center)
                 }
             }
             .padding(.top, 200)
