@@ -10,10 +10,10 @@ import FirebaseAuth
 import Foundation
 
 class RegistrationViewViewModel: ObservableObject {
-    @Published var name = " "
-    @Published var email = " "
-    @Published var password = " "
-    @Published var errorMessage = " "
+    @Published var name = ""
+    @Published var email = ""
+    @Published var password = ""
+    @Published var errorMessage = ""
     
     init() {
         
