@@ -18,8 +18,14 @@ class LoginViewViewModel: ObservableObject {
     }
     
     func login() {
-       
+        guard validate() else {
+            return
+        }
+        //will try to log user in
+        Auth.auth().signIn(withEmail: email, password: password)
     }
+    
+    
     
     private func validate() -> Bool {
         guard !email.trimmingCharacters(in: .whitespaces).isEmpty,
@@ -34,7 +40,7 @@ class LoginViewViewModel: ObservableObject {
         }
         
         
-        // if clicked print in console log
+        // just for console log
         print("Trying to log in")
         
         return true

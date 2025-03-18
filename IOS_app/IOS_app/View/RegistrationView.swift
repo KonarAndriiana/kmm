@@ -9,20 +9,29 @@ import SwiftUI
 
 struct RegistrationView: View {
     
-    @State var email = ""
-    @State var password = ""
+    @StateObject var viewModel = RegistrationViewViewModel()
     
     var body: some View {
         VStack {
             Form {
-                TextField("Email" , text: $email)
+                TextField("Name" , text: $viewModel.name)
                     .autocapitalization(.none)
                     .autocorrectionDisabled()
                 
-                SecureField("Password" , text: $password)
+                TextField("Email" , text: $viewModel.email)
+                    .autocapitalization(.none)
+                    .autocorrectionDisabled()
+                
+                SecureField("Password" , text: $viewModel.password)
                 
                 ButtonView(color: .blue, title: "Create account") {
-                    //registration
+                    viewModel.registration()
+                }
+                
+                if !viewModel.errorMessage.isEmpty {
+                    Text(viewModel.errorMessage)
+                        .foregroundColor(Color.orange)
+                        .multilineTextAlignment(.center)
                 }
             }
             .padding(.top, 200)
