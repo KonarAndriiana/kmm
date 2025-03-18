@@ -5,6 +5,7 @@
 //  Created by Andriiana Konar on 18/03/2025.
 //
 
+import FirebaseAuth
 import Foundation
 
 class RegistrationViewViewModel: ObservableObject {
@@ -19,7 +20,19 @@ class RegistrationViewViewModel: ObservableObject {
         guard validate() else {
             return
         }
+        
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
+            guard let userID = result?.user.uid else {
+                return
+            }
+            self?.insertUserRrecord(id: userID)
+        }
     }
+    
+    private func insertUserRrecord(id: String) {
+        
+    }
+    
     
     
     private func validate() -> Bool {
