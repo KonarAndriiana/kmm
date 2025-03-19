@@ -63,8 +63,14 @@ fun LoginScreen(navController: NavController) {
             Text("Don't have account? Register now!")
         }
 
-        loginState?.let { message ->
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        LaunchedEffect(loginState) {
+            loginState?.let { message ->
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+
+                if (message.contains("✅ You have logged in successfully!")) {
+                    navController.navigate("courseList")
+                }
+            }
         }
     }
 }
