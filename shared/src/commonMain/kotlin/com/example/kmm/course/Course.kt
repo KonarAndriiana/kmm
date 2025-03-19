@@ -16,7 +16,6 @@ data class Course(
 data class Instructor(
     val id: Int,
     val name: String,
-    val bio: String
 )
 
 

@@ -8,7 +8,7 @@ class CourseApiService {
                 id = 1,
                 title = "KMM Basics",
                 description = "Test your knowledge of KMM",
-                instructor = Instructor(101, "Janko Hraško", "Senior Kotlin developer"),
+                instructor = Instructor(101, "Janko Hraško"),
                 duration = "30 minutes",
                 difficulty = "Beginner"
             ),
@@ -16,7 +16,7 @@ class CourseApiService {
                 id = 2,
                 title = "Android Dev",
                 description = "Basics of Android app development",
-                instructor = Instructor(102, "Elena Nováková", "Lead Android Engineer"),
+                instructor = Instructor(102, "Elena Nováková"),
                 duration = "40 minutes",
                 difficulty = "Intermediate"
             ),
@@ -24,7 +24,7 @@ class CourseApiService {
                 id = 3,
                 title = "iOS Dev",
                 description = "Basics of iOS app development",
-                instructor = Instructor(103, "Peter Horváth", "iOS Developer with 7 years of experience"),
+                instructor = Instructor(103, "Peter Horváth"),
                 duration = "35 minutes",
                 difficulty = "Intermediate"
             )
@@ -34,7 +34,7 @@ class CourseApiService {
             id = courseId,
             title = "Unknown Test",
             description = "No details available.",
-            instructor = Instructor(0, "Unknown", ""),
+            instructor = Instructor(0, "Unknown"),
             duration = "-",
             difficulty = "-"
         )
