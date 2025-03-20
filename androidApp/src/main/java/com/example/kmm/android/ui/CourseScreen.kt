@@ -36,7 +36,7 @@ fun CourseScreen(navController: NavController, courseId: Int? = null) {
 
         // IF courseId is NULL, SHOW -> course LIST
         if (courseId == null) {
-            val courses = listOf("Course 1", "Course 2", "Course 3")
+            val courses = listOf("Course 1", "Course 2", "Course 3", "Course 4")
 
             Text(text = "Available Courses", style = MaterialTheme.typography.headlineLarge)
 
@@ -63,6 +63,7 @@ fun CourseScreen(navController: NavController, courseId: Int? = null) {
             course?.let {
                 Text(text = "Course: ${it.title}", style = MaterialTheme.typography.headlineLarge)
                 Text(text = "Description: ${it.description}")
+                Text(text = "Category: ${it.category}")
                 Text(text = "Instructor: ${it.instructor.name}")
                 Text(text = "Duration: ${it.duration}")
                 Text(text = "Difficulty: ${it.difficulty}")

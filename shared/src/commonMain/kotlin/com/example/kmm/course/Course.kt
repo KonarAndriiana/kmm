@@ -7,9 +7,10 @@ data class Course(
     val id: Int,
     val title: String,
     val description: String,
+    val category: String,
     val instructor: Instructor,
     val duration: String,
-    val difficulty: String
+    val difficulty: String,
 )
 
 @Serializable
