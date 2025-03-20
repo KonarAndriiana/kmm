@@ -9,7 +9,25 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(alignment: .leading){
+            HStack{
+                Text("Name : ")
+                Text("")
+            }
+            HStack{
+                Text("Email : ")
+                Text("")
+            }
+            HStack{
+                Text("Member since : ")
+                Text("")
+            }
+        }
+        
+        ButtonView(color: .red, title: "Log out") {
+            //pridat log out tu (nezbudni state)
+        }
+               
     }
 }
 
