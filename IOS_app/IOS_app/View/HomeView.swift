@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     
-//    @StateObject var viewModel = HomeViewViewModel()
+    @StateObject var viewModel = HomeViewViewModel()
     
     var body: some View {
         VStack(alignment: .leading){
@@ -31,7 +31,7 @@ struct HomeView: View {
             //pridat log out tu (nezbudni state)
         }
         .padding(.horizontal, 30.0)
-        .frame(height: 50.0)
+        .frame(width: 25.0, height: 50.0)
         
                
     }
