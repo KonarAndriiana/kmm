@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct HomeView: View {
+    
+//    @StateObject var viewModel = HomeViewViewModel()
+    
     var body: some View {
         VStack(alignment: .leading){
             HStack{
@@ -27,6 +30,9 @@ struct HomeView: View {
         ButtonView(color: .red, title: "Log out") {
             //pridat log out tu (nezbudni state)
         }
+        .padding(.horizontal, 30.0)
+        .frame(height: 50.0)
+        
                
     }
 }
