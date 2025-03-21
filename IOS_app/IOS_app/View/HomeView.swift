@@ -12,28 +12,40 @@ struct HomeView: View {
     @StateObject var viewModel = HomeViewViewModel()
     
     var body: some View {
-        VStack(alignment: .leading){
-            HStack{
-                Text("Name : ")
-                Text("")
-            }
-            HStack{
-                Text("Email : ")
-                Text("")
-            }
-            HStack{
-                Text("Member since : ")
-                Text("")
+        NavigationView {
+            VStack {
+                if let user = viewModel.user {
+                    VStack {
+                        HStack {
+                            Text("Name: ")
+                            Text(user.name)
+                        }
+                        .padding()
+                        
+                        HStack {
+                            Text("Email: ")
+                            Text(user.email)
+                        }
+                        .padding()
+                        
+                        HStack {
+                            Text("Member since: ")
+                            Text("\(Date(timeIntervalSince1970: user.joined).formatted(date: .abbreviated, time: .shortened))")
+                        }
+                        .padding()
+                        
+                        ButtonView(color: .red, title: "Log Out") {
+                            viewModel.logout()
+                        }
+                    }
+                } else {
+                    Text("Loading ...")
+                }
             }
         }
-        
-        ButtonView(color: .red, title: "Log out") {
-            //pridat log out tu (nezbudni state)
+        .onAppear {
+            viewModel.fetchUser()
         }
-        .padding(.horizontal, 30.0)
-        .frame(width: 25.0, height: 50.0)
-        
-               
     }
 }
 
