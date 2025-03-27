@@ -4,19 +4,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Course(
+    val userId: Int,
     val id: Int,
     val title: String,
-    val description: String,
-    val category: String,
-    val instructor: Instructor,
-    val duration: String,
-    val difficulty: String,
-)
-
-@Serializable
-data class Instructor(
-    val id: Int,
-    val name: String,
+    val body: String
 )
 
 

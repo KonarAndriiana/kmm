@@ -33,43 +33,33 @@ fun CourseScreen(navController: NavController, courseId: Int? = null) {
             .background(Color.White)
             .padding(16.dp)
     ) {
-
-        // IF courseId is NULL, SHOW -> course LIST
         if (courseId == null) {
-            val courses = listOf("Course 1", "Course 2", "Course 3", "Course 4")
+            val courses by courseViewModel.courseList.collectAsState()
+            LaunchedEffect(Unit) { courseViewModel.fetchCourses() }
 
             Text(text = "Available Courses", style = MaterialTheme.typography.headlineLarge)
-
             Spacer(modifier = Modifier.height(16.dp))
 
-            courses.forEachIndexed { index, courseName ->
+            courses.forEach { course ->
                 Text(
-                    text = courseName,
+                    text = course.title,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
-                        .clickable { navController.navigate("course/${index + 1}") },
+                        .clickable { navController.navigate("course/${course.id}") },
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Divider()
             }
         } else {
-
-            // ELSE courseId is NOT NULL(user clicked on a course, courseId changes from null),
-            // SHOW -> course DETAILS
             val course by courseViewModel.course.collectAsState()
             LaunchedEffect(courseId) { courseViewModel.fetchCourse(courseId) }
 
             course?.let {
                 Text(text = "Course: ${it.title}", style = MaterialTheme.typography.headlineLarge)
-                Text(text = "Description: ${it.description}")
-                Text(text = "Category: ${it.category}")
-                Text(text = "Instructor: ${it.instructor.name}")
-                Text(text = "Duration: ${it.duration}")
-                Text(text = "Difficulty: ${it.difficulty}")
-
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = "Description:\n${it.body}")
                 Spacer(modifier = Modifier.height(16.dp))
-
                 Button(onClick = { navController.navigate("courseList") }) {
                     Text("Back to Courses")
                 }

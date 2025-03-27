@@ -35,6 +35,13 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             //ktor
             implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.okhttp)
+            //ktor content negotiation
+            implementation(libs.ktor.client.content.negotiation)
+            //Json Ktor
+            implementation(libs.ktor.serialization.kotlinx.json)
+            //logging
+            implementation(libs.ktor.client.logging)
             //Json
             implementation(libs.kotlinx.serialization.json)
         }

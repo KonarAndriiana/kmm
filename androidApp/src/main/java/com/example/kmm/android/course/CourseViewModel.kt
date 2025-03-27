@@ -1,19 +1,32 @@
 package com.example.kmm.android.course
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.kmm.course.Course
-import com.example.kmm.course.CourseApiService
+import com.example.kmm.course.CourseApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class CourseViewModel : ViewModel() {
-    private val apiService = CourseApiService()
+    private val api = CourseApi()
 
     private val _course = MutableStateFlow<Course?>(null)
     val course: StateFlow<Course?> = _course
 
+    private val _courseList = MutableStateFlow<List<Course>>(emptyList())
+    val courseList: StateFlow<List<Course>> = _courseList
+
     fun fetchCourse(courseId: Int) {
-        _course.value = null
-        _course.value = apiService.getCourse(courseId)
+        viewModelScope.launch {
+            _course.value = null
+            _course.value = api.getCourseById(courseId)
+        }
+    }
+
+    fun fetchCourses() {
+        viewModelScope.launch {
+            _courseList.value = api.getCourses()
+        }
     }
 }
