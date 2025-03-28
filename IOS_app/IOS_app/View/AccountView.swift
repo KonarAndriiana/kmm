@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct HomeView: View {
+struct AccountView: View {
     
-    @StateObject var viewModel = HomeViewViewModel()
+    @StateObject var viewModel = AccountViewViewModel()
     
     var body: some View {
         NavigationView {
@@ -50,5 +50,5 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
+    AccountView()
 }
