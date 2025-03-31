@@ -9,8 +9,6 @@ import SwiftUI
 struct RegistrationView: View {
     
     @StateObject var viewModel = RegistrationViewViewModel()
-    @State private var showImagePicker = false
-    @State private var selectedImageData: Data? = nil
     
     var body: some View {
         VStack {
@@ -25,25 +23,7 @@ struct RegistrationView: View {
                 
                 SecureField("Password" , text: $viewModel.password)
                 
-                Button("Select Profile Photo") {
-                    showImagePicker.toggle()
-                }
-                
-                if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 100, height: 100)
-                        .clipShape(Circle())
-                        .padding()
-                }
-                
                 ButtonView(color: .blue, title: "Create account") {
-                    if let imageData = selectedImageData {
-                        if let imagePath = saveImageToLocalStorage(imageData) {
-                            viewModel.profilePhoto = imagePath
-                        }
-                    }
                     viewModel.registration()
                 }
                 
@@ -55,26 +35,6 @@ struct RegistrationView: View {
             }
             .padding(.top, 200)
         }
-        .sheet(isPresented: $showImagePicker) {
-            ImagePicker(isPresented: $showImagePicker, imageData: $selectedImageData)
-        }
-    }
-    
-    private func saveImageToLocalStorage(_ imageData: Data) -> String? {
-        let fileName = UUID().uuidString
-        let fileURL = getDocumentsDirectory().appendingPathComponent(fileName)
-        do {
-            try imageData.write(to: fileURL)
-            return fileURL.path
-        } catch {
-            print("Error saving image: \(error)")
-            return nil
-        }
-    }
-    
-    private func getDocumentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return paths[0]
     }
 }
 

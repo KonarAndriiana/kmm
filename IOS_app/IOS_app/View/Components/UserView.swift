@@ -4,7 +4,6 @@
 //
 //  Created by Andriiana Konar on 31/03/2025.
 //
-
 import SwiftUI
 
 struct UserView: View {
@@ -66,6 +65,3 @@ struct UserView: View {
         UserView()
     }
 }
-
-
-
