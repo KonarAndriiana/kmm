@@ -5,15 +5,17 @@
 //  Created by Andriiana Konar on 18/03/2025.
 //
 
-import FirebaseFirestore
+import SwiftUI
 import FirebaseAuth
 import Foundation
+import FirebaseFirestore
 
 class RegistrationViewViewModel: ObservableObject {
     @Published var name = ""
     @Published var email = ""
     @Published var password = ""
     @Published var errorMessage = ""
+    @Published var profilePhoto: String?
     
     init() {
         
@@ -28,21 +30,27 @@ class RegistrationViewViewModel: ObservableObject {
             guard let userID = result?.user.uid else {
                 return
             }
-            self?.insertUserRrecord(id: userID)
+            
+            self?.saveProfilePhoto() 
+            self?.insertUserRecord(id: userID)
         }
     }
     
-    private func insertUserRrecord(id: String) {
-        let newUser = User(id: id, name: name, email: email, joined: Date().timeIntervalSince1970)
+    private func insertUserRecord(id: String) {
+        let newUser = User(id: id, name: name, email: email, joined: Date().timeIntervalSince1970, profilePhoto: profilePhoto)
         
-        let db = Firestore.firestore()
+        UserDefaults.standard.set(profilePhoto, forKey: "profilePhoto")
         
-        db.collection("users")
-            .document(id)
-            .setData(newUser.asDictionary())
+        // Vytvorenie používateľského záznamu vo Firestore (ak budeš chcieť, môžeš túto časť upravit pre Firebase)
+         let db = Firestore.firestore()
+         db.collection("users").document(id).setData(newUser.asDictionary())
     }
     
-    
+    private func saveProfilePhoto() {
+        if let photo = profilePhoto {
+            UserDefaults.standard.set(photo, forKey: "profilePhoto")
+        }
+    }
     
     private func validate() -> Bool {
         guard !name.trimmingCharacters(in: .whitespaces).isEmpty,
@@ -53,18 +61,18 @@ class RegistrationViewViewModel: ObservableObject {
             return false
         }
         
-        guard email.contains("@")  && email.contains(".") else {
+        guard email.contains("@") && email.contains(".") else {
             errorMessage = "Please enter valid email."
             return false
         }
         
-        guard email.count >= 6 else {
-            errorMessage = "Please create password that has more that 5 Characters"
+        guard password.count >= 6 else {
+            errorMessage = "Please create a password with more than 5 characters"
             return false
         }
         
         // just for console log
-        print("Trying to registrate")
+        print("Trying to register")
         
         return true
     }
