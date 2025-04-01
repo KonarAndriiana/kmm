@@ -35,6 +35,8 @@ struct RegistrationView: View {
                 ButtonView(color: .blue, title: "Create account") {
                     viewModel.registration()
                 }
+                .disabled(viewModel.password != viewModel.confirmPassword || viewModel.password.isEmpty || viewModel.confirmPassword.isEmpty)
+                                .opacity((viewModel.password != viewModel.confirmPassword || viewModel.password.isEmpty || viewModel.confirmPassword.isEmpty) ? 0.5 : 1.0)
                 
                 if !viewModel.errorMessage.isEmpty {
                     Text(viewModel.errorMessage)
