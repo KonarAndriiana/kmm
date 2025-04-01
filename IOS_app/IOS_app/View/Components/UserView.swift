@@ -15,7 +15,7 @@ struct UserView: View {
             VStack {
                 if let user = viewModel.user {
                     HStack {
-                        Text("Hi, \(user.name) 👋🏻")
+                        Text("Hi, \(user.firstName) 👋🏻")
                             .font(.largeTitle)
                             .fontWeight(.semibold)
                             .multilineTextAlignment(.leading)

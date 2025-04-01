@@ -16,7 +16,11 @@ struct RegistrationView: View {
                 
 //                ImagePickerView()
                 
-                TextField("Name" , text: $viewModel.name)
+                TextField("First name" , text: $viewModel.firstName)
+                    .autocapitalization(.none)
+                    .autocorrectionDisabled()
+                
+                TextField("Last name" , text: $viewModel.lastName)
                     .autocapitalization(.none)
                     .autocorrectionDisabled()
                 

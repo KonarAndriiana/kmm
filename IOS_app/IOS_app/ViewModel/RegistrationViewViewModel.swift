@@ -9,7 +9,8 @@ import FirebaseFirestore
 import Foundation
 
 class RegistrationViewViewModel: ObservableObject {
-    @Published var name = ""
+    @Published var firstName = ""
+    @Published var lastName = ""
     @Published var email = ""
     @Published var password = ""
     @Published var errorMessage = ""
@@ -30,7 +31,7 @@ class RegistrationViewViewModel: ObservableObject {
     }
     
     private func insertUserRrecord(id: String) {
-        let newUser = User(id: id, name: name, email: email, joined: Date().timeIntervalSince1970)
+        let newUser = User(id: id, firstName: firstName, lastName: lastName, email: email, joined: Date().timeIntervalSince1970)
         
         let db = Firestore.firestore()
         
@@ -40,7 +41,8 @@ class RegistrationViewViewModel: ObservableObject {
     }
     
     private func validate() -> Bool {
-        guard !name.trimmingCharacters(in: .whitespaces).isEmpty,
+        guard !firstName.trimmingCharacters(in: .whitespaces).isEmpty,
+              !lastName.trimmingCharacters(in: .whitespaces).isEmpty,
               !email.trimmingCharacters(in: .whitespaces).isEmpty,
               !password.trimmingCharacters(in: .whitespaces).isEmpty else {
             
