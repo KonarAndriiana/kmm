@@ -26,7 +26,7 @@ struct ButtonView: View {
                     .bold()
                 
             }
-            .padding(.all , 10)
+//            .padding(.all , 10)
         }
     }
 }

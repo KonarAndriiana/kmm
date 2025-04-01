@@ -4,7 +4,6 @@
 //
 //  Created by Andriiana Konar on 18/03/2025.
 //
-
 import SwiftUI
 
 struct RegistrationView: View {
@@ -14,6 +13,9 @@ struct RegistrationView: View {
     var body: some View {
         VStack {
             Form {
+                
+//                ImagePickerView()
+                
                 TextField("Name" , text: $viewModel.name)
                     .autocapitalization(.none)
                     .autocorrectionDisabled()

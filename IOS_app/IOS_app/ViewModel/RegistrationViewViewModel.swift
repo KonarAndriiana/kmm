@@ -4,9 +4,8 @@
 //
 //  Created by Andriiana Konar on 18/03/2025.
 //
-
-import FirebaseFirestore
 import FirebaseAuth
+import FirebaseFirestore
 import Foundation
 
 class RegistrationViewViewModel: ObservableObject {
@@ -15,10 +14,8 @@ class RegistrationViewViewModel: ObservableObject {
     @Published var password = ""
     @Published var errorMessage = ""
     
-    init() {
+    init() {}
         
-    }
-    
     func registration() {
         guard validate() else {
             return
@@ -42,8 +39,6 @@ class RegistrationViewViewModel: ObservableObject {
             .setData(newUser.asDictionary())
     }
     
-    
-    
     private func validate() -> Bool {
         guard !name.trimmingCharacters(in: .whitespaces).isEmpty,
               !email.trimmingCharacters(in: .whitespaces).isEmpty,
@@ -62,9 +57,6 @@ class RegistrationViewViewModel: ObservableObject {
             errorMessage = "Please create password that has more that 5 Characters"
             return false
         }
-        
-        // just for console log
-        print("Trying to registrate")
         
         return true
     }
