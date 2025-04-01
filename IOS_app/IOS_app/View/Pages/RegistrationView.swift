@@ -13,22 +13,21 @@ struct RegistrationView: View {
     var body: some View {
         VStack {
             Form {
+                // ImagePickerView()  
                 
-//                ImagePickerView()
-                
-                TextField("First name" , text: $viewModel.firstName)
+                TextFieldView(placeholder: "First name", text: $viewModel.firstName)
                     .autocapitalization(.none)
                     .autocorrectionDisabled()
                 
-                TextField("Last name" , text: $viewModel.lastName)
+                TextFieldView(placeholder: "Last name", text: $viewModel.lastName)
                     .autocapitalization(.none)
                     .autocorrectionDisabled()
                 
-                TextField("Email" , text: $viewModel.email)
+                TextFieldView(placeholder: "Email", text: $viewModel.email)
                     .autocapitalization(.none)
                     .autocorrectionDisabled()
                 
-                SecureField("Password" , text: $viewModel.password)
+                TextFieldView(placeholder: "Password", text: $viewModel.password, isSecure: true)
                 
                 ButtonView(color: .blue, title: "Create account") {
                     viewModel.registration()

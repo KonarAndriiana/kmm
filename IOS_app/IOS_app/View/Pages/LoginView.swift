@@ -16,19 +16,17 @@ struct LoginView: View {
     var body: some View {
         NavigationView {
             VStack {
-                // Main form content
                 Form {
-                    TextField("Email" , text: $viewModel.email)
+                    TextFieldView(placeholder: "Email", text: $viewModel.email)
                         .autocapitalization(.none)
                         .autocorrectionDisabled()
                     
-                    SecureField("Password" , text: $viewModel.password)
+                    TextFieldView(placeholder: "Password", text: $viewModel.password, isSecure: true)
                     
                     ButtonView(color: .red, title: "Log In") {
                         viewModel.login()
                     }
                     
-                    // Forgot password button
                     Button("Forgot Password?") {
                         showForgotPasswordSheet = true
                     }
@@ -57,11 +55,10 @@ struct LoginView: View {
                                 .shadow(radius: 10)
                         }
                         .padding(.horizontal)
-                        .frame(maxWidth: 400) // Limit the max width
-                        .transition(.opacity) // Fade effect
+                        .frame(maxWidth: 400)
+                        .transition(.opacity)
                         .zIndex(1)
                         .onAppear {
-                            // Keep the message visible for 5 seconds
                             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                                 withAnimation {
                                     showToast = false
@@ -83,8 +80,6 @@ struct LoginView: View {
         }
     }
 }
-
-
 
 #Preview {
     LoginView()
