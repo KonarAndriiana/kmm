@@ -13,6 +13,9 @@ struct RegistrationView: View {
     var body: some View {
         VStack {
             Form {
+                
+//                ImagePickerView()
+                
                 TextField("Name" , text: $viewModel.name)
                     .autocapitalization(.none)
                     .autocorrectionDisabled()
