@@ -18,8 +18,7 @@ struct ForgotPasswordView: View {
                 .fontWeight(.bold)
                 .padding(.bottom, 20)
             
-            TextField("Enter your email", text: $email)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+            TextFieldView(placeholder: "Enter your email", text: $email)
                 .autocapitalization(.none)
                 .autocorrectionDisabled()
                 .padding()
@@ -39,7 +38,7 @@ struct ForgotPasswordView: View {
             
             if !viewModel.errorMessage.isEmpty {
                 Text(viewModel.errorMessage)
-                    .foregroundColor(.white)
+                    .foregroundColor(.orange)
                     .multilineTextAlignment(.center)
                     .padding()
             }
