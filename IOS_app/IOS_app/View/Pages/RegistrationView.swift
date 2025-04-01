@@ -13,7 +13,8 @@ struct RegistrationView: View {
     var body: some View {
         VStack {
             Form {
-                // ImagePickerView()  
+                
+                //ImagePickerView()
                 
                 TextFieldView(placeholder: "First name", text: $viewModel.firstName)
                     .autocapitalization(.none)
@@ -29,13 +30,15 @@ struct RegistrationView: View {
                 
                 TextFieldView(placeholder: "Password", text: $viewModel.password, isSecure: true)
                 
+                TextFieldView(placeholder: "Confirm Password", text: $viewModel.confirmPassword, isSecure: true)
+                
                 ButtonView(color: .blue, title: "Create account") {
                     viewModel.registration()
                 }
                 
                 if !viewModel.errorMessage.isEmpty {
                     Text(viewModel.errorMessage)
-                        .foregroundColor(Color.orange)
+                        .foregroundColor(.orange)
                         .multilineTextAlignment(.center)
                 }
             }
