@@ -15,14 +15,14 @@ struct UserView: View {
             VStack {
                 if let user = viewModel.user {
                     HStack {
-                        Text("Hi, \(user.name) 👋🏻")
+                        Text("Hi, \(user.firstName) 👋🏻")
                             .font(.largeTitle)
                             .fontWeight(.semibold)
                             .multilineTextAlignment(.leading)
                         
                         Spacer()
                         
-                        NavigationLink(destination: SettingsView()) {
+                        NavigationLink(destination: AccountView()) {
                             Image(systemName: "person.crop.circle")
                                 .resizable()
                                 .scaledToFit()
@@ -40,7 +40,7 @@ struct UserView: View {
                         
                         Spacer()
                         
-                        NavigationLink(destination: SettingsView()) {
+                        NavigationLink(destination: AccountView()) {
                             Image(systemName: "person.crop.circle")
                                 .resizable()
                                 .scaledToFit()

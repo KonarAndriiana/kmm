@@ -25,6 +25,21 @@ class LoginViewViewModel: ObservableObject {
         Auth.auth().signIn(withEmail: email, password: password)
     }
     
+    func resetPassword(email: String) {
+        guard !email.trimmingCharacters(in: .whitespaces).isEmpty else {
+            errorMessage = "Enter your email to continue."
+            return
+        }
+
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            if let error = error {
+                self.errorMessage = "Something went wrong. Try again."
+            } else {
+                self.errorMessage = "Check your inbox for a reset link."
+            }
+        }
+    }
+    
     
     
     private func validate() -> Bool {

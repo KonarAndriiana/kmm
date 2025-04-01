@@ -9,9 +9,11 @@ import FirebaseFirestore
 import Foundation
 
 class RegistrationViewViewModel: ObservableObject {
-    @Published var name = ""
+    @Published var firstName = ""
+    @Published var lastName = ""
     @Published var email = ""
     @Published var password = ""
+    @Published var confirmPassword = ""  
     @Published var errorMessage = ""
     
     init() {}
@@ -25,12 +27,12 @@ class RegistrationViewViewModel: ObservableObject {
             guard let userID = result?.user.uid else {
                 return
             }
-            self?.insertUserRrecord(id: userID)
+            self?.insertUserRecord(id: userID)
         }
     }
     
-    private func insertUserRrecord(id: String) {
-        let newUser = User(id: id, name: name, email: email, joined: Date().timeIntervalSince1970)
+    private func insertUserRecord(id: String) {
+        let newUser = User(id: id, firstName: firstName, lastName: lastName, email: email, joined: Date().timeIntervalSince1970)
         
         let db = Firestore.firestore()
         
@@ -40,24 +42,34 @@ class RegistrationViewViewModel: ObservableObject {
     }
     
     private func validate() -> Bool {
-        guard !name.trimmingCharacters(in: .whitespaces).isEmpty,
+        guard !firstName.trimmingCharacters(in: .whitespaces).isEmpty,
+              !lastName.trimmingCharacters(in: .whitespaces).isEmpty,
               !email.trimmingCharacters(in: .whitespaces).isEmpty,
-              !password.trimmingCharacters(in: .whitespaces).isEmpty else {
+              !password.trimmingCharacters(in: .whitespaces).isEmpty,
+              !confirmPassword.trimmingCharacters(in: .whitespaces).isEmpty else {
             
             errorMessage = "Please fill in all fields"
             return false
         }
         
-        guard email.contains("@")  && email.contains(".") else {
-            errorMessage = "Please enter valid email."
+        guard email.contains("@") && email.contains(".") else {
+            errorMessage = "Please enter a valid email."
             return false
         }
         
-        guard email.count >= 6 else {
-            errorMessage = "Please create password that has more that 5 Characters"
+        guard password.count >= 6 else {
+            errorMessage = "Please create a password that has at least 6 characters."
+            return false
+        }
+        
+        guard password == confirmPassword else {
+            errorMessage = "Passwords do not match."
             return false
         }
         
         return true
     }
 }
+
+
+

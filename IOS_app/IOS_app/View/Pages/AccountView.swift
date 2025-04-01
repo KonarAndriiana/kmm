@@ -17,8 +17,14 @@ struct AccountView: View {
                 if let user = viewModel.user {
                     VStack {
                         HStack {
-                            Text("Name: ")
-                            Text(user.name)
+                            Text("First name: ")
+                            Text(user.firstName)
+                        }
+                        .padding()
+                        
+                        HStack {
+                            Text("Last name: ")
+                            Text(user.lastName)
                         }
                         .padding()
                         
