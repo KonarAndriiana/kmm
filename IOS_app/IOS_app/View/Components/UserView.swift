@@ -22,7 +22,7 @@ struct UserView: View {
                         
                         Spacer()
                         
-                        NavigationLink(destination: SettingsView()) {
+                        NavigationLink(destination: AccountView()) {
                             Image(systemName: "person.crop.circle")
                                 .resizable()
                                 .scaledToFit()
@@ -40,7 +40,7 @@ struct UserView: View {
                         
                         Spacer()
                         
-                        NavigationLink(destination: SettingsView()) {
+                        NavigationLink(destination: AccountView()) {
                             Image(systemName: "person.crop.circle")
                                 .resizable()
                                 .scaledToFit()
