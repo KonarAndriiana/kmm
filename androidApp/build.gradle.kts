@@ -53,4 +53,6 @@ dependencies {
 
     implementation(libs.ktor.client.okhttp)
     implementation(libs.kotlinx.coroutines.android)
+
+    implementation(libs.androidx.material.icons.extended)
 }

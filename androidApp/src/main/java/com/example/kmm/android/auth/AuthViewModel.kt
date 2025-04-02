@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kmm.auth.LoginUseCase
 import com.example.kmm.auth.RegisterUseCase
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,8 +23,9 @@ class AuthViewModel
     val registerState: StateFlow<String?> = _registerState
 
     fun login(email: String, password: String) {
-        if (email.isBlank() || password.isBlank()) {
-            _loginState.value = "❌ Email or password cannot be empty."
+        val validationMessage = validateLoginInputs(email, password)
+        if (validationMessage != null) {
+            _loginState.value = validationMessage
             resetMessage()
             return
         }
@@ -32,16 +35,22 @@ class AuthViewModel
                 _loginState.value = if (result.isSuccess) {
                     "✅ You have logged in successfully!"
                 } else {
-                    mapFirebaseError(result.exceptionOrNull())
+                    mapFirebaseError(result.exceptionOrNull(), isLogin = true)
                 }
                 resetMessage()
             }
         }
     }
 
-    fun register(email: String, password: String) {
-        if (email.isBlank() || password.isBlank()) {
-            _registerState.value = "❌ Email or password cannot be empty."
+    fun register(email: String, password: String, confirmPassword: String) {
+        if (password != confirmPassword) {
+            _registerState.value = "❌ Passwords do not match"
+            resetMessage()
+            return
+        }
+        val validationMessage = validateRegisterInputs(email, password)
+        if (validationMessage != null) {
+            _registerState.value = validationMessage
             resetMessage()
             return
         }
@@ -51,19 +60,56 @@ class AuthViewModel
                 _registerState.value = if (result.isSuccess) {
                     "✅ Registration successful! You can now log in."
                 } else {
-                    mapFirebaseError(result.exceptionOrNull())
+                    mapFirebaseError(result.exceptionOrNull(), isLogin = false)
                 }
                 resetMessage()
             }
         }
     }
 
-    private fun mapFirebaseError(error: Throwable?): String {
-        if (error == null) return "❌ Login failed. Please try again."
+    private fun validateLoginInputs(email: String, password: String): String? {
+        if (email.isBlank() && password.isBlank()) return "❌ Both fields must be completed"
+        if (email.isBlank()) return "❌ Email cannot be empty"
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            return "❌ Please enter a valid email address"
+        }
+        if (password.isBlank()) return "❌ Password cannot be empty"
+        return null
+    }
+
+    private fun validateRegisterInputs(email: String, password: String): String? {
+        if (email.isBlank() && password.isBlank()) return "❌ Both fields must be completed"
+        if (email.isBlank()) return "❌ Email cannot be empty"
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            return "❌ Please enter a valid email address"
+        }
+        if (password.isBlank()) return "❌ Password cannot be empty"
+        if (password.length < 6) return "❌ Password must be at least 6 characters long"
+        if (!password.any { it.isUpperCase() }) return "❌ Password must contain at least one uppercase letter"
+        if (!password.any { it.isDigit() }) return "❌ Password must contain at least one number"
+        return null
+    }
+
+    private fun mapFirebaseError(error: Throwable?, isLogin: Boolean): String {
+        if (error == null) {
+            return if (isLogin) {
+                "❌ Login failed. Please try again"
+            } else {
+                "❌ Registration failed. Please try again later"
+            }
+        }
 
         return when (error) {
-            is FirebaseAuthInvalidCredentialsException -> "❌ Email or password is incorrect."
-            else -> "❌ Login failed. Please try again."
+            is FirebaseAuthInvalidCredentialsException -> {
+                if (isLogin) "❌ Email or password is incorrect"
+                else "❌ Please enter a valid email address"
+            }
+            is FirebaseAuthUserCollisionException -> "❌ This email is already registered"
+            is FirebaseNetworkException -> "❌ Network error. Please check your internet connection"
+            else -> {
+                if (isLogin) "❌ Login failed. Please try again later"
+                else "❌ Registration failed. Please try again later"
+            }
         }
     }
 
