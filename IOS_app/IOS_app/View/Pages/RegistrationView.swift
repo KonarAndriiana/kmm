@@ -4,18 +4,17 @@
 //
 //  Created by Andriiana Konar on 18/03/2025.
 //
+
 import SwiftUI
 
 struct RegistrationView: View {
     
     @StateObject var viewModel = RegistrationViewViewModel()
+    @State private var showToast = false
     
     var body: some View {
         VStack {
             Form {
-                
-                //ImagePickerView()
-                
                 TextFieldView(placeholder: "First name", text: $viewModel.firstName)
                     .autocapitalization(.none)
                     .autocorrectionDisabled()
@@ -40,15 +39,42 @@ struct RegistrationView: View {
                     viewModel.registration()
                 }
                 .disabled(viewModel.password != viewModel.confirmPassword || viewModel.password.isEmpty || viewModel.confirmPassword.isEmpty)
-                                .opacity((viewModel.password != viewModel.confirmPassword || viewModel.password.isEmpty || viewModel.confirmPassword.isEmpty) ? 0.5 : 1.0)
-                
-                if !viewModel.errorMessage.isEmpty {
-                    Text(viewModel.errorMessage)
-                        .foregroundColor(.orange)
-                        .multilineTextAlignment(.center)
-                }
+                .opacity((viewModel.password != viewModel.confirmPassword || viewModel.password.isEmpty || viewModel.confirmPassword.isEmpty) ? 0.5 : 1.0)
             }
             .padding(.top, 200)
+        }
+        .overlay(
+            VStack {
+                if showToast {
+                    HStack {
+                        Text(viewModel.errorMessage)
+                            .font(.body)
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.gray)
+                            .cornerRadius(10)
+                            .shadow(radius: 10)
+                    }
+                    .padding(.horizontal)
+                    .frame(maxWidth: 400)
+                    .transition(.opacity)
+                    .zIndex(1)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                            withAnimation {
+                                showToast = false
+                            }
+                        }
+                    }
+                }
+                Spacer()
+            }
+        )
+        .onChange(of: viewModel.errorMessage) { newError in
+            if !newError.isEmpty {
+                showToast = true
+            }
         }
     }
 }
