@@ -29,8 +29,12 @@ struct RegistrationView: View {
                     .autocorrectionDisabled()
                 
                 TextFieldView(placeholder: "Password", text: $viewModel.password, isSecure: true)
+                    .autocapitalization(.none)
+                    .autocorrectionDisabled()
                 
                 TextFieldView(placeholder: "Confirm Password", text: $viewModel.confirmPassword, isSecure: true)
+                    .autocapitalization(.none)
+                    .autocorrectionDisabled()
                 
                 ButtonView(color: .blue, title: "Create account") {
                     viewModel.registration()
