@@ -322,7 +322,17 @@ fun LoginScreen(navController: NavController) {
                         OutlinedTextField(
                             value = resetEmail,
                             onValueChange = { resetEmail = it },
-                            placeholder = { Text("email", fontSize = 14.sp, color = Color.Gray) },
+                            placeholder = {
+                                Box(modifier = Modifier.fillMaxWidth()) {
+                                    Text(
+                                        text = "Enter your email",
+                                        fontSize = 14.sp,
+                                        color = Color.Gray,
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier.fillMaxWidth()
+                                    )
+                                }
+                            },
                             singleLine = true,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -352,6 +362,7 @@ fun LoginScreen(navController: NavController) {
 
                         Spacer(modifier = Modifier.height(24.dp))
 
+                        // Reset Button (Modal Bottom Sheet)
                         Button(
                             onClick = {
                                 authViewModel.resetPassword(
