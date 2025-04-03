@@ -2,6 +2,7 @@ package com.example.kmm.android.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kmm.auth.AuthRepository
 import com.example.kmm.auth.LoginUseCase
 import com.example.kmm.auth.RegisterUseCase
 import com.google.firebase.FirebaseNetworkException
@@ -14,7 +15,8 @@ import kotlinx.coroutines.launch
 
 class AuthViewModel
     (private val loginUseCase: LoginUseCase,
-    private val registerUseCase: RegisterUseCase) : ViewModel() {
+    private val registerUseCase: RegisterUseCase,
+     private val authRepository: AuthRepository) : ViewModel() {
 
     private val _loginState = MutableStateFlow<String?>(null)
     val loginState: StateFlow<String?> = _loginState
@@ -65,6 +67,36 @@ class AuthViewModel
                 resetMessage()
             }
         }
+    }
+
+    fun resetPassword(
+        email: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val validationMessage = validateResetPassword(email)
+        if (validationMessage != null) {
+            onError(validationMessage)
+            return
+        }
+
+        viewModelScope.launch {
+            authRepository.resetPassword(email).collect { result ->
+                if (result.isSuccess) {
+                    onSuccess()
+                } else {
+                    onError(result.exceptionOrNull()?.message ?: "Something went wrong")
+                }
+            }
+        }
+    }
+
+    private fun validateResetPassword(email: String): String? {
+        if (email.isBlank()) return "Enter your email to continue"
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            return "Please enter a valid email address"
+        }
+        return null
     }
 
     private fun validateLoginInputs(email: String, password: String): String? {

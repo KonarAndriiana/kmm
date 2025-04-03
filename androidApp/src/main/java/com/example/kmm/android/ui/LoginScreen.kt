@@ -35,7 +35,9 @@ import com.example.kmm.android.R
 import com.example.kmm.android.auth.AuthViewModel
 import com.example.kmm.android.auth.AuthViewModelFactory
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavController) {
     val viewModelFactory = remember { AuthViewModelFactory() }
@@ -52,12 +54,21 @@ fun LoginScreen(navController: NavController) {
     var showError by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
+    // Bottom sheet
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val coroutineScope = rememberCoroutineScope()
+    var showSheet by remember { mutableStateOf(false) }
 
+    // Forgot password
+    var resetEmail by remember { mutableStateOf("") }
+    var resetError by remember { mutableStateOf<String?>(null) }
+
+    // Login background img
     Box(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        // Login background img
+
         Image(
             painter = painterResource(id = R.drawable.login_register_background),
             contentDescription = "Login Background",
@@ -234,10 +245,9 @@ fun LoginScreen(navController: NavController) {
                     text = "Forgot password?",
                     fontSize = 14.sp,
                     color = Color.White,
-                    modifier = Modifier
-                        .clickable {
-                            // TODO: nav to ForgotPasswordScreen
-                        }
+                    modifier = Modifier.clickable {
+                        showSheet = true
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -275,6 +285,107 @@ fun LoginScreen(navController: NavController) {
                             navController.navigate("register")
                         }
                     )
+                }
+            }
+
+            // Modal Bottom Sheet
+            if (showSheet) {
+                LaunchedEffect(showSheet) {
+                    sheetState.expand()
+                }
+
+                ModalBottomSheet(
+                    onDismissRequest = { showSheet = false },
+                    sheetState = sheetState,
+                    modifier = Modifier.fillMaxSize(),
+                    containerColor = Color.White,
+                    tonalElevation = 4.dp
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text("Forgot password", fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(
+                            text = "Enter your email, and we’ll send you\nlink and instructions to reset your password.",
+                            textAlign = TextAlign.Center,
+                            fontSize = 14.sp,
+                            color = Color.Gray
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        OutlinedTextField(
+                            value = resetEmail,
+                            onValueChange = { resetEmail = it },
+                            placeholder = { Text("email", fontSize = 14.sp, color = Color.Gray) },
+                            singleLine = true,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(56.dp)
+                                .clip(RoundedCornerShape(50)),
+                            shape = RoundedCornerShape(50),
+                            textStyle = TextStyle(textAlign = TextAlign.Center, fontSize = 14.sp),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                unfocusedContainerColor = Color.White,
+                                focusedContainerColor = Color.White,
+                                unfocusedTextColor = Color.Black,
+                                focusedTextColor = Color.Black,
+                                cursorColor = Color.Black
+                            )
+                        )
+
+                        if (resetError != null) {
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(
+                                text = resetError!!,
+                                color = Color.Red,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        Button(
+                            onClick = {
+                                authViewModel.resetPassword(
+                                    email = resetEmail,
+                                    onSuccess = {
+                                        coroutineScope.launch {
+                                            resetError = null
+                                            sheetState.hide()
+                                            showSheet = false
+                                        }
+                                    },
+                                    onError = { error ->
+                                        coroutineScope.launch {
+                                            resetError = error
+                                            showError = true
+                                            errorMessage = error
+                                            sheetState.hide()
+                                            showSheet = false
+                                        }
+                                    }
+                                )
+                            },
+                            modifier = Modifier
+                                .width(120.dp)
+                                .height(48.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Black,
+                                contentColor = Color.White
+                            )
+                        ) {
+                            Text("Reset", fontSize = 16.sp)
+                        }
+                    }
                 }
             }
 

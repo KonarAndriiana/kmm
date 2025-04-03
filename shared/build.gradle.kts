@@ -35,7 +35,6 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             //ktor
             implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.okhttp)
             //ktor content negotiation
             implementation(libs.ktor.client.content.negotiation)
             //Json Ktor
@@ -45,6 +44,11 @@ kotlin {
             //Json
             implementation(libs.kotlinx.serialization.json)
         }
+
+        androidMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+        }
+
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
