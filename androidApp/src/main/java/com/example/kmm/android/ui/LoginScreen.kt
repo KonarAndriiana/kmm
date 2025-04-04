@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -62,6 +63,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
     var showSheet by remember { mutableStateOf(false) }
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
 
     // Forgot password
     var resetEmail by remember { mutableStateOf("") }
@@ -143,7 +145,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                     color = Color.White
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
                     text = buildAnnotatedString {
@@ -152,7 +154,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                             append("Bugless")
                         }
                     },
-                    fontSize = 16.sp,
+                    fontSize = 20.sp,
                     color = Color.White
                 )
 
@@ -301,26 +303,27 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                 ModalBottomSheet(
                     onDismissRequest = { showSheet = false },
                     sheetState = sheetState,
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = screenHeight * 0.1f),
                     containerColor = Color.White,
-                    tonalElevation = 4.dp
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(24.dp),
+                            .padding(horizontal = 32.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text("Forgot password", fontWeight = FontWeight.Bold, fontSize = 32.sp)
-                        Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = "Enter your email, and we’ll send you\nlink and instructions to reset your password.",
                             textAlign = TextAlign.Center,
-                            fontSize = 16.sp,
+                            fontSize = 20.sp,
                         )
 
-                        Spacer(modifier = Modifier.height(24.dp))
+                        Spacer(modifier = Modifier.height(72.dp))
 
                         OutlinedTextField(
                             value = resetEmail,
@@ -363,7 +366,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                             )
                         }
 
-                        Spacer(modifier = Modifier.height(24.dp))
+                        Spacer(modifier = Modifier.height(48.dp))
 
                         // Reset Button (Modal Bottom Sheet)
                         Button(
