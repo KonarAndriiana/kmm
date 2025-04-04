@@ -22,12 +22,15 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -128,13 +131,17 @@ fun LoginScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "back to Bugless",
+                    text = buildAnnotatedString {
+                        append("back to ")
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Bugless")
+                        }
+                    },
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal,
                     color = Color.White
                 )
 
-                Spacer(modifier = Modifier.height(48.dp))
+                Spacer(modifier = Modifier.height(96.dp))
 
                 // Email field
                 OutlinedTextField(
@@ -238,7 +245,7 @@ fun LoginScreen(navController: NavController) {
                     )
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 // Forgot password
                 Text(
@@ -250,7 +257,7 @@ fun LoginScreen(navController: NavController) {
                     }
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(48.dp))
 
                 // Log In button
                 OutlinedButton(
@@ -271,7 +278,7 @@ fun LoginScreen(navController: NavController) {
                     Text("Log In", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(72.dp))
 
                 Row {
                     Text("Don't have an account? ", fontSize = 14.sp, color = Color.White)
@@ -308,13 +315,12 @@ fun LoginScreen(navController: NavController) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        Text("Forgot password", fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                        Text("Forgot password", fontWeight = FontWeight.Bold, fontSize = 32.sp)
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
                             text = "Enter your email, and we’ll send you\nlink and instructions to reset your password.",
                             textAlign = TextAlign.Center,
-                            fontSize = 14.sp,
-                            color = Color.Gray
+                            fontSize = 16.sp,
                         )
 
                         Spacer(modifier = Modifier.height(24.dp))
@@ -325,7 +331,7 @@ fun LoginScreen(navController: NavController) {
                             placeholder = {
                                 Box(modifier = Modifier.fillMaxWidth()) {
                                     Text(
-                                        text = "Enter your email",
+                                        text = "email",
                                         fontSize = 14.sp,
                                         color = Color.Gray,
                                         textAlign = TextAlign.Center,

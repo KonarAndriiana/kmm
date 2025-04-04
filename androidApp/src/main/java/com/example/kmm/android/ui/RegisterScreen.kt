@@ -334,7 +334,7 @@ fun RegisterScreen(navController: NavController) {
                     )
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(48.dp))
 
                 // Sign Up button
                 OutlinedButton(
@@ -361,7 +361,7 @@ fun RegisterScreen(navController: NavController) {
                     Text("Sign Up", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 Row {
                     Text("Already have an account? ", fontSize = 14.sp, color = Color.White)
