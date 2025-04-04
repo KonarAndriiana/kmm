@@ -2,9 +2,6 @@ package com.example.kmm.android.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.kmm.auth.AuthRepository
-import com.example.kmm.auth.LoginUseCase
-import com.example.kmm.auth.RegisterUseCase
 
 class AuthViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

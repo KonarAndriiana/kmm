@@ -54,5 +54,11 @@ dependencies {
     implementation(libs.ktor.client.okhttp)
     implementation(libs.kotlinx.coroutines.android)
 
+    // THIS HERE instead of SHARED BUILD GRADLE
+    implementation(libs.ktor.client.core)
+    implementation(libs.gitlive.firebase.auth)
+
+
+
     implementation(libs.androidx.material.icons.extended)
 }

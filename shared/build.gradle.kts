@@ -31,10 +31,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             //put your multiplatform dependencies here
-            implementation(libs.gitlive.firebase.auth)
             implementation(libs.kotlinx.coroutines.core)
-            //ktor
-            implementation(libs.ktor.client.core)
             //ktor content negotiation
             implementation(libs.ktor.client.content.negotiation)
             //Json Ktor
