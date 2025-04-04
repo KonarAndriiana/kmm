@@ -14,7 +14,7 @@ class AuthViewModelFactory : ViewModelProvider.Factory {
             val loginUseCase = LoginUseCase(authRepository)
             val registerUseCase = RegisterUseCase(authRepository)
 
-            return AuthViewModel(loginUseCase, registerUseCase) as T
+            return AuthViewModel(loginUseCase, registerUseCase, authRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
