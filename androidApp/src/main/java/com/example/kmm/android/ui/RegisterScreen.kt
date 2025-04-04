@@ -37,10 +37,7 @@ import com.example.kmm.android.auth.AuthViewModelFactory
 import kotlinx.coroutines.delay
 
 @Composable
-fun RegisterScreen(navController: NavController) {
-    val viewModelFactory = remember { AuthViewModelFactory() }
-    val authViewModel: AuthViewModel = viewModel(factory = viewModelFactory)
-
+fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  {
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }

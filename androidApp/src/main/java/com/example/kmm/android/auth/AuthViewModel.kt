@@ -1,5 +1,6 @@
 package com.example.kmm.android.auth
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kmm.auth.AuthRepository
@@ -23,6 +24,13 @@ class AuthViewModel
 
     private val _registerState = MutableStateFlow<String?>(null)
     val registerState: StateFlow<String?> = _registerState
+
+    var showRegistrationSuccess = mutableStateOf(false)
+        private set
+
+    fun markRegistrationSuccessShown() {
+        showRegistrationSuccess.value = false
+    }
 
     fun login(email: String, password: String) {
         val validationMessage = validateLoginInputs(email, password)
@@ -60,7 +68,8 @@ class AuthViewModel
         viewModelScope.launch {
             registerUseCase.execute(email, password).collect { result ->
                 _registerState.value = if (result.isSuccess) {
-                    "✅ Registration successful! You can now log in."
+                    showRegistrationSuccess.value = true
+                    "✅ Registration successful! You can now log in"
                 } else {
                     mapFirebaseError(result.exceptionOrNull(), isLogin = false)
                 }

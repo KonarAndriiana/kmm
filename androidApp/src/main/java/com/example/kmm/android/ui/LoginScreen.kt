@@ -42,10 +42,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(navController: NavController) {
-    val viewModelFactory = remember { AuthViewModelFactory() }
-    val authViewModel: AuthViewModel = viewModel(factory = viewModelFactory)
-
+fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
@@ -56,6 +53,8 @@ fun LoginScreen(navController: NavController) {
     var passwordError by remember { mutableStateOf<String?>(null) }
     var showError by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+
+    val registrationSuccess = authViewModel.showRegistrationSuccess.value
 
     // Bottom sheet
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -87,32 +86,34 @@ fun LoginScreen(navController: NavController) {
                 .fillMaxSize()
                 .padding(horizontal = 32.dp)
         ) {
-            // Error Pill
-            if (showError && errorMessage != null) {
+            // Error - Success Pill
+            if ((showError && errorMessage != null) || registrationSuccess) {
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopCenter)
                         .padding(top = 24.dp)
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(25))
-                        .background(Color.White)
-                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                        .background(if (registrationSuccess) Color(0xFFB9F6CA) else Color.White),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = errorMessage!!,
-                        color = Color.Red,
+                        text = if (registrationSuccess) "Registration successful! You can now log in" else errorMessage!!,
+                        color = if (registrationSuccess) Color(0xFF1B5E20) else Color.Red,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
                     )
                 }
 
-                // Delay for error msg
-                LaunchedEffect(errorMessage) {
+                LaunchedEffect(registrationSuccess, errorMessage) {
                     delay(5000)
                     showError = false
                     errorMessage = null
+                    if (registrationSuccess) {
+                        authViewModel.markRegistrationSuccessShown()
+                    }
                 }
             }
 
