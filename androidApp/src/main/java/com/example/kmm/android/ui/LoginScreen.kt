@@ -55,6 +55,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
     val registrationSuccess = authViewModel.showRegistrationSuccess.value
+    val registrationMessage = authViewModel.getRegistrationSuccessMessage()
 
     // Bottom sheet
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -98,7 +99,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = if (registrationSuccess) "Registration successful! You can now log in" else errorMessage!!,
+                        text = if (registrationSuccess) registrationMessage else errorMessage!!,
                         color = if (registrationSuccess) Color(0xFF1B5E20) else Color.Red,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
@@ -107,6 +108,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                     )
                 }
 
+                // Show error - success msg for 5sec
                 LaunchedEffect(registrationSuccess, errorMessage) {
                     delay(5000)
                     showError = false

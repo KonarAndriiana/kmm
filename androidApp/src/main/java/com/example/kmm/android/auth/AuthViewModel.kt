@@ -75,6 +75,8 @@ class AuthViewModel
         }
     }
 
+    fun getRegistrationSuccessMessage() = "Registration successful! You can now log in"
+
     fun resetPassword(
         email: String,
         onSuccess: () -> Unit,
