@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -49,17 +50,20 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
 
     val loginState by authViewModel.loginState.collectAsState()
 
-    var emailError by remember { mutableStateOf<String?>(null) }
-    var passwordError by remember { mutableStateOf<String?>(null) }
     var showError by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
     val registrationSuccess = authViewModel.showRegistrationSuccess.value
+    val registrationMessage = authViewModel.getRegistrationSuccessMessage()
+
+    val resetSuccess = authViewModel.showResetSuccess.value
+    val resetMessage = authViewModel.getResetSuccessMessage()
 
     // Bottom sheet
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
     var showSheet by remember { mutableStateOf(false) }
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
 
     // Forgot password
     var resetEmail by remember { mutableStateOf("") }
@@ -87,19 +91,31 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                 .padding(horizontal = 32.dp)
         ) {
             // Error - Success Pill
-            if ((showError && errorMessage != null) || registrationSuccess) {
+            if ((showError && errorMessage != null) || registrationSuccess || resetSuccess) {
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopCenter)
                         .padding(top = 24.dp)
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(25))
-                        .background(if (registrationSuccess) Color(0xFFB9F6CA) else Color.White),
+                        .background(
+                            when {
+                                registrationSuccess || resetSuccess -> Color(0xFFB9F6CA)
+                                else -> Color.White
+                            }
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = if (registrationSuccess) "Registration successful! You can now log in" else errorMessage!!,
-                        color = if (registrationSuccess) Color(0xFF1B5E20) else Color.Red,
+                        text = when {
+                            registrationSuccess -> registrationMessage
+                            resetSuccess -> resetMessage
+                            else -> errorMessage!!
+                        },
+                        color = when {
+                            registrationSuccess || resetSuccess -> Color(0xFF1B5E20)
+                            else -> Color.Red
+                        },
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                         textAlign = TextAlign.Center,
@@ -107,13 +123,13 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                     )
                 }
 
-                LaunchedEffect(registrationSuccess, errorMessage) {
+                // Show error - success msg for 5sec
+                LaunchedEffect(registrationSuccess, resetSuccess, errorMessage) {
                     delay(5000)
                     showError = false
                     errorMessage = null
-                    if (registrationSuccess) {
-                        authViewModel.markRegistrationSuccessShown()
-                    }
+                    if (registrationSuccess) authViewModel.markRegistrationSuccessShown()
+                    if (resetSuccess) authViewModel.markResetSuccessShown()
                 }
             }
 
@@ -129,7 +145,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                     color = Color.White
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
                     text = buildAnnotatedString {
@@ -138,7 +154,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                             append("Bugless")
                         }
                     },
-                    fontSize = 16.sp,
+                    fontSize = 20.sp,
                     color = Color.White
                 )
 
@@ -149,7 +165,6 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                     value = email,
                     onValueChange = {
                         email = it
-                        emailError = null
                         showError = false
                     },
                     placeholder = {
@@ -161,7 +176,6 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                             fontSize = 14.sp
                         )
                     },
-                    isError = emailError != null,
                     textStyle = TextStyle(textAlign = TextAlign.Center, fontSize = 14.sp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -177,13 +191,6 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                         cursorColor = Color.Black
                     )
                 )
-                if (emailError != null) {
-                    Text(
-                        text = emailError!!,
-                        color = MaterialTheme.colorScheme.error,
-                        fontSize = 13.sp
-                    )
-                }
 
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -192,7 +199,6 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                     value = password,
                     onValueChange = {
                         password = it
-                        passwordError = null
                         showError = false
                     },
                     placeholder = {
@@ -210,7 +216,6 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                             )
                         }
                     },
-                    isError = passwordError != null,
                     textStyle = TextStyle(textAlign = TextAlign.Center, fontSize = 14.sp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -238,13 +243,6 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                         cursorColor = Color.Black
                     )
                 )
-                if (passwordError != null) {
-                    Text(
-                        text = passwordError!!,
-                        color = MaterialTheme.colorScheme.error,
-                        fontSize = 13.sp
-                    )
-                }
 
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -305,26 +303,27 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                 ModalBottomSheet(
                     onDismissRequest = { showSheet = false },
                     sheetState = sheetState,
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = screenHeight * 0.1f),
                     containerColor = Color.White,
-                    tonalElevation = 4.dp
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(24.dp),
+                            .padding(horizontal = 32.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text("Forgot password", fontWeight = FontWeight.Bold, fontSize = 32.sp)
-                        Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = "Enter your email, and we’ll send you\nlink and instructions to reset your password.",
                             textAlign = TextAlign.Center,
-                            fontSize = 16.sp,
+                            fontSize = 20.sp,
                         )
 
-                        Spacer(modifier = Modifier.height(24.dp))
+                        Spacer(modifier = Modifier.height(72.dp))
 
                         OutlinedTextField(
                             value = resetEmail,
@@ -367,7 +366,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                             )
                         }
 
-                        Spacer(modifier = Modifier.height(24.dp))
+                        Spacer(modifier = Modifier.height(48.dp))
 
                         // Reset Button (Modal Bottom Sheet)
                         Button(

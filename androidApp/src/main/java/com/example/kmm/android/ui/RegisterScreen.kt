@@ -47,10 +47,6 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
     var passwordVisible by remember { mutableStateOf(false) }
     var confirmPasswordVisible by remember { mutableStateOf(false) }
 
-    var emailError by remember { mutableStateOf<String?>(null) }
-    var passwordError by remember { mutableStateOf<String?>(null) }
-    var confirmPasswordError by remember { mutableStateOf<String?>(null) }
-
     var showError by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
@@ -196,7 +192,6 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                     value = email,
                     onValueChange = {
                         email = it
-                        emailError = null
                         showError = false
                     },
                     placeholder = {
@@ -208,7 +203,6 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                             modifier = Modifier.fillMaxWidth()
                         )
                     },
-                    isError = emailError != null,
                     singleLine = true,
                     textStyle = TextStyle(textAlign = TextAlign.Center, fontSize = 14.sp),
                     modifier = Modifier
@@ -232,7 +226,6 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                     value = password,
                     onValueChange = {
                         password = it
-                        passwordError = null
                         showError = false
                     },
                     placeholder = {
@@ -249,7 +242,6 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                             )
                         }
                     },
-                    isError = passwordError != null,
                     singleLine = true,
                     textStyle = TextStyle(textAlign = TextAlign.Center, fontSize = 14.sp),
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -285,7 +277,6 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                     value = confirmPassword,
                     onValueChange = {
                         confirmPassword = it
-                        confirmPasswordError = null
                         showError = false
                     },
                     placeholder = {
@@ -302,7 +293,6 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                             )
                         }
                     },
-                    isError = false,
                     singleLine = true,
                     textStyle = TextStyle(textAlign = TextAlign.Center, fontSize = 14.sp),
                     visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -337,9 +327,8 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                 OutlinedButton(
                     onClick = {
                         if (password != confirmPassword) {
-                            confirmPasswordError = "passwords do not match"
                             showError = true
-                            errorMessage = "passwords do not match"
+                            errorMessage = "Passwords do not match"
                             return@OutlinedButton
                         }
                         authViewModel.register(email, password, confirmPassword)

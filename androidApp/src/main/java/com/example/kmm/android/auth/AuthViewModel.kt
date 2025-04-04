@@ -25,9 +25,8 @@ class AuthViewModel
     var showRegistrationSuccess = mutableStateOf(false)
         private set
 
-    fun markRegistrationSuccessShown() {
-        showRegistrationSuccess.value = false
-    }
+    var showResetSuccess = mutableStateOf(false)
+        private set
 
     fun login(email: String, password: String) {
         val validationMessage = validateLoginInputs(email, password)
@@ -75,6 +74,12 @@ class AuthViewModel
         }
     }
 
+    fun markRegistrationSuccessShown() {
+        showRegistrationSuccess.value = false
+    }
+
+    fun getRegistrationSuccessMessage() = "Registration successful! You can now log in"
+
     fun resetPassword(
         email: String,
         onSuccess: () -> Unit,
@@ -89,6 +94,7 @@ class AuthViewModel
         viewModelScope.launch {
             authRepository.resetPassword(email).collect { result ->
                 if (result.isSuccess) {
+                    showResetSuccess.value = true
                     onSuccess()
                 } else {
                     onError(result.exceptionOrNull()?.message ?: "Something went wrong")
@@ -96,6 +102,12 @@ class AuthViewModel
             }
         }
     }
+
+    fun markResetSuccessShown() {
+        showResetSuccess.value = false
+    }
+
+    fun getResetSuccessMessage() = "Success! Please check your email to reset your password"
 
     private fun validateResetPassword(email: String): String? {
         if (email.isBlank()) return "Enter your email to continue"
@@ -153,7 +165,7 @@ class AuthViewModel
 
     private fun resetMessage() {
         viewModelScope.launch {
-            delay(2000)
+            delay(1000)
             _loginState.value = null
             _registerState.value = null
         }
