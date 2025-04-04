@@ -1,4 +1,4 @@
-package com.example.kmm.auth
+package com.example.kmm.android.auth
 
 import dev.gitlive.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.Flow

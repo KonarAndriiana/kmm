@@ -3,9 +3,6 @@ package com.example.kmm.android.auth
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kmm.auth.AuthRepository
-import com.example.kmm.auth.LoginUseCase
-import com.example.kmm.auth.RegisterUseCase
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -16,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class AuthViewModel
     (private val loginUseCase: LoginUseCase,
-    private val registerUseCase: RegisterUseCase,
+     private val registerUseCase: RegisterUseCase,
      private val authRepository: AuthRepository) : ViewModel() {
 
     private val _loginState = MutableStateFlow<String?>(null)
