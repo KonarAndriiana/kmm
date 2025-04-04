@@ -1,10 +1,3 @@
-//
-//  TextFieldView.swift
-//  IOS_app
-//
-//  Created by Andriiana Konar on 01/04/2025.
-//
-
 import SwiftUI
 
 struct TextFieldView: View {
@@ -32,8 +25,15 @@ struct TextFieldView: View {
             }
         }
         .padding()
-        .background(RoundedRectangle(cornerRadius: 8).stroke(Color.gray, lineWidth: 1))
+        .background(Color.white)
+        .cornerRadius(8)
+        .overlay(RoundedRectangle(cornerRadius: 30).stroke(Color.gray, lineWidth: 1))
+        .padding(.horizontal, 15)
+        
     }
 }
 
-
+#Preview {
+    @State var sampleText = ""
+    return TextFieldView(placeholder: "Enter text", text: $sampleText, isSecure: false)
+}
