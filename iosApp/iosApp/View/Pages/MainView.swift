@@ -1,16 +1,18 @@
 import SwiftUI
-import shared
 
 struct MainView: View {
-	let greet = Greeting().greet()
-
-	var body: some View {
-		Text(greet)
-	}
+    
+    @StateObject var viewModel = MainViewViewModel()
+    
+    var body: some View {
+        if viewModel.isSignedIn, !viewModel.currentUserId.isEmpty {
+            CourseView()
+        } else {
+            LoginView()
+        }
+    }
 }
 
-struct MainView_Previews: PreviewProvider {
-	static var previews: some View {
-		MainView()
-	}
+#Preview {
+    MainView()
 }
