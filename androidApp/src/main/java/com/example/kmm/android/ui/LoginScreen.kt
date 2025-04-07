@@ -394,7 +394,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                             modifier = Modifier
                                 .width(120.dp)
                                 .height(48.dp),
-                            shape = RoundedCornerShape(12.dp),
+                            shape = RoundedCornerShape(25),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.Black,
                                 contentColor = Color.White
