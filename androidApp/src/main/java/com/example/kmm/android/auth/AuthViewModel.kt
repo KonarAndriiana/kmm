@@ -48,7 +48,7 @@ class AuthViewModel
         }
     }
 
-    fun register(email: String, password: String, confirmPassword: String) {
+    fun register(email: String, password: String, confirmPassword: String, firstName: String, lastName: String) {
         if (password != confirmPassword) {
             _registerState.value = "❌ Passwords do not match"
             resetMessage()
@@ -63,11 +63,17 @@ class AuthViewModel
 
         viewModelScope.launch {
             registerUseCase.execute(email, password).collect { result ->
-                _registerState.value = if (result.isSuccess) {
+                val user = result.getOrNull()
+                if (user != null) {
+                    try {
+                        authRepository.saveUserToFirestore(user.uid, firstName, lastName, email)
+                    } catch (e: Exception) {
+                        // log error, or need to add here later error message
+                    }
                     showRegistrationSuccess.value = true
-                    "✅ Registration successful! You can now log in"
+                    _registerState.value = "✅ Registration successful! You can now log in"
                 } else {
-                    mapFirebaseError(result.exceptionOrNull(), isLogin = false)
+                    _registerState.value = mapFirebaseError(result.exceptionOrNull(), isLogin = false)
                 }
                 resetMessage()
             }

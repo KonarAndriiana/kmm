@@ -331,7 +331,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                             errorMessage = "Passwords do not match"
                             return@OutlinedButton
                         }
-                        authViewModel.register(email, password, confirmPassword)
+                        authViewModel.register(email, password, confirmPassword, firstName, lastName)
                     },
                     modifier = Modifier
                         .width(120.dp)
