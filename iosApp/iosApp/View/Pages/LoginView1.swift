@@ -41,12 +41,13 @@ struct LoginView1: View {
                     Button("Forgot Password?") {
                         showForgotPasswordSheet = true
                     }
-                    .foregroundColor(Color.blue)
+                    .foregroundColor(Color.white)
                     .padding(.all, 50)
 
                     VStack {
                         Text("New around here?")
                         NavigationLink("Create an account", destination: RegistrationView())
+                            .foregroundColor(Color.white)
                     }
                     .padding(.bottom, 250)
                 }
