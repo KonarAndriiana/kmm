@@ -3,6 +3,7 @@ package com.example.kmm.android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -22,7 +23,10 @@ class MainActivity : ComponentActivity() {
             val viewModelFactory = remember { AuthViewModelFactory() }
             val authViewModel: AuthViewModel = viewModel(factory = viewModelFactory)
 
-            NavHost(navController = navController, startDestination = "login") {
+            val isLoggedIn by authViewModel.isUserLoggedIn
+            val startDestination = if (isLoggedIn) "courseList" else "login"
+
+            NavHost(navController = navController, startDestination = startDestination) {
                 composable("login") {
                     LoginScreen(navController = navController, authViewModel = authViewModel)
                 }

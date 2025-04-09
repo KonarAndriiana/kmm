@@ -53,6 +53,9 @@ dependencies {
 
     implementation(libs.ktor.client.okhttp)
     implementation(libs.kotlinx.coroutines.android)
+    // FIRE STORE
+    implementation(libs.firebase.firestore)
+    implementation(libs.kotlinx.datetime)
 
     // THIS HERE instead of SHARED BUILD GRADLE
     implementation(libs.ktor.client.core)

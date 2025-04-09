@@ -1,11 +1,14 @@
 package com.example.kmm.android.auth
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.auth.auth
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,6 +31,17 @@ class AuthViewModel
     var showResetSuccess = mutableStateOf(false)
         private set
 
+    private val _isUserLoggedIn = mutableStateOf(false)
+    val isUserLoggedIn: State<Boolean> = _isUserLoggedIn
+
+    init {
+        checkLoginStatus()
+    }
+
+    private fun checkLoginStatus() {
+        _isUserLoggedIn.value = Firebase.auth.currentUser != null
+    }
+
     fun login(email: String, password: String) {
         val validationMessage = validateLoginInputs(email, password)
         if (validationMessage != null) {
@@ -39,6 +53,7 @@ class AuthViewModel
         viewModelScope.launch {
             loginUseCase.execute(email, password).collect { result ->
                 _loginState.value = if (result.isSuccess) {
+                    _isUserLoggedIn.value = true
                     "✅ You have logged in successfully!"
                 } else {
                     mapFirebaseError(result.exceptionOrNull(), isLogin = true)
@@ -48,7 +63,14 @@ class AuthViewModel
         }
     }
 
-    fun register(email: String, password: String, confirmPassword: String) {
+    fun logout() {
+        viewModelScope.launch {
+            Firebase.auth.signOut()
+                _isUserLoggedIn.value = false
+        }
+    }
+
+    fun register(email: String, password: String, confirmPassword: String, firstName: String, lastName: String) {
         if (password != confirmPassword) {
             _registerState.value = "❌ Passwords do not match"
             resetMessage()
@@ -63,11 +85,17 @@ class AuthViewModel
 
         viewModelScope.launch {
             registerUseCase.execute(email, password).collect { result ->
-                _registerState.value = if (result.isSuccess) {
+                val user = result.getOrNull()
+                if (user != null) {
+                    try {
+                        authRepository.saveUserToFirestore(user.uid, firstName, lastName, email)
+                    } catch (e: Exception) {
+                        // log error, or need to add here later error message
+                    }
                     showRegistrationSuccess.value = true
-                    "✅ Registration successful! You can now log in"
+                    _registerState.value = "✅ Registration successful! You can now log in"
                 } else {
-                    mapFirebaseError(result.exceptionOrNull(), isLogin = false)
+                    _registerState.value = mapFirebaseError(result.exceptionOrNull(), isLogin = false)
                 }
                 resetMessage()
             }

@@ -2,7 +2,9 @@ package com.example.kmm.android.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,11 +25,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.kmm.android.auth.AuthViewModel
+import com.example.kmm.android.auth.AuthViewModelFactory
 import com.example.kmm.android.course.CourseViewModel
 
 @Composable
 fun CourseScreen(navController: NavController, courseId: Int? = null) {
     val courseViewModel: CourseViewModel = viewModel()
+    val authViewModel: AuthViewModel = viewModel(factory = AuthViewModelFactory())
 
     Column(
         modifier = Modifier
@@ -36,6 +41,24 @@ fun CourseScreen(navController: NavController, courseId: Int? = null) {
             .background(Color.White)
             .padding(16.dp)
     ) {
+
+        // Logout button
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
+            Button(onClick = {
+                authViewModel.logout()
+                navController.navigate("login") {
+                    popUpTo("courseList") { inclusive = true }
+                }
+            }) {
+                Text("Logout")
+            }
+        }
+
         if (courseId == null) {
             val courses by courseViewModel.courseList.collectAsState()
             LaunchedEffect(Unit) { courseViewModel.fetchCourses() }

@@ -4,12 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kmm.course.Course
 import com.example.kmm.course.CourseApi
+import com.example.kmm.course.HttpClientProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class CourseViewModel : ViewModel() {
-    private val api = CourseApi()
+    private val api = CourseApi(HttpClientProvider().createClient())
 
     private val _course = MutableStateFlow<Course?>(null)
     val course: StateFlow<Course?> = _course
