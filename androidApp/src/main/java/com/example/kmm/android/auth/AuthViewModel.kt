@@ -1,11 +1,14 @@
 package com.example.kmm.android.auth
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.auth.auth
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,6 +31,17 @@ class AuthViewModel
     var showResetSuccess = mutableStateOf(false)
         private set
 
+    private val _isUserLoggedIn = mutableStateOf(false)
+    val isUserLoggedIn: State<Boolean> = _isUserLoggedIn
+
+    init {
+        checkLoginStatus()
+    }
+
+    private fun checkLoginStatus() {
+        _isUserLoggedIn.value = Firebase.auth.currentUser != null
+    }
+
     fun login(email: String, password: String) {
         val validationMessage = validateLoginInputs(email, password)
         if (validationMessage != null) {
@@ -39,12 +53,20 @@ class AuthViewModel
         viewModelScope.launch {
             loginUseCase.execute(email, password).collect { result ->
                 _loginState.value = if (result.isSuccess) {
+                    _isUserLoggedIn.value = true
                     "✅ You have logged in successfully!"
                 } else {
                     mapFirebaseError(result.exceptionOrNull(), isLogin = true)
                 }
                 resetMessage()
             }
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            Firebase.auth.signOut()
+                _isUserLoggedIn.value = false
         }
     }
 
