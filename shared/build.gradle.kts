@@ -36,6 +36,8 @@ kotlin {
                 implementation(libs.ktor.serialization.kotlinx.json)
                 implementation(libs.ktor.client.logging)
                 implementation(libs.kotlinx.serialization.json)
+                implementation("com.rickclephas.kmp:kmp-nativecoroutines-core:1.0.0-ALPHA-20")
+                implementation("com.rickclephas.kmp:kmp-nativecoroutines-async:1.0.0-ALPHA-20")
             }
         }
 
@@ -57,6 +59,7 @@ kotlin {
 
             dependencies {
                 implementation("io.ktor:ktor-client-darwin:2.3.4") // adjust to your Ktor version
+                implementation("com.rickclephas.kmp:kmp-nativecoroutines-core:1.0.0-ALPHA-20")
             }
         }
 

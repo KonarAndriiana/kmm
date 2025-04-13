@@ -6,7 +6,6 @@
 //  Copyright © 2025 orgName. All rights reserved.
 //
 
-import Foundation
 import shared
 
 @MainActor
@@ -21,7 +20,7 @@ class CourseViewModel: ObservableObject {
                 let fetchedCourses = try await api.getCourses()
                 self.courses = fetchedCourses
             } catch {
-                print("Error fetching courses: \(error)")
+                print("❌ Error: \(error)")
             }
         }
     }
