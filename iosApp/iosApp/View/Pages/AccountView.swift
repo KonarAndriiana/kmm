@@ -22,7 +22,7 @@ struct AccountView: View {
                             Text(user.firstName)
                         }
                         .padding()
-                        
+    
                         HStack {
                             Text("Last name: ")
                             Text(user.lastName)
