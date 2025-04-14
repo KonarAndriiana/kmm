@@ -84,7 +84,7 @@ fun CourseScreen(navController: NavController, courseId: Int? = null) {
             course?.let {
                 Text(text = "Course: ${it.title}", style = MaterialTheme.typography.headlineLarge)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Description:\n${it.body}")
+                Text(text = "Description:\n${it.description}")
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(onClick = { navController.navigate("courseList") }) {
                     Text("Back to Courses")

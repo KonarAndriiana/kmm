@@ -6,10 +6,12 @@ import io.ktor.client.request.get
 
 class CourseApi(private val client: HttpClient) {
     suspend fun getCourses(): List<Course> {
-        return client.get("https://jsonplaceholder.typicode.com/posts").body()
+        val response: CourseListResponse =
+            client.get("https://raw.githubusercontent.com/PaloSatala/testJsons/refs/heads/main/coursesList.json").body()
+        return response.coursesList
     }
 
     suspend fun getCourseById(id: Int): Course? {
-        return getCourses().find { it.id == id }
+        return getCourses().getOrNull(id)
     }
 }

@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class CourseViewModel : ViewModel() {
-    private val api = CourseApi(HttpClientProvider().createClient())
+    private val api = CourseApi(HttpClientProvider().getClient())
 
     private val _course = MutableStateFlow<Course?>(null)
     val course: StateFlow<Course?> = _course
