@@ -3,12 +3,9 @@ package com.example.kmm.course
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Course(
+data class Lecture(
     val id: String,
     val title: String,
     val description: String,
-    val lectures: List<Lecture>
+    val requiredTime: String
 )
-
-
-
