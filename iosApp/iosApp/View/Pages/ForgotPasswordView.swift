@@ -15,15 +15,20 @@ struct ForgotPasswordView: View {
     
     var body: some View {
         VStack {
-            Text("Reset Password")
+            Text("Forgot Password")
                 .font(.title)
                 .fontWeight(.bold)
                 .padding(.bottom, 20)
+                .accessibilityIdentifier("forgot_pass_text")
+            
+            Text("Info fro forgot Password")
+                .accessibilityIdentifier("info_text")
             
             TextFieldView(placeholder: "Enter your email", text: $email)
                 .autocapitalization(.none)
                 .autocorrectionDisabled()
                 .padding()
+                .accessibilityIdentifier("email_input")
             
             Button(action: {
                 viewModel.resetPassword(email: email)
@@ -37,6 +42,7 @@ struct ForgotPasswordView: View {
                     .cornerRadius(10)
             }
             .padding()
+            .accessibilityIdentifier("reset_btn")
             
             if !viewModel.errorMessage.isEmpty {
                 Text(viewModel.errorMessage)
