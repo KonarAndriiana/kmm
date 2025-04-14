@@ -31,6 +31,7 @@ struct UserView: View {
                                 .frame(width: 60, height: 60)
                                 .foregroundColor(.gray)
                         }
+                        .accessibilityIdentifier("user_icon")
                     }
                     .padding(.all, 20)
                 } else {

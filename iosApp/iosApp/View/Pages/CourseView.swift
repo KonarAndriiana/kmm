@@ -11,6 +11,7 @@ import SwiftUI
 struct CourseView: View {
     var body: some View {
         UserView()
+            .accessibilityIdentifier("greeting_text")
     }
 }
 
