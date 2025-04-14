@@ -15,34 +15,44 @@ struct RegistrationView: View {
     
     var body: some View {
         VStack {
+            VStack{
+                Text("Create Account")
+                    .accessibilityIdentifier("create_acc_text")
+            }
+            .padding(.top, 100)
+            
             Form {
                 TextFieldView(placeholder: "First name", text: $viewModel.firstName)
-                    .autocapitalization(.none)
                     .autocorrectionDisabled()
+                    .accessibilityIdentifier("first_name_input")
                 
                 TextFieldView(placeholder: "Last name", text: $viewModel.lastName)
-                    .autocapitalization(.none)
                     .autocorrectionDisabled()
+                    .accessibilityIdentifier("last_name_input")
                 
                 TextFieldView(placeholder: "Email", text: $viewModel.email)
                     .autocapitalization(.none)
                     .autocorrectionDisabled()
+                    .accessibilityIdentifier("email_input")
                 
                 TextFieldView(placeholder: "Password", text: $viewModel.password, isSecure: true)
                     .autocapitalization(.none)
                     .autocorrectionDisabled()
+                    .accessibilityIdentifier("password_input")
                 
                 TextFieldView(placeholder: "Confirm Password", text: $viewModel.confirmPassword, isSecure: true)
                     .autocapitalization(.none)
                     .autocorrectionDisabled()
+                    .accessibilityIdentifier("confirm_password")
                 
-                ButtonView(color: .blue, title: "Create account") {
+                ButtonView(color: .blue, title: "Sign Up") {
                     viewModel.registration()
                 }
                 .disabled(viewModel.password != viewModel.confirmPassword || viewModel.password.isEmpty || viewModel.confirmPassword.isEmpty)
                 .opacity((viewModel.password != viewModel.confirmPassword || viewModel.password.isEmpty || viewModel.confirmPassword.isEmpty) ? 0.5 : 1.0)
+                .accessibilityIdentifier("sign_up_btn")
             }
-            .padding(.top, 200)
+            .padding(.top, 100)
         }
         .overlay(
             VStack {
@@ -71,6 +81,7 @@ struct RegistrationView: View {
                 }
                 Spacer()
             }
+                .accessibilityIdentifier("error_msg")
         )
         .onChange(of: viewModel.errorMessage) { newError in
             if !newError.isEmpty {
