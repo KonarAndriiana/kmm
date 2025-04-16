@@ -30,9 +30,13 @@ import com.example.kmm.android.auth.AuthViewModelFactory
 import com.example.kmm.android.course.CourseViewModel
 
 @Composable
-fun CourseScreen(navController: NavController, courseId: Int? = null) {
+fun CourseScreen(navController: NavController) {
     val courseViewModel: CourseViewModel = viewModel()
     val authViewModel: AuthViewModel = viewModel(factory = AuthViewModelFactory())
+    val coursesState = courseViewModel.courseList.collectAsState()
+    val courses = coursesState.value
+
+    LaunchedEffect(Unit) { courseViewModel.fetchCourses() }
 
     Column(
         modifier = Modifier
@@ -58,11 +62,7 @@ fun CourseScreen(navController: NavController, courseId: Int? = null) {
                 Text("Logout")
             }
         }
-
-        if (courseId == null) {
-            val courses by courseViewModel.courseList.collectAsState()
-            LaunchedEffect(Unit) { courseViewModel.fetchCourses() }
-
+            // List of courses
             Text(text = "Available Courses", style = MaterialTheme.typography.headlineLarge)
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -77,19 +77,5 @@ fun CourseScreen(navController: NavController, courseId: Int? = null) {
                 )
                 Divider()
             }
-        } else {
-            val course by courseViewModel.course.collectAsState()
-            LaunchedEffect(courseId) { courseViewModel.fetchCourse(courseId) }
-
-            course?.let {
-                Text(text = "Course: ${it.title}", style = MaterialTheme.typography.headlineLarge)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Description:\n${it.description}")
-                Spacer(modifier = Modifier.height(16.dp))
-                Button(onClick = { navController.navigate("courseList") }) {
-                    Text("Back to Courses")
-                }
-            } ?: Text(text = "Loading...")
         }
-    }
 }
