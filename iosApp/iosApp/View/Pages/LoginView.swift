@@ -40,7 +40,7 @@ struct LoginView: View {
                         .autocorrectionDisabled()
                         .accessibilityIdentifier("password_input")
                     
-                    ButtonView(color: .red, title: "Log In") {
+                    ButtonView(title: "Log In") {
                         viewModel.login()
                     }
                     .accessibilityIdentifier("login_btn")

@@ -41,7 +41,7 @@ struct AccountView: View {
                         }
                         .padding()
                         
-                        ButtonView(color: .red, title: "Log Out") {
+                        ButtonView(title: "Log Out") {
                             viewModel.logout()
                         }
                     }

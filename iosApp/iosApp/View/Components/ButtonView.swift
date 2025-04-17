@@ -9,31 +9,32 @@
 import SwiftUI
 
 struct ButtonView: View {
-    
-    let color : Color
     let title: String
     let code: () -> Void
-    
+
     var body: some View {
         Button {
             code()
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(color)
-                
+                    .fill(Color.clear) 
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.white, lineWidth: 5)
+                    )
+
                 Text(title)
                     .foregroundColor(Color.white)
                     .bold()
-                
             }
-//            .padding(.all , 10)
+            .padding(.all, 10)
         }
     }
 }
 
 #Preview {
-    ButtonView(color: .blue, title:"Hello"){
-        //code
+    ButtonView(title: "Hello") {
+        // code
     }
 }

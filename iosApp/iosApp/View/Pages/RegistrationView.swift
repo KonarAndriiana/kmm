@@ -45,7 +45,7 @@ struct RegistrationView: View {
                     .autocorrectionDisabled()
                     .accessibilityIdentifier("confirm_password")
                 
-                ButtonView(color: .blue, title: "Sign Up") {
+                ButtonView(title: "Sign Up") {
                     viewModel.registration()
                 }
                 .disabled(viewModel.password != viewModel.confirmPassword || viewModel.password.isEmpty || viewModel.confirmPassword.isEmpty)
