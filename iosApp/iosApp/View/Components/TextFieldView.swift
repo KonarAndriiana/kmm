@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct TextFieldView: View {
-    
     var placeholder: String
     @Binding var text: String
     var isSecure: Bool = false
@@ -17,43 +16,41 @@ struct TextFieldView: View {
     @State private var isPasswordVisible: Bool = false
 
     var body: some View {
-        HStack {
-            ZStack(alignment: .center) {
-                if text.isEmpty {
-                    Text(placeholder)
-                        .foregroundColor(.gray)
-                        .multilineTextAlignment(.center)
-                }
+        ZStack(alignment: .leading) {
 
-                if isSecure && !isPasswordVisible {
-                    SecureField("", text: $text)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.gray)
-                } else {
-                    TextField("", text: $text)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.gray)
-                }
+            if text.isEmpty {
+                Text(placeholder)
+                    .foregroundColor(.gray)
+                    .padding(.leading, 16)
             }
 
-            if isSecure {
-                Button(action: {
-                    isPasswordVisible.toggle()
-                }) {
-                    Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
-                        .foregroundColor(.gray)
+            HStack {
+                if isSecure && !isPasswordVisible {
+                    SecureField("", text: $text)
+                        .foregroundColor(.black)
+                        .padding(.leading, 10)
+                } else {
+                    TextField("", text: $text)
+                        .foregroundColor(.black)
+                        .padding(.leading, 10)
+                }
+
+                if isSecure {
+                    Button(action: {
+                        isPasswordVisible.toggle()
+                    }) {
+                        Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
+                            .foregroundColor(.gray)
+                    }
+                    .padding(.trailing, 10)
                 }
             }
         }
-        .padding()
+        .frame(height: 50)
         .background(
             RoundedRectangle(cornerRadius: 30)
                 .fill(Color.white)
         )
-//        .overlay(
-//            RoundedRectangle(cornerRadius: 30)
-//                .stroke(Color.gray, lineWidth: 1)
-//        )
         .padding(.horizontal, 20)
     }
 }
@@ -61,5 +58,4 @@ struct TextFieldView: View {
 #Preview {
     @State var sampleText = ""
     return TextFieldView(placeholder: "password", text: $sampleText, isSecure: true)
-
 }
