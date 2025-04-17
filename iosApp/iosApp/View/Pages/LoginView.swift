@@ -16,83 +16,123 @@ struct LoginView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                VStack {
-                    Text("Welcome")
-                        .accessibilityIdentifier("welcome_text")
-                    
-                    HStack{
-                        Text("back to")
-                        Text("Bugless")
-                    }
-                    .accessibilityIdentifier("bugless_text")
-                }
-                .padding(.top, 100)
-                
-                Form {
-                    TextFieldView(placeholder: "Email", text: $viewModel.email)
-                        .autocapitalization(.none)
-                        .autocorrectionDisabled()
-                        .accessibilityIdentifier("email_input")
-                    
-                    TextFieldView(placeholder: "Password", text: $viewModel.password, isSecure: true)
-                        .autocapitalization(.none)
-                        .autocorrectionDisabled()
-                        .accessibilityIdentifier("password_input")
-                    
-                    ButtonView(title: "Log In") {
-                        viewModel.login()
-                    }
-                    .accessibilityIdentifier("login_btn")
-                    
-                    Button("Forgot Password?") {
-                        showForgotPasswordSheet = true
-                    }
-                    .foregroundColor(.blue)
-                    .padding(.top, 10)
-                    .accessibilityIdentifier("forgot_btn")
-                }
-                .padding(.top, 100)
+            ZStack{
+                Image("backgroundImage")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+                    .accessibilityIdentifier("background_image")
                 
                 VStack {
-                    Text("New around here?")
-                        .accessibilityIdentifier("sign_up_text")
-                    NavigationLink("Create an account", destination: RegistrationView())
-                        .accessibilityIdentifier("sign_up_redirect")
-                }
-                .padding(.bottom, 250)
-            }
-            .overlay(
-                VStack {
-                    if showToast {
-                        HStack {
-                            Text(viewModel.errorMessage)
-                                .font(.body)
-                                .foregroundColor(.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.gray)
-                                .cornerRadius(10)
-                                .shadow(radius: 10)
+                    VStack(spacing: 20) {
+                        Text("Welcome")
+                            .font(.system(size: 35))
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(Color.white)
+                            .bold()
+                            .accessibilityIdentifier("welcome_text")
+                        
+                        HStack{
+                            Text("back to")
+                                .foregroundColor(Color.white)
+                                .font(.system(size: 25))
+                            
+                            Text("Bugless")
+                                .font(.system(size: 25))
+                                .foregroundColor(Color.white)
+                                .bold()
                         }
-                        .padding(.horizontal)
-                        .frame(maxWidth: 400)
-                        .transition(.opacity)
-                        .zIndex(1)
-                        .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                                withAnimation {
-                                    showToast = false
+                        .accessibilityIdentifier("bugless_text")
+                    }
+                    .padding(.bottom, 100)
+                    
+                    
+                    //fields vstack
+                    VStack(spacing: 50) {
+                        TextFieldView(placeholder: "email", text: $viewModel.email)
+                            .frame(width: 400.0, height: 40.0)
+                            .autocapitalization(.none)
+                            .autocorrectionDisabled()
+                            .accessibilityIdentifier("email_input")
+                        
+                        TextFieldView(placeholder: "password", text: $viewModel.password, isSecure: true)
+                            .frame(width: 400.0, height: 40.0)
+                            .autocapitalization(.none)
+                            .autocorrectionDisabled()
+                            .accessibilityIdentifier("password_input")
+                    }
+                    .padding(.top, 20)
+                    
+                    
+                    
+                    //log in vstack
+                    VStack(spacing: 70){
+                        
+                        Button("Forgot Password?") {
+                            showForgotPasswordSheet = true
+                        }
+                        .foregroundColor(.white)
+                        .padding(.top, 30)
+                        .accessibilityIdentifier("forgot_btn")
+                        
+                        ButtonView(title: "Log In") {
+                            viewModel.login()
+                        }
+                        .frame(width: 150.0, height: 60.0)
+                        .accessibilityIdentifier("login_btn")
+                        
+                        HStack {
+                            Text("Don't have an account?")
+                                .font(.system(size: 15))
+                                .foregroundColor(Color.white)
+                                .accessibilityIdentifier("sign_up_text")
+                                
+                            
+                            NavigationLink(destination: RegistrationView()) {
+                                Text("Sign up now")
+                                    .font(.system(size: 15))
+                                    .foregroundColor(.white)
+                                    .underline()
+                                    .bold()
+                            }
+                            .accessibilityIdentifier("sign_up_redirect")
+                        }
+                    }
+//                    .padding(.top, 100)
+                    
+                }
+                .overlay(
+                    VStack {
+                        if showToast {
+                            HStack {
+                                Text(viewModel.errorMessage)
+                                    .font(.body)
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(Color.gray)
+                                    .cornerRadius(10)
+                                    .shadow(radius: 10)
+                            }
+                            .padding(.horizontal)
+                            .frame(maxWidth: 400)
+                            .transition(.opacity)
+                            .zIndex(1)
+                            .onAppear {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                                    withAnimation {
+                                        showToast = false
+                                    }
                                 }
                             }
                         }
+                        Spacer()
                     }
-                    Spacer()
+                        .accessibilityIdentifier("error_msg")
+                )
+                .sheet(isPresented: $showForgotPasswordSheet) {
+                    ForgotPasswordView(viewModel: viewModel)
                 }
-                    .accessibilityIdentifier("error_msg")
-            )
-            .sheet(isPresented: $showForgotPasswordSheet) {
-                ForgotPasswordView(viewModel: viewModel)
             }
         }
         .onChange(of: viewModel.errorMessage) { newError in
@@ -101,6 +141,7 @@ struct LoginView: View {
             }
         }
     }
+
 }
 
 #Preview {
