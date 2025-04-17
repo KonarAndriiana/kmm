@@ -47,7 +47,7 @@ struct LoginView: View {
                     .padding(.bottom, 100)
                     
                     
-                    //fields vstack
+                    //fields
                     VStack(spacing: 50) {
                         TextFieldView(placeholder: "email", text: $viewModel.email)
                             .frame(width: 400.0, height: 40.0)
@@ -65,7 +65,7 @@ struct LoginView: View {
                     
                     
                     
-                    //log in vstack
+                    //log in 
                     VStack(spacing: 70){
                         
                         Button("Forgot Password?") {

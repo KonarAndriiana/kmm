@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct TextFieldView: View {
+    
     var placeholder: String
     @Binding var text: String
     var isSecure: Bool = false
@@ -53,11 +54,12 @@ struct TextFieldView: View {
 //            RoundedRectangle(cornerRadius: 30)
 //                .stroke(Color.gray, lineWidth: 1)
 //        )
-        .padding(.horizontal, 15)
+        .padding(.horizontal, 20)
     }
 }
 
 #Preview {
     @State var sampleText = ""
-    return TextFieldView(placeholder: "Enter text", text: $sampleText, isSecure: true)
+    return TextFieldView(placeholder: "password", text: $sampleText, isSecure: true)
+
 }
