@@ -36,34 +36,34 @@ struct RegistrationView: View {
                     //fields
                     VStack(spacing: 50) {
                         TextFieldView(placeholder: "first name", text: $viewModel.firstName)
-                            .frame(width: 440.0, height: 25.0)
+                            .frame(width: 440.0, height: 20.0)
                             .autocorrectionDisabled()
                             .accessibilityIdentifier("first_name_input")
                         
                         TextFieldView(placeholder: "last name", text: $viewModel.lastName)
-                            .frame(width: 440.0, height: 25.0)
+                            .frame(width: 440.0, height: 20.0)
                             .autocorrectionDisabled()
                             .accessibilityIdentifier("last_name_input")
                         
                         TextFieldView(placeholder: "email", text: $viewModel.email)
-                            .frame(width: 440.0, height: 25.0)
+                            .frame(width: 440.0, height: 20.0)
                             .autocapitalization(.none)
                             .autocorrectionDisabled()
                             .accessibilityIdentifier("email_input")
                         
                         TextFieldView(placeholder: "password", text: $viewModel.password, isSecure: true)
-                            .frame(width: 440.0, height: 25.0)
+                            .frame(width: 440.0, height: 20.0)
                             .autocapitalization(.none)
                             .autocorrectionDisabled()
                             .accessibilityIdentifier("password_input")
                         
                         TextFieldView(placeholder: "confirm password", text: $viewModel.confirmPassword, isSecure: true)
-                            .frame(width: 440.0, height: 25.0)
+                            .frame(width: 440.0, height: 20.0)
                             .autocapitalization(.none)
                             .autocorrectionDisabled()
                             .accessibilityIdentifier("confirm_password")
                     }
-                    .padding(.top, 20)
+                    .padding(.top, 80)
                     
                     
                     //Sign In

@@ -44,7 +44,7 @@ struct LoginView: View {
                         }
                         .accessibilityIdentifier("bugless_text")
                     }
-                    .padding(.bottom, 100)
+                    .padding(.bottom, 150)
                     
                     
                     //fields
@@ -61,7 +61,7 @@ struct LoginView: View {
                             .autocorrectionDisabled()
                             .accessibilityIdentifier("password_input")
                     }
-                    .padding(.top, 20)
+                    .padding(.top, 40)
                     
                     
                     

@@ -21,7 +21,7 @@ struct ButtonView: View {
                     .fill(Color.clear) 
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.white, lineWidth: 5)
+                            .stroke(Color.white, lineWidth: 3)
                     )
 
                 Text(title)
