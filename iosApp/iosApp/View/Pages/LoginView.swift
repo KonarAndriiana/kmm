@@ -50,13 +50,13 @@ struct LoginView: View {
                     //fields
                     VStack(spacing: 50) {
                         TextFieldView(placeholder: "email", text: $viewModel.email)
-                            .frame(width: 400.0, height: 40.0)
+                            .frame(width: 440.0, height: 40.0)
                             .autocapitalization(.none)
                             .autocorrectionDisabled()
                             .accessibilityIdentifier("email_input")
                         
                         TextFieldView(placeholder: "password", text: $viewModel.password, isSecure: true)
-                            .frame(width: 400.0, height: 40.0)
+                            .frame(width: 440.0, height: 40.0)
                             .autocapitalization(.none)
                             .autocorrectionDisabled()
                             .accessibilityIdentifier("password_input")
@@ -98,7 +98,7 @@ struct LoginView: View {
                             .accessibilityIdentifier("sign_up_redirect")
                         }
                     }
-//                    .padding(.top, 100)
+                    .padding(.bottom, 30)
                     
                 }
                 .overlay(
