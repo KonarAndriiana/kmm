@@ -1,6 +1,8 @@
 package com.example.kmm.android.ui
 
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
@@ -32,10 +35,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.kmm.android.R
 import com.example.kmm.android.auth.AuthViewModel
 import com.example.kmm.android.auth.AuthViewModelFactory
 import kotlinx.coroutines.delay
+import java.io.File
 
 @Composable
 fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  {
@@ -52,7 +57,19 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
     val registerState by authViewModel.registerState.collectAsState()
+    val imagePath by authViewModel.imagePath.collectAsState()
 
+    val context = LocalContext.current
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        uri?.let {
+            authViewModel.saveSelectedImage(context, it)
+        }
+    }
+
+    val file = imagePath?.let { File(it) }
 
     Box(
         modifier = Modifier
@@ -117,7 +134,47 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                     modifier = Modifier.testTag("create_acc_text")
                 )
 
-                Spacer(modifier = Modifier.height(96.dp))
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Photo picker
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Box(
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(RoundedCornerShape(50))
+                            .background(Color.White)
+                            .clickable { launcher.launch("image/*") },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (file?.exists() == true) {
+                            Image(
+                                painter = rememberAsyncImagePainter(model = file),
+                                contentDescription = "Selected Photo",
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Default.Image, // REPLACE with default profile photo
+                                contentDescription = "Default Icon",
+                                tint = Color.Gray,
+                                modifier = Modifier.size(48.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "Choose a photo",
+                        fontSize = 14.sp,
+                        color = Color.White,
+                        modifier = Modifier.clickable { launcher.launch("image/*") }
+                            .testTag("choose_photo_btn")
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
 
                 // First Name
                 OutlinedTextField(

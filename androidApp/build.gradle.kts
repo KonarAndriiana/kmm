@@ -60,6 +60,8 @@ dependencies {
     // THIS HERE instead of SHARED BUILD GRADLE
     implementation(libs.ktor.client.core)
     implementation(libs.gitlive.firebase.auth)
+    // PHOTO PICKER
+    implementation(libs.coil.compose)
 
 
 
