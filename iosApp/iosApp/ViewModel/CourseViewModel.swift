@@ -6,23 +6,28 @@
 //  Copyright © 2025 orgName. All rights reserved.
 //
 
-import Foundation
 import shared
- 
+
 @MainActor
 class CourseViewModel: ObservableObject {
     @Published var courses: [Course] = []
-    
-    private let api = CourseApi(client: HttpClientProvider().getClient())
+    private let courseApi: CourseApi
+
+    init() {
+        let client = HttpClientProvider().getClient()
+        self.courseApi = CourseApi(client: client)
+    }
 
     func fetchCourses() {
         Task {
             do {
-                let fetchedCourses = try await api.getCourses()
-                self.courses = fetchedCourses
+                let result = try await courseApi.getCourses()
+                self.courses = result
             } catch {
-                print("❌ Error: \(error)")
+                print("Failed to fetch courses: \(error)")
             }
         }
     }
 }
+
+
