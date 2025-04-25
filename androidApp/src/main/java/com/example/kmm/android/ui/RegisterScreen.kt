@@ -25,6 +25,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -101,7 +103,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                         .clip(RoundedCornerShape(25))
                         .background(Color.White)
                         .padding(horizontal = 16.dp, vertical = 12.dp)
-                        .testTag("error_msg"),
+                        .semantics { contentDescription = "error_msg" },
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -131,7 +133,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
-                    modifier = Modifier.testTag("create_acc_text")
+                    modifier = Modifier.semantics { contentDescription = "create_acc_text" }
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -169,8 +171,9 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                         text = "Choose a photo",
                         fontSize = 14.sp,
                         color = Color.White,
-                        modifier = Modifier.clickable { launcher.launch("image/*") }
-                            .testTag("choose_photo_btn")
+                        modifier = Modifier
+                            .clickable { launcher.launch("image/*") }
+                            .semantics { contentDescription = "choose_photo_btn" }
                     )
                 }
 
@@ -195,7 +198,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                         .fillMaxWidth()
                         .height(56.dp)
                         .clip(RoundedCornerShape(50))
-                        .testTag("first_name_input"),
+                        .semantics { contentDescription = "first_name_input" },
                     shape = RoundedCornerShape(50),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedContainerColor = Color.White,
@@ -227,7 +230,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                         .fillMaxWidth()
                         .height(56.dp)
                         .clip(RoundedCornerShape(50))
-                        .testTag("last_name_input"),
+                        .semantics { contentDescription = "last_name_input" },
                     shape = RoundedCornerShape(50),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedContainerColor = Color.White,
@@ -262,7 +265,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                         .fillMaxWidth()
                         .height(56.dp)
                         .clip(RoundedCornerShape(50))
-                        .testTag("email_input"),
+                        .semantics { contentDescription = "email_input" },
                     shape = RoundedCornerShape(50),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedContainerColor = Color.White,
@@ -293,7 +296,6 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                                 color = Color.Gray,
                                 fontSize = 14.sp,
                                 modifier = Modifier.align(Alignment.Center)
-                                    .testTag("password_input")
                             )
                         }
                     },
@@ -303,8 +305,10 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                     trailingIcon = {
                         val icon =
                             if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
-                        IconButton(onClick = { passwordVisible = !passwordVisible },
-                            modifier = Modifier.testTag("toggle_pass")) {
+                        IconButton(
+                            onClick = { passwordVisible = !passwordVisible },
+                            modifier = Modifier.semantics { contentDescription = "toggle_pass" }
+                        ) {
                             Icon(
                                 imageVector = icon,
                                 contentDescription = "Toggle Password Visibility",
@@ -316,7 +320,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                         .fillMaxWidth()
                         .height(56.dp)
                         .clip(RoundedCornerShape(50))
-                        .testTag("password_input"),
+                        .semantics { contentDescription = "password_input" },
                     shape = RoundedCornerShape(50),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedContainerColor = Color.White,
@@ -356,8 +360,10 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                     trailingIcon = {
                         val icon =
                             if (confirmPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
-                        IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible },
-                            modifier = Modifier.testTag("toggle_confirm_pass")) {
+                        IconButton(
+                            onClick = { confirmPasswordVisible = !confirmPasswordVisible },
+                            modifier = Modifier.semantics { contentDescription = "toggle_confirm_pass" }
+                        ) {
                             Icon(
                                 imageVector = icon,
                                 contentDescription = "Toggle Confirm Password Visibility",
@@ -369,7 +375,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                         .fillMaxWidth()
                         .height(56.dp)
                         .clip(RoundedCornerShape(50))
-                        .testTag("confirm_pass"),
+                        .semantics { contentDescription = "confirm_pass" },
                     shape = RoundedCornerShape(50),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedContainerColor = Color.White,
@@ -396,7 +402,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                         .width(120.dp)
                         .height(48.dp)
                         .align(Alignment.CenterHorizontally)
-                        .testTag("sign_up_btn"),
+                        .semantics { contentDescription = "sign_up_btn" },
                     shape = RoundedCornerShape(25),
                     colors = ButtonDefaults.outlinedButtonColors(
                         containerColor = Color.Transparent,
@@ -410,19 +416,21 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Row {
-                    Text("Already have an account? ",
+                    Text(
+                        "Already have an account? ",
                         fontSize = 14.sp,
                         color = Color.White,
-                        modifier = Modifier.testTag("log_in_text"))
+                        modifier = Modifier.semantics { contentDescription = "log_in_text" }
+                    )
                     Text(
                         text = "Log in",
                         color = Color.White,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         style = LocalTextStyle.current.copy(textDecoration = TextDecoration.Underline),
-                        modifier = Modifier.clickable {
-                            navController.navigate("login")
-                        }.testTag("log_in_redirect")
+                        modifier = Modifier
+                            .clickable { navController.navigate("login") }
+                            .semantics { contentDescription = "log_in_redirect" }
                     )
                 }
             }
