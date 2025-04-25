@@ -5,7 +5,6 @@
 //  Created by Andriiana Konar on 14/04/2025.
 //  Copyright © 2025 orgName. All rights reserved.
 //
-
 import SwiftUI
 import shared
 
@@ -14,20 +13,40 @@ struct CourseListView: View {
 
     var body: some View {
         NavigationView {
-            List(viewModel.courses, id: \.id) { course in
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(course.title)
-                        .font(.headline)
-                    Text(course.body)
-                        .font(.subheadline)
+            ScrollView {
+                LazyVStack(spacing: 16) {
+                    ForEach(viewModel.courses, id: \.id) { course in
+                        CourseCard(course: course)
+                    }
                 }
-                .padding(.vertical, 4)
+                .padding()
             }
             .navigationTitle("Courses")
             .onAppear {
                 viewModel.fetchCourses()
             }
         }
+    }
+}
+
+struct CourseCard: View {
+    let course: Course
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(course.title)
+                .font(.title3)
+                .fontWeight(.semibold)
+                .foregroundColor(.primary)
+
+            Text(course.body)
+                .font(.body)
+                .foregroundColor(.secondary)
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        .cornerRadius(16)
+        .shadow(color: Color.black.opacity(0.1), radius: 6, x: 0, y: 4)
     }
 }
 
