@@ -1,0 +1,46 @@
+{
+  "lectures": [
+    {
+      "id": "8469f018-ae5e-4b45-9273-6103cf795286",
+      "courseId": "c6ae129f-e890-4ac8-964f-48055a78430c",
+      "name": "Variables",
+      "info": "Introduction to variables in C++.",
+      "exampleCode": "int a = 5;"
+    },
+    {
+      "id": "39e0a3a8-68ea-4653-9253-846af63d64a7",
+      "courseId": "c6ae129f-e890-4ac8-964f-48055a78430c",
+      "name": "Loops",
+      "info": "How loops work in C++.",
+      "exampleCode": "for(int i = 0; i < 5; i++) {}"
+    },
+    {
+      "id": "new-1",
+      "courseId": "c6ae129f-e890-4ac8-964f-48055a78430c",
+      "name": "Functions",
+      "info": "Basic functions in C++.",
+      "exampleCode": "int sum(int a, int b) { return a + b; }"
+    },
+    {
+      "id": "caa9717a-3ab5-4d23-a7ad-fed8ca43952d",
+      "courseId": "b53cfbef-507f-4261-aa96-90873398e558",
+      "name": "Variables",
+      "info": "Understanding passwords and variables in security.",
+      "exampleCode": "password = '123456';"
+    },
+    {
+      "id": "d360d5e7-189b-418f-99f1-33df1e6d6aaa",
+      "courseId": "b53cfbef-507f-4261-aa96-90873398e558",
+      "name": "SSL Certificates",
+      "info": "Basics of SSL and HTTPS.",
+      "exampleCode": "openssl req -new -x509 -days 365"
+    },
+    {
+      "id": "new-2",
+      "courseId": "b53cfbef-507f-4261-aa96-90873398e558",
+      "name": "Firewalls",
+      "info": "Intro to firewall configuration.",
+      "exampleCode": "sudo ufw allow 22"
+    }
+  ]
+}
