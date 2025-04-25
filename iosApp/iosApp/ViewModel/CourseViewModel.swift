@@ -17,7 +17,7 @@ class CourseViewModel: ObservableObject {
         let client = HttpClientProvider().getClient()
         self.courseApi = CourseApi(client: client)
     }
-
+        
     func fetchCourses() {
         Task {
             do {
