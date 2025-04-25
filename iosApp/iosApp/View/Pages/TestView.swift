@@ -1,14 +1,14 @@
 //
-//  LoginView.swift
+//  TestView.swift
 //  iosApp
 //
-//  Created by Andriiana Konar on 07/04/2025.
+//  Created by Andriiana Konar on 15/04/2025.
 //  Copyright © 2025 orgName. All rights reserved.
 //
 
 import SwiftUI
 
-struct LoginView: View {
+struct TestView: View {
     
     @StateObject var viewModel = LoginViewViewModel()
     @State private var showForgotPasswordSheet = false
@@ -51,13 +51,13 @@ struct LoginView: View {
                         //fields
                         VStack(spacing: 50) {
                             TextFieldView(placeholder: "email", text: $viewModel.email)
-                                .frame(maxWidth: 350, minHeight: 44)
+                                .frame(width: 440.0, height: 40.0)
                                 .autocapitalization(.none)
                                 .autocorrectionDisabled()
                                 .accessibilityIdentifier("email_input")
                             
                             TextFieldView(placeholder: "password", text: $viewModel.password, isSecure: true)
-                                .frame(maxWidth: 350, minHeight: 44)
+                                .frame(width: 440.0, height: 40.0)
                                 .autocapitalization(.none)
                                 .autocorrectionDisabled()
                                 .accessibilityIdentifier("password_input")
@@ -146,5 +146,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView()
+    TestView()
 }
