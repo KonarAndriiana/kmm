@@ -47,6 +47,10 @@ struct AccountView: View {
                     }
                 } else {
                     Text("Loading ...")
+                    
+                    ButtonView(title: "Log Out") {
+                        viewModel.logout()
+                    }
                 }
             }
         }

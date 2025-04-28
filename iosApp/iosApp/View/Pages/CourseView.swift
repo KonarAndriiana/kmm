@@ -14,7 +14,7 @@ struct CourseView: View {
             UserView()
                 .accessibilityIdentifier("greeting_text")
 
-            CourseListView()
+//            CourseListView()
         }
         .padding()
     }
