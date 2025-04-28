@@ -31,6 +31,7 @@
 		00753D5F2DA3E2AB00133F2D /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 00753D5E2DA3E2AB00133F2D /* FirebaseStorage */; };
 		00753D612DA3E2AB00133F2D /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 00753D602DA3E2AB00133F2D /* FirebaseStorageCombine-Community */; };
 		00753D632DA3E2AB00133F2D /* FirebaseVertexAI in Frameworks */ = {isa = PBXBuildFile; productRef = 00753D622DA3E2AB00133F2D /* FirebaseVertexAI */; };
+		007961682DBBE34700444DFD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 007961672DBBE34700444DFD /* GoogleService-Info.plist */; };
 		007A36C62DAC78ED00E8CBDF /* KMPNativeCoroutinesAsync in Frameworks */ = {isa = PBXBuildFile; productRef = 007A36C52DAC78ED00E8CBDF /* KMPNativeCoroutinesAsync */; };
 		00A98E502DBF8D64007839D5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 00A98E4F2DBF8D64007839D5 /* GoogleService-Info.plist */; };
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
@@ -59,6 +60,7 @@
 		7555FF7B242A565900829871 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		00753D292DA3DEA300133F2D /* View */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = View; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 		};
 /* End PBXGroup section */
 
+
 /* Begin PBXNativeTarget section */
 		7555FF7A242A565900829871 /* iosApp */ = {
 			isa = PBXNativeTarget;
@@ -225,6 +228,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
 
 /* Begin PBXShellScriptBuildPhase section */
 		7555FFB5242A651A00829871 /* ShellScript */ = {

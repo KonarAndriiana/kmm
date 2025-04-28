@@ -10,8 +10,13 @@ import SwiftUI
 
 struct CourseView: View {
     var body: some View {
-        UserView()
-            .accessibilityIdentifier("greeting_text")
+        VStack(spacing: 24) {
+            UserView()
+                .accessibilityIdentifier("greeting_text")
+
+//            CourseListView()
+        }
+        .padding()
     }
 }
 
