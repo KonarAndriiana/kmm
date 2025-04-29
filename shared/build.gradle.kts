@@ -16,7 +16,7 @@ kotlin {
             }
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -29,28 +29,47 @@ kotlin {
     }
 
     sourceSets {
-        commonMain.dependencies {
-            //put your multiplatform dependencies here
-            implementation(libs.kotlinx.coroutines.core)
-            //ktor content negotiation
-            implementation(libs.ktor.client.content.negotiation)
-            //Json Ktor
-            implementation(libs.ktor.serialization.kotlinx.json)
-            //logging
-            implementation(libs.ktor.client.logging)
-            //Json
-            implementation(libs.kotlinx.serialization.json)
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.serialization.kotlinx.json)
+                implementation(libs.ktor.client.logging)
+                implementation(libs.kotlinx.serialization.json)
+            }
         }
 
-        androidMain.dependencies {
-            implementation(libs.ktor.client.okhttp)
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.ktor.client.okhttp)
+            }
         }
 
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+
+        val iosMain by creating {
+            dependsOn(commonMain)
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
+
+            dependencies {
+                implementation("io.ktor:ktor-client-darwin:2.3.4") // adjust to your Ktor version
+            }
+        }
+
+        val commonTest by getting {
+            dependencies {
+                implementation(libs.kotlin.test)
+            }
         }
     }
+
+
 }
+
 
 android {
     namespace = "com.example.kmm"
@@ -62,4 +81,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+}
+
+dependencies {
+    implementation(libs.firebase.auth.ktx)
 }
