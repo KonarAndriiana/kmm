@@ -5,6 +5,7 @@ from appium.options.android import UiAutomator2Options
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 
+
 class MobileAppTest:
     def __init__(self, device_name, app_package, app_activity):
         self.device_name = device_name
@@ -22,18 +23,20 @@ class MobileAppTest:
 
         self.driver = webdriver.Remote("http://127.0.0.1:4723", options=options)
 
-    def restart_app(self):
+    def quit_driver(self):
         if self.driver:
-            self.driver.reset()
+            self.driver.quit()
 
     def test_login(self, email, password, expected_error_message):
-        print(f"\nTesting with email: {email} and password: {password}")
+        print(f"\nTesting with email: '{email}' and password: '{password}'")
 
-        email_input = self.driver.find_element(By.XPATH, "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[1]")
+        email_input = self.driver.find_element(By.XPATH,
+                                               "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[1]")
         email_input.clear()
         email_input.send_keys(email)
 
-        password_field = self.driver.find_element(By.XPATH, "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[2]")
+        password_field = self.driver.find_element(By.XPATH,
+                                                  "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[2]")
         password_field.clear()
         password_field.send_keys(password)
 
@@ -43,47 +46,77 @@ class MobileAppTest:
         time.sleep(2)
 
         try:
-            error_element = self.driver.find_element(By.XPATH, f"//*[contains(@text, '{expected_error_message}')]")
-            print(f"Test passed: Error message '{expected_error_message}' found.")
+            error_element = self.driver.find_element(By.ACCESSIBILITY_ID, "error_msg")
+            actual_error_text = error_element.text
+
+            if expected_error_message in actual_error_text:
+                print(f"Test passed: Error message '{expected_error_message}' is displayed.")
+            else:
+                print(f"Test failed: Expected '{expected_error_message}' but got '{actual_error_text}'.")
+                raise AssertionError(f"Expected '{expected_error_message}' but got '{actual_error_text}'.")
         except NoSuchElementException:
-            print(f"Test failed: Error message '{expected_error_message}' not found.")
+            print("Test failed: Error message element not found.")
             raise
 
-    def quit_driver(self):
-        if self.driver:
-            self.driver.quit()
+        time.sleep(5)
 
 
-# Test cases for pytest
 @pytest.fixture(scope="class")
 def app_test():
-    app_test_instance = MobileAppTest("emulator-5554", "com.google.android.apps.nexuslauncher", "com.google.android.apps.nexuslauncher.NexusLauncherActivity")
+    app_test_instance = MobileAppTest("emulator-5554", "com.google.android.apps.nexuslauncher",
+                                      "com.google.android.apps.nexuslauncher.NexusLauncherActivity")
     app_test_instance.start_driver()
     yield app_test_instance
     app_test_instance.quit_driver()
 
 
-def test_invalid_email(app_test):
-    print("\nRunning test for invalid email...")
-    app_test.test_login("invalidemail@domain.com", "admiN1", "Invalid email")
+@pytest.mark.parametrize("email, password, expected_error", [
+    ("wrong1@gmail.com", "admiN1", "Email or password is incorrect"),
+    ("wrong2@gmail.com", "admiN1", "Email or password is incorrect"),
+    ("", "admiN1", "Both fields must be completed"),
+])
+def test_invalid_email(app_test, email, password, expected_error):
+    app_test.test_login(email, password, expected_error)
 
 
-def test_invalid_password(app_test):
-    print("\nRunning test for invalid password...")
-    app_test.test_login("szilard.vysoky@gmail.com", "wrongpassword", "Invalid password")
+@pytest.mark.parametrize("email, password, expected_error", [
+    ("szilard.visoky@gmail.com", "wrong1", "Email or password is incorrect"),
+    ("szilard.visoky@gmail.com", "wrong2", "Email or password is incorrect"),
+    ("szilard.visoky@gmail.com", "", "Both fields must be completed"),
+])
+def test_invalid_password(app_test, email, password, expected_error):
+    app_test.test_login(email, password, expected_error)
 
 
-def test_empty_fields(app_test):
-    print("\nRunning test for empty fields...")
-    app_test.test_login("", "", "Fields cannot be empty")
+@pytest.mark.parametrize("email, password, expected_error", [
+    ("szilard.vysokygmail.com", "admiN1", "Please enter a valid email address"),
+    ("szilard@", "admiN1", "Please enter a valid email address"),
+])
+def test_invalid_email_format(app_test, email, password, expected_error):
+    app_test.test_login(email, password, expected_error)
+
+
+@pytest.mark.parametrize("email, password, expected_error", [
+    ("", "", "Both fields must be completed"),
+    ("", "admiN1", "Email cannot be empty"),
+    ("szilard.visoky@gmail.com", "", "Password cannot be empty"),
+])
+def test_empty_fields(app_test, email, password, expected_error):
+    app_test.test_login(email, password, expected_error)
 
 
 if __name__ == "__main__":
-    app_test_instance = MobileAppTest("emulator-5554", "com.google.android.apps.nexuslauncher", "com.google.android.apps.nexuslauncher.NexusLauncherActivity")
+    app_test_instance = MobileAppTest("emulator-5554", "com.google.android.apps.nexuslauncher",
+                                      "com.google.android.apps.nexuslauncher.NexusLauncherActivity")
     app_test_instance.start_driver()
 
-    app_test_instance.test_login("szilard.vysoky@gmail.com", "admiN1", "Invalid email")
-    app_test_instance.restart_app()
+    test_cases = [
+        ("wrong1@gmail.com", "admiN1", "Email or password is incorrect"),
+        ("szilard.vysokygmail.com", "admiN1", "Please enter a valid email address"),
+        ("", "", "Both fields must be completed"),
+    ]
 
-    # app_test_instance.test_login("invalidemail@domain.com", "wrongpassword", "Invalid password")
+    for email, password, expected in test_cases:
+        app_test_instance.test_login(email, password, expected)
+
     app_test_instance.quit_driver()

@@ -20,8 +20,7 @@ class MobileAppTest:
         options.device_name = self.device_name
         options.app_package = self.app_package
         options.app_activity = self.app_activity
-        options.no_reset = True  # Prevents app reset between tests
-
+        options.no_reset = True
         self.driver = webdriver.Remote("http://127.0.0.1:4723", options=options)
 
     def test_login(self, email, password):
@@ -64,16 +63,9 @@ def app_test():
     test.quit_driver()
 
 
-def test_multiple_logins(app_test):
+def test_login(app_test):
     app_test.test_login("szilard.vysoky@gmail.com", "admiN1")
-    app_test.quit_driver()
-
-    # Uncomment to add more tests
-    # app_test.test_login("another.email@example.com", "wrongPassword")
-    # app_test.quit_driver()
-    #
-    # app_test.test_login("testuser@domain.com", "correctPassword")
-    # app_test.quit_driver()
+    print("Login test prebehol úspešne!")
 
 
 if __name__ == "__main__":
@@ -82,6 +74,5 @@ if __name__ == "__main__":
     app_test_instance.start_driver()
 
     app_test_instance.test_login("szilard.vysoky@gmail.com", "admiN1")
-    print("Login test prebehol úspešne!")
 
     app_test_instance.quit_driver()
