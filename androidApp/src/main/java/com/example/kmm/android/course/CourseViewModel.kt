@@ -18,16 +18,25 @@ class CourseViewModel : ViewModel() {
     private val _courseList = MutableStateFlow<List<Course>>(emptyList())
     val courseList: StateFlow<List<Course>> = _courseList
 
-    fun fetchCourse(courseId: Int) {
+    fun fetchCourse(courseId: String) {
         viewModelScope.launch {
-            _course.value = null
-            _course.value = api.getCourseById(courseId)
+            try {
+                _course.value = api.getCourseById(courseId)
+            } catch (e: Exception) {
+                _course.value = null
+                println("Error fetching courses: ${e.message}")
+            }
         }
     }
 
     fun fetchCourses() {
         viewModelScope.launch {
+            try {
             _courseList.value = api.getCourses()
+        } catch (e: Exception) {
+                _courseList.value = emptyList()
+                println("Error fetching courses: ${e.message}")
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.kmm.android.auth.AuthViewModel
 import com.example.kmm.android.auth.AuthViewModelFactory
+import com.example.kmm.android.ui.CourseDetailsScreen
 import com.example.kmm.android.ui.CourseScreen
 import com.example.kmm.android.ui.LoginScreen
 import com.example.kmm.android.ui.RegisterScreen
@@ -34,11 +35,13 @@ class MainActivity : ComponentActivity() {
                     RegisterScreen(navController = navController, authViewModel = authViewModel)
                 }
                 composable("courseList") {
-                    CourseScreen(navController, null)
+                    CourseScreen(navController)
                 }
                 composable("course/{courseId}") { backStackEntry ->
-                    val courseId = backStackEntry.arguments?.getString("courseId")?.toIntOrNull()
-                    CourseScreen(navController, courseId)
+                    val courseId = backStackEntry.arguments?.getString("courseId")
+                    courseId?.let {
+                        CourseDetailsScreen(courseId = it)
+                    }
                 }
             }
         }

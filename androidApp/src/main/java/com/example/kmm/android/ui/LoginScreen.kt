@@ -22,7 +22,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -120,6 +123,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                         fontWeight = FontWeight.SemiBold,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+                            .semantics { contentDescription = "error_msg" }
                     )
                 }
 
@@ -142,7 +146,8 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                     text = "Welcome",
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = Color.White,
+                    modifier = Modifier.semantics { contentDescription = "welcome_text" }
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -155,7 +160,8 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                         }
                     },
                     fontSize = 20.sp,
-                    color = Color.White
+                    color = Color.White,
+                    modifier = Modifier.semantics { contentDescription = "buggless_text" }
                 )
 
                 Spacer(modifier = Modifier.height(96.dp))
@@ -180,7 +186,8 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp)
-                        .clip(RoundedCornerShape(50)),
+                        .clip(RoundedCornerShape(50))
+                        .semantics { contentDescription = "email_input" },
                     shape = RoundedCornerShape(50),
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
@@ -220,14 +227,18 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp)
-                        .clip(RoundedCornerShape(50)),
+                        .clip(RoundedCornerShape(50))
+                        .semantics { contentDescription = "password_input" },
                     shape = RoundedCornerShape(50),
                     singleLine = true,
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     trailingIcon = {
                         val icon =
                             if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
-                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        IconButton(
+                            onClick = { passwordVisible = !passwordVisible },
+                            modifier = Modifier.semantics { contentDescription = "toggle_pass" }
+                        ) {
                             Icon(
                                 imageVector = icon,
                                 contentDescription = "Toggle Password Visibility",
@@ -251,9 +262,9 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                     text = "Forgot password?",
                     fontSize = 14.sp,
                     color = Color.White,
-                    modifier = Modifier.clickable {
-                        showSheet = true
-                    }
+                    modifier = Modifier
+                        .clickable { showSheet = true }
+                        .semantics { contentDescription = "forgot_btn" }
                 )
 
                 Spacer(modifier = Modifier.height(48.dp))
@@ -266,7 +277,8 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                     modifier = Modifier
                         .width(120.dp)
                         .height(48.dp)
-                        .align(Alignment.CenterHorizontally),
+                        .align(Alignment.CenterHorizontally)
+                        .semantics { contentDescription = "login_btn" },
                     shape = RoundedCornerShape(25),
                     colors = ButtonDefaults.outlinedButtonColors(
                         containerColor = Color.Transparent,
@@ -280,16 +292,20 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                 Spacer(modifier = Modifier.height(72.dp))
 
                 Row {
-                    Text("Don't have an account? ", fontSize = 14.sp, color = Color.White)
+                    Text("Don't have an account? ",
+                        fontSize = 14.sp,
+                        color = Color.White,
+                        modifier = Modifier.semantics { contentDescription = "sign_up_text" }
+                    )
                     Text(
                         text = "Sign up now",
                         color = Color.White,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         style = LocalTextStyle.current.copy(textDecoration = TextDecoration.Underline),
-                        modifier = Modifier.clickable {
-                            navController.navigate("register")
-                        }
+                        modifier = Modifier
+                            .clickable { navController.navigate("register") }
+                            .semantics { contentDescription = "sign_up_redirect" }
                     )
                 }
             }
@@ -315,12 +331,18 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        Text("Forgot password", fontWeight = FontWeight.Bold, fontSize = 32.sp)
+                        Text(
+                            "Forgot password",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 32.sp,
+                            modifier = Modifier.semantics { contentDescription = "forgot_pass_text" }
+                        )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = "Enter your email, and we’ll send you\nlink and instructions to reset your password.",
                             textAlign = TextAlign.Center,
                             fontSize = 20.sp,
+                            modifier = Modifier.semantics { contentDescription = "info_text" }
                         )
 
                         Spacer(modifier = Modifier.height(72.dp))
@@ -343,7 +365,8 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(56.dp)
-                                .clip(RoundedCornerShape(50)),
+                                .clip(RoundedCornerShape(50))
+                                .semantics { contentDescription = "email_input" },
                             shape = RoundedCornerShape(50),
                             textStyle = TextStyle(textAlign = TextAlign.Center, fontSize = 14.sp),
                             colors = OutlinedTextFieldDefaults.colors(
@@ -362,7 +385,8 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                                 color = Color.Red,
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.SemiBold,
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.semantics { contentDescription = "error_msg" }
                             )
                         }
 
@@ -393,7 +417,8 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                             },
                             modifier = Modifier
                                 .width(120.dp)
-                                .height(48.dp),
+                                .height(48.dp)
+                                .semantics { contentDescription = "reset_btn" },
                             shape = RoundedCornerShape(25),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.Black,

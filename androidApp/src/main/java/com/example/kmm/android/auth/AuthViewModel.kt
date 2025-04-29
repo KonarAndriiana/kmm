@@ -1,9 +1,12 @@
 package com.example.kmm.android.auth
 
+import android.content.Context
+import android.net.Uri
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kmm.android.image.ImageRepository
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -17,7 +20,8 @@ import kotlinx.coroutines.launch
 class AuthViewModel
     (private val loginUseCase: LoginUseCase,
      private val registerUseCase: RegisterUseCase,
-     private val authRepository: AuthRepository) : ViewModel() {
+     private val authRepository: AuthRepository,
+     private val imageRepository: ImageRepository) : ViewModel() {
 
     private val _loginState = MutableStateFlow<String?>(null)
     val loginState: StateFlow<String?> = _loginState
@@ -30,6 +34,9 @@ class AuthViewModel
 
     var showResetSuccess = mutableStateOf(false)
         private set
+
+    private val _imagePath = MutableStateFlow<String?>(null)
+    val imagePath: StateFlow<String?> = _imagePath
 
     private val _isUserLoggedIn = mutableStateOf(false)
     val isUserLoggedIn: State<Boolean> = _isUserLoggedIn
@@ -189,6 +196,11 @@ class AuthViewModel
                 else "❌ Registration failed. Please try again later"
             }
         }
+    }
+
+    fun saveSelectedImage(context: Context, uri: Uri) {
+        val savedPath = imageRepository.saveImageToLocalStorage(context, uri, "profile_image.jpg")
+        _imagePath.value = savedPath
     }
 
     private fun resetMessage() {

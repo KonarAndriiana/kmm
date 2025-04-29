@@ -1,6 +1,8 @@
 package com.example.kmm.android.ui
 
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
@@ -20,7 +23,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -31,10 +37,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.kmm.android.R
 import com.example.kmm.android.auth.AuthViewModel
 import com.example.kmm.android.auth.AuthViewModelFactory
 import kotlinx.coroutines.delay
+import java.io.File
 
 @Composable
 fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  {
@@ -51,7 +59,19 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
     val registerState by authViewModel.registerState.collectAsState()
+    val imagePath by authViewModel.imagePath.collectAsState()
 
+    val context = LocalContext.current
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        uri?.let {
+            authViewModel.saveSelectedImage(context, it)
+        }
+    }
+
+    val file = imagePath?.let { File(it) }
 
     Box(
         modifier = Modifier
@@ -82,7 +102,8 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(25))
                         .background(Color.White)
-                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                        .padding(horizontal = 16.dp, vertical = 12.dp)
+                        .semantics { contentDescription = "error_msg" },
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -111,19 +132,52 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                     text = "Create account",
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    text = "before we start provide\nyour info below",
-                    fontSize = 16.sp,
                     color = Color.White,
-                    textAlign = TextAlign.Center
+                    modifier = Modifier.semantics { contentDescription = "create_acc_text" }
                 )
 
-                Spacer(modifier = Modifier.height(48.dp))
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Photo picker
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Box(
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(RoundedCornerShape(50))
+                            .background(Color.White)
+                            .clickable { launcher.launch("image/*") },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (file?.exists() == true) {
+                            Image(
+                                painter = rememberAsyncImagePainter(model = file),
+                                contentDescription = "Selected Photo",
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Default.Image, // REPLACE with default profile photo
+                                contentDescription = "Default Icon",
+                                tint = Color.Gray,
+                                modifier = Modifier.size(48.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "Choose a photo",
+                        fontSize = 14.sp,
+                        color = Color.White,
+                        modifier = Modifier
+                            .clickable { launcher.launch("image/*") }
+                            .semantics { contentDescription = "choose_photo_btn" }
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
 
                 // First Name
                 OutlinedTextField(
@@ -143,7 +197,8 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp)
-                        .clip(RoundedCornerShape(50)),
+                        .clip(RoundedCornerShape(50))
+                        .semantics { contentDescription = "first_name_input" },
                     shape = RoundedCornerShape(50),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedContainerColor = Color.White,
@@ -174,7 +229,8 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp)
-                        .clip(RoundedCornerShape(50)),
+                        .clip(RoundedCornerShape(50))
+                        .semantics { contentDescription = "last_name_input" },
                     shape = RoundedCornerShape(50),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedContainerColor = Color.White,
@@ -208,7 +264,8 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp)
-                        .clip(RoundedCornerShape(50)),
+                        .clip(RoundedCornerShape(50))
+                        .semantics { contentDescription = "email_input" },
                     shape = RoundedCornerShape(50),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedContainerColor = Color.White,
@@ -248,7 +305,10 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                     trailingIcon = {
                         val icon =
                             if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
-                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        IconButton(
+                            onClick = { passwordVisible = !passwordVisible },
+                            modifier = Modifier.semantics { contentDescription = "toggle_pass" }
+                        ) {
                             Icon(
                                 imageVector = icon,
                                 contentDescription = "Toggle Password Visibility",
@@ -259,7 +319,8 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp)
-                        .clip(RoundedCornerShape(50)),
+                        .clip(RoundedCornerShape(50))
+                        .semantics { contentDescription = "password_input" },
                     shape = RoundedCornerShape(50),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedContainerColor = Color.White,
@@ -299,7 +360,10 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                     trailingIcon = {
                         val icon =
                             if (confirmPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
-                        IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
+                        IconButton(
+                            onClick = { confirmPasswordVisible = !confirmPasswordVisible },
+                            modifier = Modifier.semantics { contentDescription = "toggle_confirm_pass" }
+                        ) {
                             Icon(
                                 imageVector = icon,
                                 contentDescription = "Toggle Confirm Password Visibility",
@@ -310,7 +374,8 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp)
-                        .clip(RoundedCornerShape(50)),
+                        .clip(RoundedCornerShape(50))
+                        .semantics { contentDescription = "confirm_pass" },
                     shape = RoundedCornerShape(50),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedContainerColor = Color.White,
@@ -336,7 +401,8 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                     modifier = Modifier
                         .width(120.dp)
                         .height(48.dp)
-                        .align(Alignment.CenterHorizontally),
+                        .align(Alignment.CenterHorizontally)
+                        .semantics { contentDescription = "sign_up_btn" },
                     shape = RoundedCornerShape(25),
                     colors = ButtonDefaults.outlinedButtonColors(
                         containerColor = Color.Transparent,
@@ -350,16 +416,21 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Row {
-                    Text("Already have an account? ", fontSize = 14.sp, color = Color.White)
+                    Text(
+                        "Already have an account? ",
+                        fontSize = 14.sp,
+                        color = Color.White,
+                        modifier = Modifier.semantics { contentDescription = "log_in_text" }
+                    )
                     Text(
                         text = "Log in",
                         color = Color.White,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         style = LocalTextStyle.current.copy(textDecoration = TextDecoration.Underline),
-                        modifier = Modifier.clickable {
-                            navController.navigate("login")
-                        }
+                        modifier = Modifier
+                            .clickable { navController.navigate("login") }
+                            .semantics { contentDescription = "log_in_redirect" }
                     )
                 }
             }
