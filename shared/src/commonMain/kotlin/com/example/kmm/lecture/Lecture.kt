@@ -1,11 +1,12 @@
-package com.example.kmm.course
+package com.example.kmm.lecture
 
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Lecture(
     val id: String,
-    val title: String,
+    val name: String,
     val description: String,
-    val requiredTime: String
+    val level: String,
+    val specification: String
 )
