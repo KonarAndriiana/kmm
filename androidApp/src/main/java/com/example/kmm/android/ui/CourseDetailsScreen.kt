@@ -34,30 +34,13 @@ fun CourseDetailsScreen(courseId: String) {
             .padding(16.dp)
     ) {
         course?.let { selectedCourse ->
-            Text(
-                text = selectedCourse.title,
-                style = MaterialTheme.typography.headlineLarge
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(text = selectedCourse.description)
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text("Lectures:", style = MaterialTheme.typography.headlineMedium)
-
-            selectedCourse.lectures.forEach { lecture ->
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Text(
-                    text = "• ${lecture.title} (${lecture.requiredTime} min)",
-                    fontSize = 18.sp
-                )
-                Text(
-                    text = lecture.description
-                )
-            }
-        } ?: Text("Loading...")
+            Text(text = selectedCourse.name, style = MaterialTheme.typography.headlineLarge)
+            Spacer(Modifier.height(8.dp))
+            Text(text = selectedCourse.description, style = MaterialTheme.typography.bodyLarge)
+            Spacer(Modifier.height(16.dp))
+            Text("Level: ${selectedCourse.level}", style = MaterialTheme.typography.bodyMedium)
+            Spacer(Modifier.height(4.dp))
+            Text("Specification: ${selectedCourse.specification}", style = MaterialTheme.typography.bodyMedium)
+        } ?: Text("Loading...", style = MaterialTheme.typography.bodyLarge)
     }
 }

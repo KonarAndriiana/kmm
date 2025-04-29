@@ -68,7 +68,7 @@ fun CourseScreen(navController: NavController) {
 
             courses.forEach { course ->
                 Text(
-                    text = course.title,
+                    text = course.name,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)

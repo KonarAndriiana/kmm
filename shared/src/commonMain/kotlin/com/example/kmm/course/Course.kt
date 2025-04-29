@@ -5,9 +5,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Course(
     val id: String,
-    val title: String,
+    val name: String,
     val description: String,
-    val lectures: List<Lecture>
+    val level: String,
+    val specification: String
 )
 
 

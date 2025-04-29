@@ -6,9 +6,9 @@ import io.ktor.client.request.get
 
 class CourseApi(private val client: HttpClient) {
     suspend fun getCourses(): List<Course> {
-        val response: CoursesList =
-            client.get("https://raw.githubusercontent.com/PaloSatala/testJsons/refs/heads/main/coursesList.json").body()
-        return response.coursesList
+        val response: CoursesResponse =
+            client.get("https://raw.githubusercontent.com/KonarAndriiana/kmm/refs/heads/Android-App/courses.json").body()
+        return response.courses
     }
 
     suspend fun getCourseById(id: String): Course? {
