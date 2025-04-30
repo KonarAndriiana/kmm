@@ -26,7 +26,7 @@ class LectureViewModel: ObservableObject {
                 let result = try await lectureApi.getLectures()
                 self.lectures = result
             }catch{
-                print("Failed to fetch courses: \(error)")
+                print("Failed to fetch lectures: \(error)")
             }
         }
     }
