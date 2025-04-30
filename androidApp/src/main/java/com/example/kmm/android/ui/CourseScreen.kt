@@ -1,6 +1,5 @@
 package com.example.kmm.android.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,15 +14,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,12 +33,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.imageLoader
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import com.example.kmm.android.R
 import com.example.kmm.android.auth.AuthViewModel
 import com.example.kmm.android.auth.AuthViewModelFactory
@@ -53,10 +53,21 @@ import com.example.kmm.course.Course
 fun CourseScreen(navController: NavController) {
     val courseViewModel: CourseViewModel = viewModel()
     val authViewModel: AuthViewModel = viewModel(factory = AuthViewModelFactory())
-    val coursesState = courseViewModel.courseList.collectAsState()
-    val courses = coursesState.value
+    val courses by courseViewModel.courseList.collectAsState()
 
-    LaunchedEffect(Unit) { courseViewModel.fetchCourses() }
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        // load courses
+        courseViewModel.fetchCourses()
+        // preload drawables
+        context.imageLoader.enqueue(
+            ImageRequest.Builder(context)
+                .data(R.drawable.language_1)
+                .size(width = 240, height = 160)
+                .memoryCachePolicy(CachePolicy.ENABLED)
+                .build()
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -90,12 +101,12 @@ fun CourseScreen(navController: NavController) {
             Text(
                 text = "Course",
                 fontSize = 32.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.SemiBold
             )
             Text(
                 text = "see all",
                 color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.clickable { /* TODO: see-all action */ }
+                modifier = Modifier.clickable { /* TODO */ }
             )
         }
 
@@ -130,14 +141,17 @@ private fun CourseCard(course: Course, onClick: () -> Unit) {
             .size(width = 240.dp, height = 160.dp)
             .clip(RoundedCornerShape(16.dp))
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Box {
-            // TODO: replace with real image loader (Coil/Glide) if you have images
-            Image(
-                painter = painterResource(id = R.drawable.language_1),
-                contentDescription = "Language icon",
+            // AsyncImage
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(R.drawable.language_1)
+                    .size(width = 240, height = 160)
+                    .memoryCachePolicy(CachePolicy.ENABLED)
+                    .build(),
+                contentDescription = "Language background",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
@@ -148,18 +162,13 @@ private fun CourseCard(course: Course, onClick: () -> Unit) {
                 color = Color.White,
                 fontSize = 16.sp,
                 modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 16.dp) //hor 8.dp
-//                    .background(
-//                        color = Color(0x80000000),
-//                        shape = RoundedCornerShape(12.dp)
-//                    )
-//                    .padding(horizontal = 16.dp, vertical = 4.dp)
+                    .padding(16.dp)
                     .align(Alignment.TopStart)
             )
 
             // Favorite icon
             IconButton(
-                onClick = { /* TODO: toggle favorite */ },
+                onClick = { /* TODO */ },
                 modifier = Modifier.align(Alignment.TopEnd)
             ) {
                 Icon(
@@ -181,15 +190,10 @@ private fun CourseCard(course: Course, onClick: () -> Unit) {
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold
                 )
-
                 Spacer(Modifier.height(12.dp))
-
                 Box(
                     modifier = Modifier
-                        .background(
-                            color = Color.White,
-                            shape = RoundedCornerShape(12.dp)
-                        )
+                        .background(Color.White, RoundedCornerShape(12.dp))
                         .padding(horizontal = 16.dp, vertical = 4.dp)
                 ) {
                     Text(
