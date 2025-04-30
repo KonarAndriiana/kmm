@@ -1,0 +1,22 @@
+{
+  "lectures": [
+    {
+      "id": "caa9717a-3ab5-4d23-a7ad-fed8ca43952d",
+      "courseId": "b53cfbef-507f-4261-aa96-90873398e558",
+      "name": "Passwords",
+      "info": "Understanding passwords and variables in security."
+    },
+    {
+      "id": "d360d5e7-189b-418f-99f1-33df1e6d6aaa",
+      "courseId": "b53cfbef-507f-4261-aa96-90873398e558",
+      "name": "SSL Certificates",
+      "info": "Basics of SSL and HTTPS."
+    },
+    {
+      "id": "1eee4b0f-668e-4f99-ab1a-03009bc94037",
+      "courseId": "b53cfbef-507f-4261-aa96-90873398e558",
+      "name": "Firewalls",
+      "info": "Intro to firewall configuration."
+    }
+  ]
+}
