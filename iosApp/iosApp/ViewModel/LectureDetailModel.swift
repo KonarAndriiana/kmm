@@ -9,8 +9,8 @@
 import shared
 
 @MainActor
-class LectureDetailView: ObservableObject {
-    @Published var courses : [Lecture] = []
+class LectureDetailModel: ObservableObject {
+    @Published var lecture : Lecture? = nil
     private var lectureApi : LectureApi
     
     init() {
@@ -18,11 +18,11 @@ class LectureDetailView: ObservableObject {
         self.lectureApi = LectureApi(client: client)
     }
     
-    func fetchLectureDetail() {
+    func fetchLectureDetail(id: String) {
         Task{
             do{
-                let result = try await lectureApi.getLectureById(id: <#T##String#>)
-                self.lectureApi = result ?? String
+                let result = try await lectureApi.getLectureById(id: id)
+                self.lecture = result
             }catch{
                 print("Failed to fetch lectures details: \(error)")
             }
