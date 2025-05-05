@@ -1,0 +1,45 @@
+{
+  "id": "caa9717a-3ab5-4d23-a7ad-fed8ca43952d",
+  "courseId": "b53cfbef-507f-4261-aa96-90873398e558",
+  "name": "Passwords",
+  "info": "Understanding passwords and variables in security.",
+  "content": [
+    {
+      "type": "title",
+      "content": "Password Security: Your First Line of Defense"
+    },
+    {
+      "type": "text",
+      "content": "Passwords are the gatekeepers of your digital identity. Whether it’s your email, work applications, or company systems, a strong password is often the only thing standing between sensitive data and a cybercriminal. Here's what you need to know to stay protected:"
+    },
+    {
+      "type": "subtitle",
+      "content": "Use Strong, Unique Passwords"
+    },
+    {
+      "type": "text",
+      "content": "Passwords are the gatekeepers of your digital identity. Whether it’s your email, work applications, or company systems, a strong password is often the only thing standing between sensitive data and a cybercriminal. Here's what you need to know to stay protected:"
+    },
+    {
+      "type": "subtitle",
+      "content": "Never Reuse Passwords"
+    },
+    {
+      "type": "text",
+      "content": "Reusing the same password across multiple sites makes you vulnerable. If one site is breached, attackers may try the same credentials elsewhere (a tactic called “credential stuffing”)."
+    },
+    {
+      "type": "subtitle",
+      "content": "Enable Multi-Factor Authentication (MFA)"
+    },
+    {
+      "type": "text",
+      "content": "MFA adds a second layer of protection, usually requiring a code from your phone or a biometric check. This makes it significantly harder for attackers to gain access even if your password is compromised."
+    },
+
+    {
+      "type": "text",
+      "content": "Remember: Cybersecurity starts with you. A strong password is one of the simplest, most effective tools you have to protect yourself and your organization."
+    }
+  ]
+}
