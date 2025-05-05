@@ -151,7 +151,7 @@ private fun CourseCard(course: Course, onClick: () -> Unit) {
                     .size(width = 240, height = 160)
                     .memoryCachePolicy(CachePolicy.ENABLED)
                     .build(),
-                contentDescription = "Language background",
+                contentDescription = "Programming Language Background",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
