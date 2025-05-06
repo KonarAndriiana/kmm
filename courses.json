@@ -3,14 +3,14 @@
     {
       "id": "c6ae129f-e890-4ac8-964f-48055a78430c",
       "name": "C++ course",
-      "description": "Basic C++ course",
+      "courseDescription": "Basic C++ course",
       "level": "Beginner",
       "specification": "Backend"
     },
     {
       "id": "b53cfbef-507f-4261-aa96-90873398e558",
       "name": "IT security",
-      "description": "Basic IT securities",
+      "courseDescription": "Basic IT securities",
       "level": "Intermediate",
       "specification": "Security"
     }

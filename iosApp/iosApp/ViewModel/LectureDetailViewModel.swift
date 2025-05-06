@@ -9,7 +9,7 @@
 import shared
 
 @MainActor
-class LectureDetailModel: ObservableObject {
+class LectureDetailViewModel: ObservableObject {
     @Published var lecture : Lecture? = nil
     private var lectureApi : LectureApi
     
@@ -29,3 +29,4 @@ class LectureDetailModel: ObservableObject {
         }
     }
 }
+
