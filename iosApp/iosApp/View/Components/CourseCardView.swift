@@ -75,7 +75,7 @@ struct CourseCardView: View {
             level: "Beginner",
             specification: "Backend"
         ),
-        photo: { Image("background_sample") } // použiješ svoj asset alebo systemName
+        photo: { Image("bg_1") } // použiješ svoj asset alebo systemName
     )
 }
 
