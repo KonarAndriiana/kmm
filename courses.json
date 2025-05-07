@@ -13,6 +13,34 @@
       "courseDescription": "Basic IT securities",
       "level": "Intermediate",
       "specification": "Security"
+    },
+    {
+      "id": "fe42e9c1-f205-4fa2-85f5-2346c06c8e34",
+      "name": "Java Fundamentals",
+      "courseDescription": "Learn core Java concepts and syntax",
+      "level": "Beginner",
+      "specification": "Backend"
+    },
+    {
+      "id": "5ba2d12e-d5c2-4d61-95fd-6d6e89c1ad63",
+      "name": "Advanced Python",
+      "courseDescription": "Deep dive into advanced Python features",
+      "level": "Advanced",
+      "specification": "Backend"
+    },
+    {
+      "id": "e3e6b5d1-d518-49be-995f-91b4c161d5f8",
+      "name": "React Essentials",
+      "courseDescription": "Build interactive UIs with React",
+      "level": "Intermediate",
+      "specification": "Frontend"
+    },
+    {
+      "id": "2cb4c25e-1583-4d1e-8a1b-3e7a948a8d79",
+      "name": "Network Basics",
+      "courseDescription": "Introduction to computer networking",
+      "level": "Beginner",
+      "specification": "Security"
     }
   ]
 }
