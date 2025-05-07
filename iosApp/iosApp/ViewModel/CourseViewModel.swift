@@ -11,17 +11,14 @@ import shared
 @MainActor
 class CourseViewModel: ObservableObject {
     @Published var courses: [Course] = []
-    @Published var isLoading = false
-
     private let courseApi: CourseApi
 
     init() {
         let client = HttpClientProvider().getClient()
         self.courseApi = CourseApi(client: client)
     }
-
+        
     func fetchCourses() {
-        isLoading = true
         Task {
             do {
                 let result = try await courseApi.getCourses()
@@ -29,10 +26,8 @@ class CourseViewModel: ObservableObject {
             } catch {
                 print("Failed to fetch courses: \(error)")
             }
-            isLoading = false
         }
     }
 }
-
 
 
