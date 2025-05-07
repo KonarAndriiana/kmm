@@ -10,60 +10,37 @@ import shared
 
 struct CourseListView: View {
     @StateObject private var viewModel = CourseViewModel()
-    let course: Course
     
     var body: some View {
-//        let course: Course
-        
-        Text(course.name)
-            .font(.title3)
-            .fontWeight(.semibold)
-            .foregroundColor(.primary)
-        
-//        NavigationView {
-//            ScrollView {
-//                LazyVStack(spacing: 16) {
-//                    ForEach(viewModel.courses, id: \.id) { course in
-//                        CourseCard(course: course)
-//                    }
-//                }
-//                .padding()
-//            }
-//            .navigationTitle("Courses")
-//            .onAppear {
-//                viewModel.fetchCourses()
-//            }
-//        }
+        ScrollView {
+            VStack(spacing: 16) {
+                ForEach(viewModel.courses, id: \.id) { course in
+                    CourseCardView(course: course) {
+                        getImageForCourse(course)
+                    }
+                }
+            }
+            .padding()
+        }
+        .onAppear {
+            viewModel.fetchCourses()
+        }
     }
+
+    func getImageForCourse(_ course: Course) -> Image {
+        switch course.id {
+        case "c6ae129f-e890-4ac8-964f-48055a78430c":
+            return Image("cpp_background")
+        case "12345678-aaaa-bbbb-cccc-987654321000":
+            return Image("python_background")
+        default:
+            return Image("default_course_background")
+        }
+    }
+
 }
 
-//struct CourseCard: View {
-//    let course: Course
-//
-//    var body: some View {
-//        VStack(alignment: .leading, spacing: 8) {
-//            Text(course.name)
-//                .font(.title3)
-//                .fontWeight(.semibold)
-//                .foregroundColor(.primary)
-//
-//            Text(course.description)
-//                .font(.body)
-//                .foregroundColor(.secondary)
-//        }
-//        .padding()
-//        .background(Color(.systemBackground))
-//        .cornerRadius(16)
-//        .shadow(color: Color.black.opacity(0.1), radius: 6, x: 0, y: 4)
-//    }
-//}
 
 #Preview {
-    CourseListView(course: Course(
-        id: "c6ae129f-e890-4ac8-964f-48055a78430c",
-        name: "C++ course",
-        courseDescription: "Basic C++ course",
-        level: "Beginner",
-        specification: "Backend"
-    ))
+    CourseListView()
 }
