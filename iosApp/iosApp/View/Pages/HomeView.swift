@@ -9,35 +9,18 @@
 import SwiftUI
 import shared
 
-struct CourseView: View {
+struct HomeView: View {
     @StateObject private var viewModel = CourseViewModel()
-
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
                 UserView()
                     .accessibilityIdentifier("greeting_text")
-
-                if viewModel.isLoading {
-                    ProgressView("Loading courses...")
-                        .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-                        .font(.headline)
-                        .padding(.top, 40)
-                } else if viewModel.courses.isEmpty {
-                    VStack(spacing: 12) {
-                        Image(systemName: "exclamationmark.circle")
-                            .font(.largeTitle)
-                            .foregroundColor(.gray)
-                        Text("No courses available.")
-                            .font(.headline)
-                            .foregroundColor(.gray)
-                    }
-                    .padding(.top, 40)
-                } else {
-                    ForEach(viewModel.courses, id: \.id) { course in
-                        CourseCardView(course: course) {
-                            getImageForCourse(course)
-                        }
+                
+                ForEach(viewModel.courses, id: \.id) { course in
+                    CourseCardView(course: course) {
+                        getImageForCourse(course)
                     }
                 }
             }
@@ -47,7 +30,8 @@ struct CourseView: View {
             viewModel.fetchCourses()
         }
     }
-
+    
+    // MARK: - Image selection by course
     func getImageForCourse(_ course: Course) -> Image {
         switch course.id {
         case "c6ae129f-e890-4ac8-964f-48055a78430c":
@@ -65,5 +49,5 @@ struct CourseView: View {
 }
 
 #Preview {
-    CourseView()
+    HomeView()
 }
