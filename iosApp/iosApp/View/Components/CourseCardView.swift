@@ -11,17 +11,17 @@ import shared
 
 struct CourseCardView: View {
     let course: Course
-    let photo : () -> Image
-    
+    let photo: Image
+
     var body: some View {
         ZStack {
-            photo() // pozadie
+            photo
                 .resizable()
                 .scaledToFill()
                 .clipped()
-                .overlay(Color.black.opacity(0.3)) // voliteľne stmavenie pre čitateľnosť textu
+                .overlay(Color.black.opacity(0.3))
                 .cornerRadius(20)
-            
+
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
                     Image(systemName: "book.fill")
@@ -75,7 +75,6 @@ struct CourseCardView: View {
             level: "Beginner",
             specification: "Backend"
         ),
-        photo: { Image("bg_1") } // použiješ svoj asset alebo systemName
+        photo: Image("bg_1") // Upravene na priamy Image
     )
 }
-

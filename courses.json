@@ -34,13 +34,6 @@
       "courseDescription": "Build interactive UIs with React",
       "level": "Intermediate",
       "specification": "Frontend"
-    },
-    {
-      "id": "2cb4c25e-1583-4d1e-8a1b-3e7a948a8d79",
-      "name": "Network Basics",
-      "courseDescription": "Introduction to computer networking",
-      "level": "Beginner",
-      "specification": "Security"
     }
   ]
 }

@@ -7,43 +7,15 @@
 //
 
 import SwiftUI
-import shared
 
 struct HomeView: View {
-    @StateObject private var viewModel = CourseViewModel()
-    
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                UserView()
-                    .accessibilityIdentifier("greeting_text")
-                
-                ForEach(viewModel.courses, id: \.id) { course in
-                    CourseCardView(course: course) {
-                        getImageForCourse(course)
-                    }
-                }
+        NavigationView {
+            VStack {
+                UserView() // Predpokladám, že tu máš zobrazenie používateľa
+                CourseView() // Tento riadok zobrazí kurzy
             }
             .padding()
-        }
-        .onAppear {
-            viewModel.fetchCourses()
-        }
-    }
-    
-    // MARK: - Image selection by course
-    func getImageForCourse(_ course: Course) -> Image {
-        switch course.id {
-        case "c6ae129f-e890-4ac8-964f-48055a78430c":
-            return Image("bg_1")
-        case "b53cfbef-507f-4261-aa96-90873398e558":
-            return Image("bg_2")
-        case "fe42e9c1-f205-4fa2-85f5-2346c06c8e34":
-            return Image("bg_3")
-        case "5ba2d12e-d5c2-4d61-95fd-6d6e89c1ad63":
-            return Image("bg_4")
-        default:
-            return Image("bg_0")
         }
     }
 }
