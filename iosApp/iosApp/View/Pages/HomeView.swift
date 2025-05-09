@@ -12,8 +12,8 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             VStack {
-                UserView() // Predpokladám, že tu máš zobrazenie používateľa
-                CourseView() // Tento riadok zobrazí kurzy
+                UserView()
+               
             }
             .padding()
         }
