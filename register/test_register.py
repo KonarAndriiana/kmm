@@ -57,8 +57,25 @@ class MobileAppTest:
         confirm_password_input.send_keys(password)
 
         self.driver.find_element(By.ACCESSIBILITY_ID, "sign_up_btn").click()
-        time.sleep(3)
-        print("Registration test prebehol (údaje odoslané).")
+        time.sleep(2)
+
+        try:
+            success_message = self.driver.find_element(By.ACCESSIBILITY_ID, "error_msg")
+            if success_message.text == "Registration successful! You can now log in":
+                print("Registration successful: Message displayed correctly.")
+            else:
+                print(f"Registration failed: Unexpected message '{success_message.text}'.")
+                raise AssertionError(f"Expected success message, but got '{success_message.text}'.")
+        except NoSuchElementException:
+            print("Error message not found after registration.")
+            raise
+
+        try:
+            self.driver.find_element(By.ACCESSIBILITY_ID, "login_btn")
+            print("Successfully redirected to the login page.")
+        except NoSuchElementException:
+            print("Failed to redirect to the login page.")
+            raise
 
     def quit_driver(self):
         if self.driver:
@@ -75,12 +92,12 @@ def app_test():
 
 
 def test_register(app_test):
-    app_test.test_register("Test", "User", "testuser@example.com", "Test1234")
+    app_test.test_register("Test", "User", "testuser3@example.com", "Test1234")
 
 
 if __name__ == "__main__":
     app_test_instance = MobileAppTest("emulator-5554", "com.google.android.apps.nexuslauncher",
                                       "com.google.android.apps.nexuslauncher.NexusLauncherActivity")
     app_test_instance.start_driver()
-    app_test_instance.test_register("Test", "User", "testuser@example.com", "Test1234")
+    app_test_instance.test_register("Test", "User", "testuser3@example.com", "Test1234")
     app_test_instance.quit_driver()
