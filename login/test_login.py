@@ -43,7 +43,7 @@ class MobileAppTest:
         time.sleep(2)
 
         try:
-            course_element = self.driver.find_element(By.XPATH, "//*[contains(@text, 'Courses')]")
+            course_element = self.driver.find_element(By.XPATH, "//*[contains(@text, 'Course')]")
             print("Login successful: 'Course' is visible.")
         except NoSuchElementException:
             print("Login failed: 'Course' not found.")

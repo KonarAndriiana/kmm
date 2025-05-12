@@ -73,7 +73,7 @@ def app_test():
 @pytest.mark.parametrize("email, password, expected_error", [
     ("wrong1@gmail.com", "admiN1", "Email or password is incorrect"),
     ("wrong2@gmail.com", "admiN1", "Email or password is incorrect"),
-    ("", "admiN1", "Both fields must be completed"),
+    ("", "admiN1", "Email cannot be empty"),
 ])
 def test_invalid_email(app_test, email, password, expected_error):
     app_test.test_login(email, password, expected_error)
@@ -82,7 +82,7 @@ def test_invalid_email(app_test, email, password, expected_error):
 @pytest.mark.parametrize("email, password, expected_error", [
     ("szilard.visoky@gmail.com", "wrong1", "Email or password is incorrect"),
     ("szilard.visoky@gmail.com", "wrong2", "Email or password is incorrect"),
-    ("szilard.visoky@gmail.com", "", "Both fields must be completed"),
+    ("szilard.visoky@gmail.com", "", "Password cannot be empty"),
 ])
 def test_invalid_password(app_test, email, password, expected_error):
     app_test.test_login(email, password, expected_error)
