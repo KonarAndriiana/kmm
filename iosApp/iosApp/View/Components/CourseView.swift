@@ -2,47 +2,41 @@
 //  CourseView.swift
 //  iosApp
 //
-//  Created by Andriiana Konar on 07/05/2025.
+//  Created by Andriiana Konar on 13/05/2025.
 //  Copyright © 2025 orgName. All rights reserved.
 //
 
 import SwiftUI
-import shared
+
+struct Courses : Identifiable {
+    let id = UUID()
+    let name : String
+    let specification : String
+    let level : String
+    let photo : String?
+}
 
 struct CourseView: View {
-    @StateObject private var viewModel = CourseViewModel()
-
+    
+    var coursesList : [Courses] = [
+        .init(name: "Java", specification: "Backend", level: "Beginner", photo: "bg_1"),
+        .init(name: "SQL", specification: "Database", level: "Intermediate", photo: "bg_2"),
+        .init(name: "IT security", specification: "Security", level: "Intermediate" , photo: "bg_3")
+    ]
+    
     var body: some View {
-        VStack {
-            Text("Your Courses")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .padding(.top)
-            
-            ScrollView {
-                VStack(spacing: 16) {
-                    ForEach(viewModel.courses, id: \.id) { course in
-                        CourseCardView(course: course, photo: courseImage(for: course.id)) // Priamy Image
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 16) {
+                    ForEach(coursesList) { course in
+                        CourseItem(courses: course)
                     }
                 }
                 .padding(.horizontal)
             }
         }
-        .onAppear {
-            viewModel.fetchCourses()
-        }
-    }
+}
 
-    // Funkcia pre dynamický výber obrázka podľa ID
-    func courseImage(for id: String) -> Image {
-        let hashValue = abs(id.hashValue)
-        let imageNumber = (hashValue % 4) + 1
-        let imageName = "bg_\(imageNumber)"
-        
-        if UIImage(named: imageName) != nil {
-            return Image(imageName)
-        } else {
-            return Image("bg_0")
-        }
-    }
+
+#Preview {
+    CourseView()
 }
