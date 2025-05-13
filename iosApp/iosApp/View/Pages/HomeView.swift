@@ -13,7 +13,9 @@ struct HomeView: View {
         NavigationView {
             VStack {
                 UserView()
-               
+                
+                CourseView()
+                
             }
             .padding()
         }
