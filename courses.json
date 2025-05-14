@@ -3,16 +3,38 @@
     {
       "id": "c6ae129f-e890-4ac8-964f-48055a78430c",
       "name": "C++ course",
-      "description": "Basic C++ course",
+      "courseDescription": "Basic C++ course",
       "level": "Beginner",
       "specification": "Backend"
     },
     {
       "id": "b53cfbef-507f-4261-aa96-90873398e558",
       "name": "IT security",
-      "description": "Basic IT securities",
+      "courseDescription": "Basic IT securities",
       "level": "Intermediate",
       "specification": "Security"
+    },
+    {
+      "id": "fe42e9c1-f205-4fa2-85f5-2346c06c8e34",
+      "name": "Java Fundamentals",
+      "courseDescription": "Learn core Java concepts and syntax",
+      "level": "Beginner",
+      "specification": "Backend"
+    },
+    {
+      "id": "5ba2d12e-d5c2-4d61-95fd-6d6e89c1ad63",
+      "name": "Advanced Python",
+      "courseDescription": "Deep dive into advanced Python features",
+      "level": "Advanced",
+      "specification": "Backend"
+    },
+    {
+      "id": "e3e6b5d1-d518-49be-995f-91b4c161d5f8",
+      "name": "React Essentials",
+      "courseDescription": "Build interactive UIs with React",
+      "level": "Intermediate",
+      "specification": "Frontend"
     }
   ]
 }
+

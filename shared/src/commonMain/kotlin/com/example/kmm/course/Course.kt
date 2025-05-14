@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class Course(
     val id: String,
     val name: String,
-    val description: String,
+    val courseDescription: String,
     val level: String,
     val specification: String
 )

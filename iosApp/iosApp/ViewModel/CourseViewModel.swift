@@ -6,6 +6,7 @@
 //  Copyright © 2025 orgName. All rights reserved.
 //
 
+import Foundation
 import shared
 
 @MainActor
@@ -29,5 +30,4 @@ class CourseViewModel: ObservableObject {
         }
     }
 }
-
 

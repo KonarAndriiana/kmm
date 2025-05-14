@@ -6,7 +6,7 @@ struct MainView: View {
     
     var body: some View {
         if viewModel.isSignedIn, !viewModel.currentUserId.isEmpty {
-            CourseView()
+            HomeView()
         } else {
             LoginView()
         }
