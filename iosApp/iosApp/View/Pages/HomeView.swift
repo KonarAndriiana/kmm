@@ -17,7 +17,7 @@ struct HomeView: View {
                 CourseView()
                 
             }
-            .padding()
+            
         }
     }
 }
