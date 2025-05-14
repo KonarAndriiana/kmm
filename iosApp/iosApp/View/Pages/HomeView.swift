@@ -8,18 +8,20 @@
 
 import SwiftUI
 
-struct CourseView: View {
+struct HomeView: View {
     var body: some View {
-        VStack(spacing: 24) {
-            UserView()
-                .accessibilityIdentifier("greeting_text")
-
-//            CourseListView()
+        NavigationView {
+            VStack {
+                UserView()
+                
+                CourseView()
+                
+            }
+            
         }
-        .padding()
     }
 }
 
 #Preview {
-    CourseView()
+    HomeView()
 }
