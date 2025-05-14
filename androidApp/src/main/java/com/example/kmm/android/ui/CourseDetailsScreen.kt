@@ -36,7 +36,7 @@ fun CourseDetailsScreen(courseId: String) {
         course?.let { selectedCourse ->
             Text(text = selectedCourse.name, style = MaterialTheme.typography.headlineLarge)
             Spacer(Modifier.height(8.dp))
-            Text(text = selectedCourse.description, style = MaterialTheme.typography.bodyLarge)
+            Text(text = selectedCourse.courseDescription, style = MaterialTheme.typography.bodyLarge)
             Spacer(Modifier.height(16.dp))
             Text("Level: ${selectedCourse.level}", style = MaterialTheme.typography.bodyMedium)
             Spacer(Modifier.height(4.dp))
