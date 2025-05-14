@@ -6,13 +6,17 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.kmm.android.auth.AuthViewModel
 import com.example.kmm.android.auth.AuthViewModelFactory
 import com.example.kmm.android.ui.CourseDetailsScreen
 import com.example.kmm.android.ui.CourseScreen
+import com.example.kmm.android.ui.LectureDetailsScreen
+import com.example.kmm.android.ui.LectureListByCourse
 import com.example.kmm.android.ui.LoginScreen
 import com.example.kmm.android.ui.RegisterScreen
 
@@ -37,10 +41,28 @@ class MainActivity : ComponentActivity() {
                 composable("courseList") {
                     CourseScreen(navController)
                 }
-                composable("course/{courseId}") { backStackEntry ->
-                    val courseId = backStackEntry.arguments?.getString("courseId")
-                    courseId?.let {
-                        CourseDetailsScreen(courseId = it)
+                composable(
+                    "lectures/{courseId}",
+                    arguments = listOf(
+                        navArgument("courseId") { type = NavType.StringType }
+                    )
+                ) { backStack ->
+                    backStack.arguments?.getString("courseId")?.let { courseId ->
+                        LectureListByCourse(
+                            courseId = courseId,
+                            navController = navController
+                        )
+                    }
+                }
+
+                composable(
+                    "lecture/{lectureId}",
+                    arguments = listOf(
+                        navArgument("lectureId") { type = NavType.StringType }
+                    )
+                ) { backStack ->
+                    backStack.arguments?.getString("lectureId")?.let { lectureId ->
+                        LectureDetailsScreen(lectureId = lectureId)
                     }
                 }
             }
