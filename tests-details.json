@@ -1,0 +1,101 @@
+{
+  "testDetails": [
+    {
+      "id": "1e6c7a1b-bf65-4a4e-865d-6d7c5f0a9a01",
+      "title": "C++ Basics Quiz",
+      "description": "Test your knowledge on C++ fundamentals.",
+      "questions": [
+        {
+          "question": "Which of these is a correct C++ variable declaration?",
+          "options": ["int 1x;", "int x1;", "integer x;", "x int;"],
+          "answer": "int x1;"
+        },
+        {
+          "question": "What symbol is used to indicate the end of a statement in C++?",
+          "options": [";", ".", ":", "!"],
+          "answer": ";"
+        }
+      ]
+    },
+    {
+      "id": "81b37382-54b7-4ac6-b8df-00f865cb106b",
+      "title": "C++ Data Types",
+      "description": "Quiz on primitive data types in C++.",
+      "questions": [
+        {
+          "question": "Which of these is a floating-point type in C++?",
+          "options": ["float", "char", "bool", "int"],
+          "answer": "float"
+        }
+      ]
+    },
+    {
+      "id": "3a4a50f2-4699-4b4d-8c01-36a91a6a2a3f",
+      "title": "IT Security Fundamentals",
+      "description": "Covers basics of IT security.",
+      "questions": [
+        {
+          "question": "What is the purpose of a firewall?",
+          "options": ["To encrypt data", "To block unauthorized access", "To store passwords", "To backup data"],
+          "answer": "To block unauthorized access"
+        },
+        {
+          "question": "What does SSL stand for?",
+          "options": ["Secure Socket Layer", "Security Safe Layer", "Simple Secure Login", "System Security Level"],
+          "answer": "Secure Socket Layer"
+        }
+      ]
+    },
+    {
+      "id": "2cbeeb2e-8b48-4b58-99cc-0c00e3d8931e",
+      "title": "Password Security",
+      "description": "Quiz on secure password practices.",
+      "questions": [
+        {
+          "question": "What is credential stuffing?",
+          "options": [
+            "Using multiple credentials for one account",
+            "Trying breached credentials on other sites",
+            "Encrypting your password",
+            "Reusing old credentials"
+          ],
+          "answer": "Trying breached credentials on other sites"
+        }
+      ]
+    },
+    {
+      "id": "c07e3db8-6cf1-4a2f-9a43-7a3e97917678",
+      "title": "Java Syntax Quiz",
+      "description": "Test your understanding of Java syntax.",
+      "questions": [
+        {
+          "question": "Which keyword is used to create a class in Java?",
+          "options": ["class", "struct", "define", "object"],
+          "answer": "class"
+        },
+        {
+          "question": "How do you write the main method in Java?",
+          "options": [
+            "public void main(String[] args)",
+            "static void Main()",
+            "public static void main(String[] args)",
+            "int main()"
+          ],
+          "answer": "public static void main(String[] args)"
+        }
+      ]
+    },
+    {
+      "id": "bbd4e5b1-739d-48ec-a4e1-505073af901e",
+      "title": "Java Data Types",
+      "description": "Covers primitive and non-primitive data types in Java.",
+      "questions": [
+        {
+          "question": "Which of the following is a non-primitive data type?",
+          "options": ["int", "boolean", "String", "char"],
+          "answer": "String"
+        }
+      ]
+    }
+  ]
+}
