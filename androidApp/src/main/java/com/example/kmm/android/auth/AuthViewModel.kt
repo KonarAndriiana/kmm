@@ -83,7 +83,7 @@ class AuthViewModel
             resetMessage()
             return
         }
-        val validationMessage = validateRegisterInputs(email, password)
+        val validationMessage = validateRegisterInputs(email, password, confirmPassword)
         if (validationMessage != null) {
             _registerState.value = validationMessage
             resetMessage()
@@ -162,7 +162,8 @@ class AuthViewModel
         return null
     }
 
-    private fun validateRegisterInputs(email: String, password: String): String? {
+    private fun validateRegisterInputs(email: String, password: String, confirmPassword: String): String? {
+        if (email.isBlank() && password.isBlank() && confirmPassword.isBlank()) return "❌ All fields must be completed"
         if (email.isBlank() && password.isBlank()) return "❌ Both fields must be completed"
         if (email.isBlank()) return "❌ Email cannot be empty"
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
