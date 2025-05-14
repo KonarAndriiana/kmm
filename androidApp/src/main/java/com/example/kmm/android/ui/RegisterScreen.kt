@@ -102,8 +102,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(25))
                         .background(Color.White)
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
-                        .semantics { contentDescription = "error_msg" },
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -111,7 +110,8 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
                         color = Color.Red,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.semantics { contentDescription = "error_msg" }
                     )
                 }
 
