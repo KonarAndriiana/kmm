@@ -127,7 +127,7 @@ fun CourseScreen(navController: NavController) {
         ) {
             items(courses) { course ->
                 CourseCard(course = course) {
-                    navController.navigate("course/${course.id}")
+                    navController.navigate("lectures/${course.id}")
                 }
             }
         }
