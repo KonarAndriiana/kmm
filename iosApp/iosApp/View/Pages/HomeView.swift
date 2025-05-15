@@ -10,14 +10,10 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        NavigationView {
-            VStack {
-                UserView()
-                
-                CourseView()
-                
-            }
+        VStack{
+            UserView()
             
+            CourseView()
         }
     }
 }

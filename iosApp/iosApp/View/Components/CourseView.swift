@@ -8,36 +8,21 @@
 
 import SwiftUI
 
-struct Courses : Identifiable {
-    let id = UUID()
-    let name : String
-    let specification : String
-    let level : String
-    let photo : String?
-}
-
 struct CourseView: View {
-    
-    var coursesList : [Courses] = [
-        .init(name: "Java", specification: "Backend", level: "Beginner", photo: "bg_1"),
-        .init(name: "SQL", specification: "Database", level: "Intermediate", photo: "bg_4"),
-        .init(name: "IT security", specification: "Security", level: "Intermediate" , photo: "bg_0")
-    ]
-    
+    @StateObject private var viewModel = CourseViewModel()
+
     var body: some View {
-        
         VStack(spacing: 20) {
-            
-            VStack(alignment: .leading , spacing: 10) {
+            VStack(alignment: .leading, spacing: 10) {
                 HStack {
                     Text("Course")
                         .font(.system(size: 30))
                         .fontWeight(.bold)
-                    
+
                     Spacer()
-                    
-                    Button{
-                        //code
+
+                    Button {
+                        // code
                     } label: {
                         Text("see all")
                             .font(.system(size: 15))
@@ -46,8 +31,7 @@ struct CourseView: View {
                             .underline()
                     }
                 }
-                
-                
+
                 Text("""
                      Ready to learn? Choose your course and start your journey! Select a topic that interests you and dive into a new adventure in coding
                      """)
@@ -55,18 +39,19 @@ struct CourseView: View {
                 .fontWeight(.regular)
             }
             .padding()
-        
-            
+
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
-                    ForEach(coursesList) { course in
+                    ForEach(viewModel.courses.map { Courses(from: $0) }) { course in
                         CourseItem(courses: course)
                     }
                 }
                 .padding(.horizontal)
             }
         }
-        
+        .onAppear {
+            viewModel.fetchCourses()
+        }
     }
 }
 

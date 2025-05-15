@@ -8,20 +8,19 @@
 import SwiftUI
 
 struct CourseItem: View {
-    
     let courses: Courses
-    
+
     var body: some View {
         ZStack {
-            if let photoName = courses.photo {
-                Image(photoName)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 300.0, height: 150.0)
-                    .clipped()
-                    .cornerRadius(10)
-            }
-            
+//            if let photoName = courses.photo {
+//                Image(photoName)
+//                    .resizable()
+//                    .scaledToFill()
+//                    .frame(width: 300.0, height: 150.0)
+//                    .clipped()
+//                    .cornerRadius(10)
+//            }
+
             HStack {
                 VStack(alignment: .leading, spacing: 30) {
                     HStack {
@@ -29,11 +28,11 @@ struct CourseItem: View {
                             .font(.subheadline)
                             .fontWeight(.light)
                             .foregroundColor(.white)
-                        
+
                         Spacer()
-                        
+
                         Button {
-                            //code
+                            // code
                         } label: {
                             Image(systemName: "heart")
                                 .foregroundStyle(Color.white)
@@ -41,13 +40,13 @@ struct CourseItem: View {
                         }
                         .padding(.top, 10.0)
                     }
-                    
+
                     VStack(alignment: .leading) {
                         Text(courses.name)
                             .font(.system(size: 25))
                             .fontWeight(.bold)
                             .foregroundColor(.white)
-                        
+
                         Text(courses.specification)
                             .font(.system(size: 10))
                             .fontWeight(.bold)
@@ -67,7 +66,3 @@ struct CourseItem: View {
     }
 }
 
-
-#Preview {
-    CourseItem(courses: .init(name: "Java", specification: "Backend", level: "Beginner", photo: "bg_1"))
-}
