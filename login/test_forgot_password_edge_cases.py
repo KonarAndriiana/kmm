@@ -38,35 +38,53 @@ def app_test():
     test.quit_driver()
 
 
-def test_forgot_password(app_test):
+@pytest.mark.parametrize("email, expected_message", [
+    # ("", "Enter your email to continue"),
+    ("invalid-email", "Please enter a valid email address"),
+    ("invalid-email@", "Please enter a valid email address"),
+    ("@domain.com", "Please enter a valid email address"),
+    ("invalid@domain", "Please enter a valid email address"),
+    ("wrong.email@notregistered.com", "Success! Please check your email to reset your password.")
+])
+def test_forgot_password_edge_cases(app_test, email, expected_message):
     wait = WebDriverWait(app_test.driver, 10)
 
     forgot_button = wait.until(EC.presence_of_element_located((By.ACCESSIBILITY_ID, "forgot_btn")))
     forgot_button.click()
-    time.sleep(2)
+    time.sleep(3)
 
     try:
         info_text = app_test.driver.find_element(By.ACCESSIBILITY_ID, "info_text")
         assert info_text.is_displayed()
-        print("Information text is displayed correctly.")
+        print("The information text is displayed correctly.")
     except NoSuchElementException:
-        print("Test failed: Information text is not displayed.")
+        print("Test failed: Information text not displayed.")
         raise
-
-    time.sleep(2)
 
     email_input = app_test.driver.find_element(By.XPATH, "//android.widget.EditText")
     email_input.clear()
-    email_input.send_keys("patriklisivka95@gmail.com")
-
-    # reset_button = app_test.driver.find_element(By.ACCESSIBILITY_ID, "reset_btn")
-    # reset_button.click()
+    email_input.send_keys(email)
     time.sleep(2)
 
     try:
-        success_message = app_test.driver.find_element(By.ACCESSIBILITY_ID, "error_msg")
-        assert success_message.text == "Success! Please check your email to reset your password"
-        print("Test passed: Password reset was successful.")
+        message_element = app_test.driver.find_element(By.ACCESSIBILITY_ID, "error_msg")
+        actual_message = message_element.text
+        assert actual_message == expected_message, f"Expected '{expected_message}' but got '{actual_message}'"
+        print(f"Test passed: '{actual_message}' is displayed as expected.")
     except NoSuchElementException:
-        print("Test failed: Success message did not appear.")
+        print("Test failed: Expected message element not found.")
+        raise
+
+    print("Waiting 5 seconds for the message to disappear...")
+    time.sleep(5)
+
+    forgot_button.click()
+    time.sleep(3)
+
+    try:
+        message_element = app_test.driver.find_element(By.ACCESSIBILITY_ID, "error_msg")
+        assert message_element.text == expected_message, f"Expected '{expected_message}' but got '{message_element.text}'"
+        print(f"Test passed: '{expected_message}' is displayed correctly after returning to Forgot Password.")
+    except NoSuchElementException:
+        print("Test failed: The error message did not appear on the Forgot Password page.")
         raise
