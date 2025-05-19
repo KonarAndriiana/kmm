@@ -13,7 +13,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.kmm.android.auth.AuthViewModel
 import com.example.kmm.android.auth.AuthViewModelFactory
-import com.example.kmm.android.ui.CourseDetailsScreen
 import com.example.kmm.android.ui.CourseScreen
 import com.example.kmm.android.ui.LectureDetailsScreen
 import com.example.kmm.android.ui.LectureListByCourse
