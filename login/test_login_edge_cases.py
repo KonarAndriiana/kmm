@@ -27,17 +27,34 @@ class MobileAppTest:
         if self.driver:
             self.driver.quit()
 
+    def clear_and_verify(self, element):
+        max_attempts = 5
+        for attempt in range(max_attempts):
+            element.clear()
+            time.sleep(1)
+            if element.text == "":
+                print(f"Field is successfully cleared after {attempt + 1} attempts.")
+                return True
+            print(f"Field not cleared, retrying... ({attempt + 1}/{max_attempts})")
+        print("Failed to clear the field.")
+        return False
+
     def test_login(self, email, password, expected_error_message):
         print(f"\nTesting with email: '{email}' and password: '{password}'")
 
         email_input = self.driver.find_element(By.XPATH,
                                                "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[1]")
-        email_input.clear()
-        email_input.send_keys(email)
-
         password_field = self.driver.find_element(By.XPATH,
                                                   "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[2]")
-        password_field.clear()
+
+        if not self.clear_and_verify(email_input):
+            raise AssertionError("Email field could not be cleared.")
+
+        email_input.send_keys(email)
+
+        if not self.clear_and_verify(password_field):
+            raise AssertionError("Password field could not be cleared.")
+
         password_field.send_keys(password)
 
         login_button = self.driver.find_element(By.ACCESSIBILITY_ID, "login_btn")

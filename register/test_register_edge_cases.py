@@ -23,6 +23,18 @@ class MobileAppTest:
         options.no_reset = True
         self.driver = webdriver.Remote("http://127.0.0.1:4723", options=options)
 
+    def clear_and_verify(self, element):
+        max_attempts = 5
+        for attempt in range(max_attempts):
+            element.clear()
+            time.sleep(1)
+            if element.text == "":
+                print(f"Field is successfully cleared after {attempt + 1} attempts.")
+                return True
+            print(f"Field not cleared, retrying... ({attempt + 1}/{max_attempts})")
+        print("Failed to clear the field.")
+        return False
+
     def test_register_edge_case(self, first_name, last_name, email, password, confirm_password, expected_error):
         print(f"\nTesting registration with First Name: '{first_name}', Last Name: '{last_name}', "
               f"Email: '{email}', Password: '{password}', Confirm Password: '{confirm_password}'")
@@ -39,27 +51,32 @@ class MobileAppTest:
 
         first_name_input = self.driver.find_element(By.XPATH,
                                                     "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[1]")
-        first_name_input.clear()
+        if not self.clear_and_verify(first_name_input):
+            raise AssertionError("Email field could not be cleared.")
         first_name_input.send_keys(first_name)
 
         last_name_input = self.driver.find_element(By.XPATH,
                                                    "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[2]")
-        last_name_input.clear()
+        if not self.clear_and_verify(last_name_input):
+            raise AssertionError("Email field could not be cleared.")
         last_name_input.send_keys(last_name)
 
         email_input = self.driver.find_element(By.XPATH,
                                                "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[3]")
-        email_input.clear()
+        if not self.clear_and_verify(email_input):
+            raise AssertionError("Email field could not be cleared.")
         email_input.send_keys(email)
 
         password_input = self.driver.find_element(By.XPATH,
                                                   "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[4]")
-        password_input.clear()
+        if not self.clear_and_verify(password_input):
+            raise AssertionError("Email field could not be cleared.")
         password_input.send_keys(password)
 
         confirm_password_input = self.driver.find_element(By.XPATH,
                                                           "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[5]")
-        confirm_password_input.clear()
+        if not self.clear_and_verify(confirm_password_input):
+            raise AssertionError("Email field could not be cleared.")
         confirm_password_input.send_keys(confirm_password)
 
         print("Clicking the 'Sign Up' button...")
