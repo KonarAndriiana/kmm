@@ -137,6 +137,13 @@ def test_password_validation(app_test, first_name, last_name, email, password, c
 
 
 @pytest.mark.parametrize("first_name, last_name, email, password, confirm_password, expected_error", [
+    ("", "", "", "", "", "All fields must be completed")
+])
+def test_all_fields_empty(app_test, first_name, last_name, email, password, confirm_password, expected_error):
+    app_test.test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
+
+
+@pytest.mark.parametrize("first_name, last_name, email, password, confirm_password, expected_error", [
     ("Test", "User", "testuser10@example.com", "", "", "Password cannot be empty"),
 ])
 def test_empty_fields(app_test, first_name, last_name, email, password, confirm_password, expected_error):
