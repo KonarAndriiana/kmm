@@ -21,12 +21,14 @@ struct ForgotPasswordView: View {
                 .padding(.bottom, 20)
                 .accessibilityIdentifier("forgot_pass_text")
             
-            Text("Info fro forgot Password")
+            Text("Enter your email, and we’ll send you link and instructions to reset your password.")
                 .accessibilityIdentifier("info_text")
+                .multilineTextAlignment(.center)
             
             TextFieldView(placeholder: "Enter your email", text: $email)
                 .autocapitalization(.none)
                 .autocorrectionDisabled()
+                .multilineTextAlignment(.center)
                 .padding()
                 .accessibilityIdentifier("email_input")
             
@@ -37,8 +39,8 @@ struct ForgotPasswordView: View {
                 Text("Reset Password")
                     .foregroundColor(.white)
                     .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
+                    .frame(width: 200 , height:  40)
+                    .background(Color.black)
                     .cornerRadius(10)
             }
             .padding()
@@ -55,3 +57,6 @@ struct ForgotPasswordView: View {
     }
 }
 
+#Preview {
+    ForgotPasswordView(viewModel: LoginViewViewModel())
+}
