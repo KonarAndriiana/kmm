@@ -32,6 +32,17 @@ class MobileAppTest:
             self.driver.find_element(By.ACCESSIBILITY_ID, "sign_up_redirect").click()
             time.sleep(2)
 
+        self.driver.find_element(By.ACCESSIBILITY_ID, "choose_photo_btn").click()
+        time.sleep(2)
+
+        try:
+            first_photo = self.driver.find_element(By.XPATH, '//android.widget.ImageView[@resource-id="com.google.android.providers.media.module:id/icon_thumbnail"]')
+            first_photo.click()
+            time.sleep(2)
+        except NoSuchElementException:
+            print("Photo selection failed – no image found.")
+            raise
+
         first_name_input = self.driver.find_element(By.XPATH,
                                                     "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[1]")
         first_name_input.clear()
@@ -76,10 +87,6 @@ class MobileAppTest:
         except NoSuchElementException:
             print("Failed to redirect to the login page.")
             raise
-
-    def quit_driver(self):
-        if self.driver:
-            self.driver.quit()
 
 
 @pytest.fixture
