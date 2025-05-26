@@ -226,7 +226,13 @@ class AuthViewModel
     }
 
     fun saveSelectedImage(context: Context, uri: Uri) {
-        val savedPath = imageRepository.saveImageToLocalStorage(context, uri, "profile_image.jpg")
+        // determine the current user’s UID
+        val uid = Firebase.auth.currentUser?.uid
+
+        // if we're already signed in, key by UID; otherwise use a temp file
+        val fileName = uid?.let { "${it}_profile.jpg" } ?: "temp_profile.jpg"
+
+        val savedPath = imageRepository.saveImageToLocalStorage(context, uri, fileName)
         _imagePath.value = savedPath
     }
 

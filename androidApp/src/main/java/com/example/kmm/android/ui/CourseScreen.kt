@@ -52,6 +52,8 @@ import com.example.kmm.android.auth.AuthViewModel
 import com.example.kmm.android.auth.AuthViewModelFactory
 import com.example.kmm.android.course.CourseViewModel
 import com.example.kmm.course.Course
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.auth.auth
 import java.io.File
 
 @Composable
@@ -76,7 +78,8 @@ fun CourseScreen(navController: NavController) {
     }
 
     // look for the saved profile image
-    val profileFile = File(context.filesDir, "profile_image.jpg")
+    val uid = Firebase.auth.currentUser?.uid
+    val profileFile = uid?.let { File(context.filesDir, "${it}_profile.jpg") }
 
     Column(
         modifier = Modifier
@@ -98,15 +101,15 @@ fun CourseScreen(navController: NavController) {
                 fontWeight = FontWeight.Bold
             )
 
-            if (profileFile.exists()) {
+            if (profileFile?.exists() == true) {
                 Image(
-                    painter           = rememberAsyncImagePainter(model = profileFile),
-                    contentDescription= "Your profile photo",
-                    modifier          = Modifier
+                    painter            = rememberAsyncImagePainter(model = profileFile),
+                    contentDescription = "Your profile photo",
+                    modifier           = Modifier
                         .size(48.dp)
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.surfaceVariant),
-                    contentScale      = ContentScale.Crop
+                    contentScale       = ContentScale.Crop
                 )
             } else {
                 Icon(
