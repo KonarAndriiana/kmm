@@ -14,8 +14,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -54,6 +56,7 @@ fun CourseScreen(navController: NavController) {
     val courseViewModel: CourseViewModel = viewModel()
     val authViewModel: AuthViewModel = viewModel(factory = AuthViewModelFactory())
     val courses by courseViewModel.courseList.collectAsState()
+    val firstName by authViewModel.firstName.collectAsState()
 
     val context = LocalContext.current
     LaunchedEffect(Unit) {
@@ -75,6 +78,31 @@ fun CourseScreen(navController: NavController) {
             .background(Color.White)
             .padding(16.dp)
     ) {
+        // Greeting
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment   = Alignment.CenterVertically
+        ) {
+            Text(
+                text  = "Hi, $firstName 👋🏻",
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Icon(
+                imageVector      = Icons.Default.Image,
+                contentDescription = "Profile",
+                tint             = MaterialTheme.colorScheme.onBackground,
+                modifier         = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .padding(8.dp)
+            )
+        }
+
         // logout
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -100,8 +128,8 @@ fun CourseScreen(navController: NavController) {
         ) {
             Text(
                 text = "Course",
-                fontSize = 32.sp,
-                fontWeight = FontWeight.SemiBold
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
             )
             Text(
                 text = "see all",

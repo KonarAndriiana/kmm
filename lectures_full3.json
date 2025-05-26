@@ -1,0 +1,44 @@
+{
+      "id": "1eee4b0f-668e-4f99-ab1a-03009bc94037",
+      "courseId": "b53cfbef-507f-4261-aa96-90873398e558",
+      "name": "Firewalls",
+      "info": "Intro to firewall configuration.",
+      "content": [
+         {
+           "type": "title",
+           "content": "Understanding Firewalls"
+         },
+         {
+           "type": "text",
+           "content": "Firewalls are a fundamental part of network security. They act as barriers between trusted internal networks and untrusted external networks, such as the internet."
+         },
+         {
+           "type": "subtitle",
+           "content": "What Is a Firewall?"
+         },
+         {
+           "type": "text",
+           "content": "A firewall is a security system—either hardware, software, or both—that monitors and controls incoming and outgoing network traffic based on predetermined security rules."
+         },
+         {
+           "type": "subtitle",
+           "content": "How Firewalls Protect You"
+         },
+         {
+           "type": "text",
+           "content": "- **Traffic Filtering**: Blocks unauthorized access to or from private networks.\n- **Threat Prevention**: Helps detect and stop malware, intrusions, and suspicious behavior.\n- **Access Control**: Allows organizations to restrict user access to certain websites or services."
+         },
+         {
+           "type": "subtitle",
+           "content": "Types of Firewalls"
+         },
+         {
+           "type": "text",
+           "content": "- **Network Firewalls**: Protect entire networks and are typically installed at the gateway.\n- **Host-Based Firewalls**: Installed on individual computers to protect them specifically.\n- **Next-Generation Firewalls (NGFWs)**: Offer advanced features like deep packet inspection and intrusion prevention."
+         },
+         {
+           "type": "text",
+           "content": "Firewalls are essential for protecting both personal and enterprise environments from cyber threats. Keeping them properly configured and updated is key to maintaining a secure network."
+         }
+     ]
+}

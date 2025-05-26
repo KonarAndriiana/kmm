@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
+import dev.gitlive.firebase.firestore.firestore
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,12 +42,35 @@ class AuthViewModel
     private val _isUserLoggedIn = mutableStateOf(false)
     val isUserLoggedIn: State<Boolean> = _isUserLoggedIn
 
+    private val _firstName = MutableStateFlow<String>("")
+    val firstName: StateFlow<String> = _firstName
+
     init {
         checkLoginStatus()
+        // if we’re already logged in, fetch profile
+        if (Firebase.auth.currentUser != null) {
+            loadUserProfile()
+        }
     }
 
     private fun checkLoginStatus() {
         _isUserLoggedIn.value = Firebase.auth.currentUser != null
+    }
+
+    private fun loadUserProfile() {
+        viewModelScope.launch {
+            try {
+                val uid = Firebase.auth.currentUser?.uid ?: return@launch
+                val doc = Firebase.firestore
+                    .collection("users")
+                    .document(uid)
+                    .get()
+                val fn: String = doc.get<String>("firstName")
+                _firstName.value = fn
+            } catch (e: Exception) {
+                // log
+            }
+        }
     }
 
     fun login(email: String, password: String) {
@@ -61,6 +85,7 @@ class AuthViewModel
             loginUseCase.execute(email, password).collect { result ->
                 _loginState.value = if (result.isSuccess) {
                     _isUserLoggedIn.value = true
+                    loadUserProfile()
                     "✅ You have logged in successfully!"
                 } else {
                     mapFirebaseError(result.exceptionOrNull(), isLogin = true)
@@ -74,6 +99,7 @@ class AuthViewModel
         viewModelScope.launch {
             Firebase.auth.signOut()
                 _isUserLoggedIn.value = false
+                _firstName.value = ""
         }
     }
 
@@ -83,7 +109,7 @@ class AuthViewModel
             resetMessage()
             return
         }
-        val validationMessage = validateRegisterInputs(email, password)
+        val validationMessage = validateRegisterInputs(email, password, confirmPassword)
         if (validationMessage != null) {
             _registerState.value = validationMessage
             resetMessage()
@@ -162,7 +188,8 @@ class AuthViewModel
         return null
     }
 
-    private fun validateRegisterInputs(email: String, password: String): String? {
+    private fun validateRegisterInputs(email: String, password: String, confirmPassword: String): String? {
+        if (email.isBlank() && password.isBlank() && confirmPassword.isBlank()) return "❌ All fields must be completed"
         if (email.isBlank() && password.isBlank()) return "❌ Both fields must be completed"
         if (email.isBlank()) return "❌ Email cannot be empty"
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {

@@ -1,0 +1,36 @@
+{
+     "id": "d360d5e7-189b-418f-99f1-33df1e6d6aaa",
+     "courseId": "b53cfbef-507f-4261-aa96-90873398e558",
+     "name": "SSL Certificates",
+     "info": "Basics of SSL and HTTPS.",
+     "content": [
+         {
+           "type": "title",
+           "content": "Basics of SSL and HTTPS"
+         },
+         {
+           "type": "text",
+           "content": "SSL (Secure Sockets Layer) and its successor TLS (Transport Layer Security) are protocols that encrypt communication between your browser and a website, keeping data safe from eavesdropping and tampering."
+         },
+         {
+           "type": "subtitle",
+           "content": "What Is HTTPS?"
+         },
+         {
+           "type": "text",
+           "content": "HTTPS (Hypertext Transfer Protocol Secure) is the secure version of HTTP. It uses SSL/TLS to encrypt the data exchanged between your device and a website. Websites using HTTPS show a padlock icon in the browser's address bar."
+         },
+         {
+           "type": "subtitle",
+           "content": "Why HTTPS Matters"
+         },
+         {
+           "type": "text",
+           "content": "- Privacy: Keeps sensitive information like login credentials and credit card numbers private.\n- Integrity: Prevents data from being altered or corrupted during transfer.\n- Authentication: Verifies that you're communicating with the intended website and not an imposter."
+         },
+         {
+           "type": "text",
+           "content": "In today's internet environment, HTTPS is a basic requirement for trust and security. Users should always look for the padlock icon and avoid entering personal data on non-HTTPS websites."
+         }
+     ]
+}
