@@ -237,4 +237,8 @@ class AuthViewModel
             _registerState.value = null
         }
     }
+
+    fun clearSelectedImage() {
+        _imagePath.value = null
+    }
 }

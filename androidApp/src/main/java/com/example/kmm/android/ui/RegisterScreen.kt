@@ -73,6 +73,10 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
 
     val file = imagePath?.let { File(it) }
 
+    LaunchedEffect(Unit) {
+        authViewModel.clearSelectedImage()
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
