@@ -1,6 +1,5 @@
 package com.example.kmm.android.ui
 
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -23,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -35,12 +33,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.kmm.android.R
 import com.example.kmm.android.auth.AuthViewModel
-import com.example.kmm.android.auth.AuthViewModelFactory
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.auth.auth
 import kotlinx.coroutines.delay
 import java.io.File
 
@@ -60,6 +58,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
 
     val registerState by authViewModel.registerState.collectAsState()
     val imagePath by authViewModel.imagePath.collectAsState()
+    val file = imagePath?.let { File(it) }
 
     val context = LocalContext.current
 
@@ -71,7 +70,9 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
         }
     }
 
-    val file = imagePath?.let { File(it) }
+    LaunchedEffect(Unit) {
+        authViewModel.clearSelectedImage()
+    }
 
     Box(
         modifier = Modifier
@@ -439,6 +440,19 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel)  
             LaunchedEffect(registerState) {
                 registerState?.let { message ->
                     if (message.contains("✅")) {
+                        // rename temp_profile.jpg → "<uid>_profile.jpg"
+                        val uid = Firebase.auth.currentUser?.uid
+                        if (uid != null) {
+                            val tempFile = File(context.filesDir, "temp_profile.jpg")
+                            val newFile  = File(context.filesDir, "${uid}_profile.jpg")
+                            if (tempFile.exists()) {
+                                tempFile.renameTo(newFile)
+                                }
+
+                        }
+                        // to prevent profile photo overwrite after successful registration
+                        authViewModel.logout()
+                        // nav to login
                         navController.navigate("login")
                     } else if (message.contains("❌")) {
                         showError = true

@@ -1,5 +1,6 @@
 package com.example.kmm.android.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -42,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import coil.imageLoader
 import coil.request.CachePolicy
 import coil.request.ImageRequest
@@ -50,6 +52,9 @@ import com.example.kmm.android.auth.AuthViewModel
 import com.example.kmm.android.auth.AuthViewModelFactory
 import com.example.kmm.android.course.CourseViewModel
 import com.example.kmm.course.Course
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.auth.auth
+import java.io.File
 
 @Composable
 fun CourseScreen(navController: NavController) {
@@ -72,13 +77,17 @@ fun CourseScreen(navController: NavController) {
         )
     }
 
+    // look for the saved profile image
+    val uid = Firebase.auth.currentUser?.uid
+    val profileFile = uid?.let { File(context.filesDir, "${it}_profile.jpg") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
             .padding(16.dp)
     ) {
-        // Greeting
+        // Greeting + profile photo
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -91,16 +100,29 @@ fun CourseScreen(navController: NavController) {
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold
             )
-            Icon(
-                imageVector      = Icons.Default.Image,
-                contentDescription = "Profile",
-                tint             = MaterialTheme.colorScheme.onBackground,
-                modifier         = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                    .padding(8.dp)
-            )
+
+            if (profileFile?.exists() == true) {
+                Image(
+                    painter            = rememberAsyncImagePainter(model = profileFile),
+                    contentDescription = "Your profile photo",
+                    modifier           = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
+                    contentScale       = ContentScale.Crop
+                )
+            } else {
+                Icon(
+                    imageVector       = Icons.Default.Image,
+                    contentDescription= "Default avatar",
+                    tint              = MaterialTheme.colorScheme.onBackground,
+                    modifier          = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .padding(8.dp)
+                )
+            }
         }
 
         // logout
