@@ -7,9 +7,9 @@ from selenium.webdriver.support import expected_conditions as EC
 
 @pytest.fixture
 def app_test():
-    from login.test_login import MobileAppTest
-    test = MobileAppTest("emulator-5554", "com.google.android.apps.nexuslauncher",
-                         "com.google.android.apps.nexuslauncher.NexusLauncherActivity")
+    from driver_setup import MobileAppTest
+    test = MobileAppTest("emulator-5554", "com.example.kmm.android",
+                         ".MainActivity")
     test.start_driver()
     yield test
     test.quit_driver()

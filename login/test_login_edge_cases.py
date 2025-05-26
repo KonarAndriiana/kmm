@@ -6,27 +6,6 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 
 
-class MobileAppTest:
-    def __init__(self, device_name, app_package, app_activity):
-        self.device_name = device_name
-        self.app_package = app_package
-        self.app_activity = app_activity
-        self.driver = None
-
-    def start_driver(self):
-        options = UiAutomator2Options()
-        options.platform_name = "Android"
-        options.device_name = self.device_name
-        options.app_package = self.app_package
-        options.app_activity = self.app_activity
-        options.no_reset = True
-
-        self.driver = webdriver.Remote("http://127.0.0.1:4723", options=options)
-
-    def quit_driver(self):
-        if self.driver:
-            self.driver.quit()
-
     def clear_and_verify(self, element):
         max_attempts = 5
         for attempt in range(max_attempts):
@@ -80,11 +59,12 @@ class MobileAppTest:
 
 @pytest.fixture(scope="class")
 def app_test():
-    app_test_instance = MobileAppTest("emulator-5554", "com.google.android.apps.nexuslauncher",
-                                      "com.google.android.apps.nexuslauncher.NexusLauncherActivity")
-    app_test_instance.start_driver()
-    yield app_test_instance
-    app_test_instance.quit_driver()
+    from driver_setup import MobileAppTest
+    test = MobileAppTest("emulator-5554", "com.example.kmm.android",
+                         ".MainActivity")
+    test.start_driver()
+    yield test
+    test.quit_driver()
 
 
 @pytest.mark.parametrize("email, password, expected_error", [
@@ -134,6 +114,6 @@ if __name__ == "__main__":
     ]
 
     for email, password, expected in test_cases:
-        app_test_instance.test_login(email, password, expected)
+        app_test_instance.test_login_pytest(email, password, expected)
 
     app_test_instance.quit_driver()

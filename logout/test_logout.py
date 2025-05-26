@@ -3,19 +3,21 @@ import pytest
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 
+from login.test_login import test_login_pytest
+
 
 @pytest.fixture
 def app_test():
-    from login.test_login import MobileAppTest  # Importujem MobileAppTest z priečinka login
-    test = MobileAppTest("emulator-5554", "com.google.android.apps.nexuslauncher",
-                         "com.google.android.apps.nexuslauncher.NexusLauncherActivity")
+    from driver_setup import MobileAppTest
+    test = MobileAppTest("emulator-5554", "com.example.kmm.android",
+                         ".MainActivity")
     test.start_driver()
     yield test
     test.quit_driver()
 
 
 def test_logout(app_test):
-    app_test.test_login("szilard.vysoky@gmail.com", "admiN1")
+    test_login_pytest("szilard.vysoky@gmail.com", "admiN1")
 
     logout_button = app_test.driver.find_element(By.ACCESSIBILITY_ID, "logout_btn")
     logout_button.click()

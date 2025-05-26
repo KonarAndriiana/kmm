@@ -1,50 +1,29 @@
 import time
 import pytest
-from appium import webdriver
-from appium.options.android import UiAutomator2Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common import NoSuchElementException
 
 
-class MobileAppTest:
-    def __init__(self, device_name, app_package, app_activity):
-        self.device_name = device_name
-        self.app_package = app_package
-        self.app_activity = app_activity
-        self.driver = None
-
-    def start_driver(self):
-        options = UiAutomator2Options()
-        options.platform_name = "Android"
-        options.device_name = self.device_name
-        options.app_package = self.app_package
-        options.app_activity = self.app_activity
-        options.no_reset = True
-        self.driver = webdriver.Remote("http://127.0.0.1:4723", options=options)
-
-    def quit_driver(self):
-        if self.driver:
-            self.driver.quit()
-
-    def clear_and_verify(self, element):
-        max_attempts = 5
-        for attempt in range(max_attempts):
-            element.clear()
-            time.sleep(1)
-            if element.text == "":
-                print(f"Field is successfully cleared after {attempt + 1} attempts.")
-                return True
-            print(f"Field not cleared, retrying... ({attempt + 1}/{max_attempts})")
-        print("Failed to clear the field.")
-        return False
+def clear_and_verify(self, element):
+    max_attempts = 5
+    for attempt in range(max_attempts):
+        element.clear()
+        time.sleep(1)
+        if element.text == "":
+            print(f"Field is successfully cleared after {attempt + 1} attempts.")
+            return True
+        print(f"Field not cleared, retrying... ({attempt + 1}/{max_attempts})")
+    print("Failed to clear the field.")
+    return False
 
 
 @pytest.fixture
 def app_test():
-    test = MobileAppTest("emulator-5554", "com.google.android.apps.nexuslauncher",
-                         "com.google.android.apps.nexuslauncher.NexusLauncherActivity")
+    from driver_setup import MobileAppTest
+    test = MobileAppTest("emulator-5554", "com.example.kmm.android",
+                         ".MainActivity")
     test.start_driver()
     yield test
     test.quit_driver()
