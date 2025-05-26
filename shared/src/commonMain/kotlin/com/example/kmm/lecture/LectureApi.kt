@@ -13,18 +13,22 @@ class LectureApi(private val client: HttpClient) {
         return response.lectures
     }
 
-//    suspend fun getLectureById(id: String): Lecture? {
-//        val allLectures: List<Lecture> = client
-//            .get("https://raw.githubusercontent.com/KonarAndriiana/kmm/refs/heads/main/lectures_full.json")
-//            .body()
-//        return allLectures.find { it.id == id }
-//    }
-//}
-
-suspend fun getLectureById(id: String): Lecture? {
-    val passwordsLectures: Lecture = client
-        .get("https://raw.githubusercontent.com/KonarAndriiana/kmm/refs/heads/main/lectures_full.json")
-        .body()
-    return if (passwordsLectures.id == id) passwordsLectures else null
+    suspend fun getLectureById(id: String): Lecture? {
+        // list of all LectureDetails endpoints
+        val urls = listOf(
+            "https://raw.githubusercontent.com/KonarAndriiana/kmm/main/lectures_full.json",
+            "https://raw.githubusercontent.com/KonarAndriiana/kmm/main/lectures_full2.json",
+            "https://raw.githubusercontent.com/KonarAndriiana/kmm/main/lectures_full3.json"
+        )
+        // try each one in turn
+        for (url in urls) {
+            runCatching {
+                client.get(url).body<Lecture>()
+            }.onSuccess { lecture ->
+                if (lecture.id == id) return lecture
+            }
+            // onFailure is ignored so we keep trying the next URL
+        }
+        return null
     }
 }
