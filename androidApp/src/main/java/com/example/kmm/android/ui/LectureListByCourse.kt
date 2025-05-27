@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -21,11 +21,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.kmm.android.lecture.LectureViewModel
-import com.example.kmm.lecture.LectureSummary
 
 @Composable
 fun LectureListByCourse(
@@ -51,17 +52,30 @@ fun LectureListByCourse(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(lecturesFiltered) { lec ->
+        itemsIndexed(lecturesFiltered) { index, lec ->
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { navController.navigate("lecture/${lec.id}") },
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
-                Text(
-                    text = lec.name,
-                    modifier = Modifier.padding(16.dp)
-                )
+                Column(Modifier.padding(16.dp)) {
+                    // Lec num, zero-padded to two digits
+                    Text(
+                        text = "Lecture ${(index + 1).toString().padStart(2, '0')}",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Light,
+                    )
+
+                    Spacer(Modifier.height(4.dp))
+
+                    // Lec name
+                    Text(
+                        text = lec.name,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                }
             }
         }
     }
