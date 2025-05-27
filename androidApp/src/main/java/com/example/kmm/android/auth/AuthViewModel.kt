@@ -45,6 +45,12 @@ class AuthViewModel
     private val _firstName = MutableStateFlow<String>("")
     val firstName: StateFlow<String> = _firstName
 
+    private val _lastName = MutableStateFlow("")
+    val lastName: StateFlow<String> = _lastName
+
+    private val _emailAddr = MutableStateFlow("")
+    val emailAddr: StateFlow<String> = _emailAddr
+
     init {
         checkLoginStatus()
         // if we’re already logged in, fetch profile
@@ -65,8 +71,13 @@ class AuthViewModel
                     .collection("users")
                     .document(uid)
                     .get()
-                val fn: String = doc.get<String>("firstName")
+                val fn = doc.get<String>("firstName")
+                val ln = doc.get<String>("lastName")
+                val em = doc.get<String>("email")
+
                 _firstName.value = fn
+                _lastName.value  = ln
+                _emailAddr.value = em
             } catch (e: Exception) {
                 // log
             }
