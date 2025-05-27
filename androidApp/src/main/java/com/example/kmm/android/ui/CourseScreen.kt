@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -34,6 +35,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -186,71 +188,80 @@ fun CourseScreen(navController: NavController) {
 
 @Composable
 private fun CourseCard(course: Course, onClick: () -> Unit) {
-    Card(
+    // Box to draw the offset shadow for course cards
+    Box(
         modifier = Modifier
+            .offset(x = 4.dp, y = 4.dp)
+            .shadow(8.dp, RoundedCornerShape(16.dp), clip = false)
+            .offset(x = (-4).dp, y = (-4).dp)
             .size(width = 240.dp, height = 160.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Box {
-            // AsyncImage
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(R.drawable.language_1)
-                    .size(width = 240, height = 160)
-                    .memoryCachePolicy(CachePolicy.ENABLED)
-                    .build(),
-                contentDescription = "Programming Language Background",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
-            )
-
-            // Level badge
-            Text(
-                text = course.level,
-                color = Color.White,
-                fontSize = 16.sp,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .align(Alignment.TopStart)
-            )
-
-            // Favorite icon
-            IconButton(
-                onClick = { /* TODO */ },
-                modifier = Modifier.align(Alignment.TopEnd)
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.FavoriteBorder,
-                    contentDescription = "Favorite",
-                    tint = Color.White
+        Card(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(16.dp))
+                .clickable(onClick = onClick),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp) // turn off the built-in shadow
+        ) {
+            Box {
+                // AsyncImage
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(R.drawable.language_1)
+                        .size(width = 240, height = 160)
+                        .memoryCachePolicy(CachePolicy.ENABLED)
+                        .build(),
+                    contentDescription = "Programming Language Background",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
                 )
-            }
 
-            // Bottom name + specification
-            Column(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(16.dp)
-            ) {
+                // Level badge
                 Text(
-                    text = course.name,
+                    text = course.level,
                     color = Color.White,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Spacer(Modifier.height(12.dp))
-                Box(
+                    fontSize = 16.sp,
                     modifier = Modifier
-                        .background(Color.White, RoundedCornerShape(12.dp))
-                        .padding(horizontal = 16.dp, vertical = 4.dp)
+                        .padding(16.dp)
+                        .align(Alignment.TopStart)
+                )
+
+                // Favorite icon
+                IconButton(
+                    onClick = { /* TODO */ },
+                    modifier = Modifier.align(Alignment.TopEnd)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.FavoriteBorder,
+                        contentDescription = "Favorite",
+                        tint = Color.White
+                    )
+                }
+
+                // Bottom name + specification
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(16.dp)
                 ) {
                     Text(
-                        text = course.specification,
-                        color = Color.Black,
-                        fontSize = 12.sp
+                        text = course.name,
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold
                     )
+                    Spacer(Modifier.height(12.dp))
+                    Box(
+                        modifier = Modifier
+                            .background(Color.White, RoundedCornerShape(12.dp))
+                            .padding(horizontal = 16.dp, vertical = 4.dp)
+                    ) {
+                        Text(
+                            text = course.specification,
+                            color = Color.Black,
+                            fontSize = 12.sp
+                        )
+                    }
                 }
             }
         }
