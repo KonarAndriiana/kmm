@@ -111,7 +111,8 @@ fun CourseScreen(navController: NavController) {
                     modifier           = Modifier
                         .size(48.dp)
                         .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .clickable { navController.navigate("profileMenu") },
                     contentScale       = ContentScale.Crop
                 )
             } else {
@@ -124,6 +125,7 @@ fun CourseScreen(navController: NavController) {
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.surfaceVariant)
                         .padding(8.dp)
+                        .clickable { navController.navigate("profileMenu") }
                 )
             }
         }

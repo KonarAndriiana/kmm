@@ -13,10 +13,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.kmm.android.auth.AuthViewModel
 import com.example.kmm.android.auth.AuthViewModelFactory
+import com.example.kmm.android.ui.AccountDetailsScreen
 import com.example.kmm.android.ui.CourseScreen
 import com.example.kmm.android.ui.LectureDetailsScreen
 import com.example.kmm.android.ui.LectureListByCourse
 import com.example.kmm.android.ui.LoginScreen
+import com.example.kmm.android.ui.ProfileMenuScreen
 import com.example.kmm.android.ui.RegisterScreen
 
 class MainActivity : ComponentActivity() {
@@ -39,6 +41,12 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("courseList") {
                     CourseScreen(navController)
+                }
+                composable("profileMenu") {
+                    ProfileMenuScreen(navController)
+                }
+                composable("accountDetails") {
+                    AccountDetailsScreen()
                 }
                 composable(
                     "lectures/{courseId}",
