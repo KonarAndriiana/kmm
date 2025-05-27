@@ -2,14 +2,13 @@ package com.example.kmm.android.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Image
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,7 +19,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -45,7 +43,7 @@ fun ProfileMenuScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(16.dp),
+            .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(Modifier.height(24.dp))
@@ -70,7 +68,8 @@ fun ProfileMenuScreen(
             }
         }
 
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(96.dp))
+
 
         // menu
         data class MenuItem(val label: String, val onClick: () -> Unit)
@@ -85,18 +84,25 @@ fun ProfileMenuScreen(
         )
 
         items.forEach { item ->
-            Card(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp)
-                    .padding(vertical = 8.dp)
+                    .height(112.dp)
+                    .padding(vertical = 16.dp)
+                    .clip(RoundedCornerShape(28.dp))
+                    .border(
+                        width = 4.dp,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                        shape = RoundedCornerShape(28.dp)
+                    )
                     .clickable(onClick = item.onClick),
-                shape = RoundedCornerShape(16.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                contentAlignment = Alignment.Center
             ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Text(item.label, fontSize = 18.sp, fontWeight = FontWeight.Medium)
-                }
+                Text(
+                    text = item.label,
+                    fontSize = 28.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             }
         }
     }

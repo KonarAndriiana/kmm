@@ -53,7 +53,8 @@ fun AccountDetailsScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(16.dp)
+            .padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Spacer(Modifier.height(24.dp))
