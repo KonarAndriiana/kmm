@@ -40,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -157,7 +158,7 @@ fun CourseScreen(navController: NavController) {
             )
             Text(
                 text = "see all",
-                color = MaterialTheme.colorScheme.primary,
+                textDecoration = TextDecoration.Underline,
                 modifier = Modifier.clickable { /* TODO */ }
             )
         }
@@ -173,7 +174,7 @@ fun CourseScreen(navController: NavController) {
 
         Spacer(Modifier.height(24.dp))
 
-        // Horizontal list of cards
+        // Horizontal list of Course cards
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(24.dp)
         ) {
@@ -183,8 +184,38 @@ fun CourseScreen(navController: NavController) {
                 }
             }
         }
+
+        // —— New “Test” section —— //
+
+            Spacer(Modifier.height(48.dp))
+
+            Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment   = Alignment.CenterVertically
+            ) {
+                Text(
+                text = "Test",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = "see all",
+                    textDecoration = TextDecoration.Underline,
+                    modifier = Modifier.clickable { /* TODO */ }
+                )
+            }
+
+            Spacer(Modifier.height(8.dp))
+
+            Text(
+                text = "Ready to test your skills? Choose a test and see how much you've learned. " +
+                        "Challenge yourself and level up!",
+                fontSize = 18.sp
+            )
+        }
     }
-}
+
 
 @Composable
 private fun CourseCard(course: Course, onClick: () -> Unit) {
