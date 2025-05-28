@@ -109,19 +109,18 @@ fun CourseScreen(navController: NavController) {
             if (profileFile?.exists() == true) {
                 Image(
                     painter            = rememberAsyncImagePainter(model = profileFile),
-                    contentDescription = "Your profile photo",
+                    contentDescription = "user_icon",
                     modifier           = Modifier
                         .size(60.dp)
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.surfaceVariant)
-                        .clickable { navController.navigate("profileMenu") }
-                        .semantics { contentDescription = "user_icon" },
+                        .clickable { navController.navigate("profileMenu") },
                     contentScale       = ContentScale.Crop
                 )
             } else {
                 Icon(
                     imageVector       = Icons.Default.Image,
-                    contentDescription= "default_profile_photo",
+                    contentDescription= "user_icon",
                     tint              = MaterialTheme.colorScheme.onBackground,
                     modifier          = Modifier
                         .size(60.dp)
@@ -129,7 +128,6 @@ fun CourseScreen(navController: NavController) {
                         .background(MaterialTheme.colorScheme.surfaceVariant)
                         .padding(8.dp)
                         .clickable { navController.navigate("profileMenu") }
-                        .semantics { contentDescription = "user_icon" }
                 )
             }
         }
@@ -259,9 +257,8 @@ private fun CourseCard(course: Course, onClick: () -> Unit) {
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.FavoriteBorder,
-                        contentDescription = "Favorite",
-                        tint = Color.White,
-                        modifier = Modifier.semantics { contentDescription = "like_btn" }
+                        contentDescription = "like_btn",
+                        tint = Color.White
                     )
                 }
 
