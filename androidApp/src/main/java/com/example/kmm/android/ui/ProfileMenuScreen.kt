@@ -68,7 +68,7 @@ fun ProfileMenuScreen(
             }
         }
 
-        Spacer(Modifier.height(96.dp))
+        Spacer(Modifier.height(112.dp))
 
 
         // menu

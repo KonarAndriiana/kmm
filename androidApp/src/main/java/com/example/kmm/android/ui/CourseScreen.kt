@@ -21,7 +21,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -130,22 +129,7 @@ fun CourseScreen(navController: NavController) {
             }
         }
 
-        // logout
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            Button(onClick = {
-                authViewModel.logout()
-                navController.navigate("login") {
-                    popUpTo("courseList") { inclusive = true }
-                }
-            }) {
-                Text("Logout")
-            }
-        }
-
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(48.dp))
 
         // Header + "see all"
         Row(
