@@ -15,6 +15,7 @@ import com.example.kmm.android.auth.AuthViewModel
 import com.example.kmm.android.auth.AuthViewModelFactory
 import com.example.kmm.android.ui.AccountDetailsScreen
 import com.example.kmm.android.ui.CourseScreen
+import com.example.kmm.android.ui.CoursesScreen
 import com.example.kmm.android.ui.LectureDetailsScreen
 import com.example.kmm.android.ui.LectureListByCourse
 import com.example.kmm.android.ui.LoginScreen
@@ -41,6 +42,9 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("courseList") {
                     CourseScreen(navController)
+                }
+                composable("allCourses") {
+                    CoursesScreen(navController)
                 }
                 composable("profileMenu") {
                     ProfileMenuScreen(navController)

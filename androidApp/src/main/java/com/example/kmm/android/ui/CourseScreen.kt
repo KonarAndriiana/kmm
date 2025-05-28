@@ -147,7 +147,8 @@ fun CourseScreen(navController: NavController) {
             Text(
                 text = "see all",
                 textDecoration = TextDecoration.Underline,
-                modifier = Modifier.clickable { /* TODO */ }
+                modifier = Modifier
+                    .clickable { navController.navigate("allCourses") }
                     .semantics { contentDescription = "see_all_courses_btn" }
             )
         }
