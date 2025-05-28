@@ -93,7 +93,7 @@ fun CourseScreen(navController: NavController) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 24.dp),
+                .padding(top = 16.dp, bottom = 72.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment   = Alignment.CenterVertically
         ) {
@@ -108,7 +108,7 @@ fun CourseScreen(navController: NavController) {
                     painter            = rememberAsyncImagePainter(model = profileFile),
                     contentDescription = "Your profile photo",
                     modifier           = Modifier
-                        .size(48.dp)
+                        .size(60.dp)
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.surfaceVariant)
                         .clickable { navController.navigate("profileMenu") },
@@ -120,7 +120,7 @@ fun CourseScreen(navController: NavController) {
                     contentDescription= "Default avatar",
                     tint              = MaterialTheme.colorScheme.onBackground,
                     modifier          = Modifier
-                        .size(48.dp)
+                        .size(60.dp)
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.surfaceVariant)
                         .padding(8.dp)
@@ -128,8 +128,6 @@ fun CourseScreen(navController: NavController) {
                 )
             }
         }
-
-        Spacer(Modifier.height(48.dp))
 
         // Header + "see all"
         Row(

@@ -51,7 +51,7 @@ fun ProfileMenuScreen(
         // profile Photo
         Box(
             modifier = Modifier
-                .size(100.dp)
+                .size(112.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surfaceVariant),
             contentAlignment = Alignment.Center
@@ -68,7 +68,7 @@ fun ProfileMenuScreen(
             }
         }
 
-        Spacer(Modifier.height(112.dp))
+        Spacer(Modifier.height(100.dp))
 
 
         // menu
