@@ -38,6 +38,8 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -100,7 +102,8 @@ fun CourseScreen(navController: NavController) {
             Text(
                 text  = "Hi, $firstName 👋🏻",
                 fontSize = 32.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.semantics { contentDescription = "greeting_text" }
             )
 
             if (profileFile?.exists() == true) {
@@ -111,13 +114,14 @@ fun CourseScreen(navController: NavController) {
                         .size(60.dp)
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.surfaceVariant)
-                        .clickable { navController.navigate("profileMenu") },
+                        .clickable { navController.navigate("profileMenu") }
+                        .semantics { contentDescription = "user_icon" },
                     contentScale       = ContentScale.Crop
                 )
             } else {
                 Icon(
                     imageVector       = Icons.Default.Image,
-                    contentDescription= "Default avatar",
+                    contentDescription= "default_profile_photo",
                     tint              = MaterialTheme.colorScheme.onBackground,
                     modifier          = Modifier
                         .size(60.dp)
@@ -125,6 +129,7 @@ fun CourseScreen(navController: NavController) {
                         .background(MaterialTheme.colorScheme.surfaceVariant)
                         .padding(8.dp)
                         .clickable { navController.navigate("profileMenu") }
+                        .semantics { contentDescription = "user_icon" }
                 )
             }
         }
@@ -138,12 +143,14 @@ fun CourseScreen(navController: NavController) {
             Text(
                 text = "Course",
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.semantics { contentDescription = "course_text" }
             )
             Text(
                 text = "see all",
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier.clickable { /* TODO */ }
+                    .semantics { contentDescription = "see_all_courses_btn" }
             )
         }
 
@@ -153,7 +160,8 @@ fun CourseScreen(navController: NavController) {
         Text(
             text = "Ready to learn? Choose your course and start your journey! " +
                     "Select a topic that interests you and dive into a new adventure in coding",
-            fontSize = 18.sp
+            fontSize = 18.sp,
+            modifier = Modifier.semantics { contentDescription = "about_courses" }
         )
 
         Spacer(Modifier.height(24.dp))
@@ -181,12 +189,14 @@ fun CourseScreen(navController: NavController) {
                 Text(
                 text = "Test",
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                    modifier = Modifier.semantics { contentDescription = "test_text" }
                 )
                 Text(
                     text = "see all",
                     textDecoration = TextDecoration.Underline,
                     modifier = Modifier.clickable { /* TODO */ }
+                        .semantics { contentDescription = "see_all_tests_btn" }
                 )
             }
 
@@ -195,7 +205,8 @@ fun CourseScreen(navController: NavController) {
             Text(
                 text = "Ready to test your skills? Choose a test and see how much you've learned. " +
                         "Challenge yourself and level up!",
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                modifier = Modifier.semantics { contentDescription = "about_tests" }
             )
         }
     }
@@ -249,7 +260,8 @@ private fun CourseCard(course: Course, onClick: () -> Unit) {
                     Icon(
                         imageVector = Icons.Outlined.FavoriteBorder,
                         contentDescription = "Favorite",
-                        tint = Color.White
+                        tint = Color.White,
+                        modifier = Modifier.semantics { contentDescription = "like_btn" }
                     )
                 }
 
