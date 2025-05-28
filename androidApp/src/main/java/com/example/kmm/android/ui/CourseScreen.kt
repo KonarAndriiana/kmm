@@ -21,7 +21,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -94,7 +93,7 @@ fun CourseScreen(navController: NavController) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 24.dp),
+                .padding(top = 16.dp, bottom = 72.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment   = Alignment.CenterVertically
         ) {
@@ -109,7 +108,7 @@ fun CourseScreen(navController: NavController) {
                     painter            = rememberAsyncImagePainter(model = profileFile),
                     contentDescription = "Your profile photo",
                     modifier           = Modifier
-                        .size(48.dp)
+                        .size(60.dp)
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.surfaceVariant)
                         .clickable { navController.navigate("profileMenu") },
@@ -121,7 +120,7 @@ fun CourseScreen(navController: NavController) {
                     contentDescription= "Default avatar",
                     tint              = MaterialTheme.colorScheme.onBackground,
                     modifier          = Modifier
-                        .size(48.dp)
+                        .size(60.dp)
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.surfaceVariant)
                         .padding(8.dp)
@@ -129,23 +128,6 @@ fun CourseScreen(navController: NavController) {
                 )
             }
         }
-
-        // logout
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            Button(onClick = {
-                authViewModel.logout()
-                navController.navigate("login") {
-                    popUpTo("courseList") { inclusive = true }
-                }
-            }) {
-                Text("Logout")
-            }
-        }
-
-        Spacer(Modifier.height(16.dp))
 
         // Header + "see all"
         Row(

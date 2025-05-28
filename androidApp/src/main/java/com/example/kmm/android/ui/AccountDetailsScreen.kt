@@ -62,7 +62,7 @@ fun AccountDetailsScreen(
         // profile photo
         Box(
             modifier = Modifier
-                .size(100.dp)
+                .size(112.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surfaceVariant),
             contentAlignment = Alignment.Center
@@ -79,7 +79,7 @@ fun AccountDetailsScreen(
             }
         }
 
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(100.dp))
 
         @Composable
         fun labeledField(label: String, value: String) {
