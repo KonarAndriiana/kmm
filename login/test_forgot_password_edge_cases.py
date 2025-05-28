@@ -5,18 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common import NoSuchElementException
 
-
-def clear_and_verify(self, element):
-    max_attempts = 5
-    for attempt in range(max_attempts):
-        element.clear()
-        time.sleep(1)
-        if element.text == "":
-            print(f"Field is successfully cleared after {attempt + 1} attempts.")
-            return True
-        print(f"Field not cleared, retrying... ({attempt + 1}/{max_attempts})")
-    print("Failed to clear the field.")
-    return False
+from clear_and_verify import ClearInput
 
 
 @pytest.fixture
@@ -53,7 +42,7 @@ def test_forgot_password_edge_cases(app_test, email, expected_message):
         raise
 
     email_input = app_test.driver.find_element(By.XPATH, "//android.widget.EditText")
-    if not app_test.clear_and_verify(email_input):
+    if not ClearInput.clear_and_verify(email_input):
         raise AssertionError("Email field could not be cleared.")
     email_input.send_keys(email)
     time.sleep(2)

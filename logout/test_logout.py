@@ -3,7 +3,7 @@ import pytest
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 
-from login.test_login import test_login_pytest
+from login import test_login
 
 
 @pytest.fixture
@@ -17,7 +17,7 @@ def app_test():
 
 
 def test_logout(app_test):
-    test_login_pytest("szilard.vysoky@gmail.com", "admiN1")
+    test_login.LoginTest.perform_login("szilard.vysoky@gmail.com", "admiN1")
 
     logout_button = app_test.driver.find_element(By.ACCESSIBILITY_ID, "logout_btn")
     logout_button.click()

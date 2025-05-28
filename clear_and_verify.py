@@ -1,7 +1,7 @@
 import time
 
 
-class MobileAppTest:
+class ClearInput:
 
 
     def clear_and_verify(self, element):

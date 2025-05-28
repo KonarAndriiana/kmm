@@ -17,7 +17,7 @@ def app_test():
 
 
 def test_pass_visibility_register(app_test):
-    wait = WebDriverWait(app_test.driver, 10)
+    WebDriverWait(app_test.driver, 10)
     time.sleep(2)
     try:
         app_test.driver.find_element(By.ACCESSIBILITY_ID, "create_acc_text")

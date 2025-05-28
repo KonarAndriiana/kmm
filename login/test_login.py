@@ -4,21 +4,24 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
+from clear_and_verify import ClearInput
 from driver_setup import MobileAppTest
 
 
 class LoginTest(MobileAppTest):
     def perform_login(self, email, password):
-        wait = WebDriverWait(self.driver, 10)
+        WebDriverWait(self.driver, 10)
 
         email_input = self.driver.find_element(By.XPATH,
                                                "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[1]")
-        email_input.clear()
+        if not ClearInput.clear_and_verify(email_input):
+            raise AssertionError("Email field could not be cleared.")
         email_input.send_keys(email)
 
         password_field = self.driver.find_element(By.XPATH,
                                                   "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[2]")
-        password_field.click()
+        if not ClearInput.clear_and_verify(password_field):
+            raise AssertionError("Password field could not be cleared.")
         password_field.clear()
         password_field.send_keys(password)
 

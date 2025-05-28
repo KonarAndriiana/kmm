@@ -1,10 +1,10 @@
 import time
 import pytest
-from appium import webdriver
-from appium.options.android import UiAutomator2Options
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+
+from driver_setup import MobileAppTest
 
 
 def test_register_edge_case(self, first_name, last_name, email, password, confirm_password, expected_error):
@@ -86,7 +86,7 @@ def app_test():
     ("Test", "User", "testuser9.com", "Test1234", "Test1234", "Please enter a valid email address"),
 ])
 def test_invalid_email_format(app_test, first_name, last_name, email, password, confirm_password, expected_error):
-    app_test.test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
+    test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
 
 
 @pytest.mark.parametrize("first_name, last_name, email, password, confirm_password, expected_error", [
@@ -101,21 +101,21 @@ def test_invalid_email_format(app_test, first_name, last_name, email, password, 
     ("Test", "User", "testuser7@example.com", "Pass1", "Pass1", "Password must be at least 6 characters long"),
 ])
 def test_password_validation(app_test, first_name, last_name, email, password, confirm_password, expected_error):
-    app_test.test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
+    test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
 
 
 @pytest.mark.parametrize("first_name, last_name, email, password, confirm_password, expected_error", [
     ("", "", "", "", "", "All fields must be completed")
 ])
 def test_all_fields_empty(app_test, first_name, last_name, email, password, confirm_password, expected_error):
-    app_test.test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
+    test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
 
 
 @pytest.mark.parametrize("first_name, last_name, email, password, confirm_password, expected_error", [
     ("Test", "User", "testuser10@example.com", "", "", "Password cannot be empty"),
 ])
 def test_empty_fields(app_test, first_name, last_name, email, password, confirm_password, expected_error):
-    app_test.test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
+    test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
 
 
 @pytest.mark.parametrize("first_name, last_name, email, password, confirm_password, expected_error", [
@@ -123,14 +123,14 @@ def test_empty_fields(app_test, first_name, last_name, email, password, confirm_
     ("Test", "User", "testuser12@example.com", "AnotherPass1", "AnotherPass2", "Passwords do not match"),
 ])
 def test_password_mismatch(app_test, first_name, last_name, email, password, confirm_password, expected_error):
-    app_test.test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
+    test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
 
 
 @pytest.mark.parametrize("first_name, last_name, email, password, confirm_password, expected_error", [
     ("Test", "User", "testuser1@example.com", "Test1234", "Test1234", "This email is already registered"),
 ])
 def test_existing_user(app_test, first_name, last_name, email, password, confirm_password, expected_error):
-    app_test.test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
+    test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
 
 
 if __name__ == "__main__":
@@ -146,6 +146,6 @@ if __name__ == "__main__":
     ]
 
     for case in edge_cases:
-        app_test_instance.test_register_edge_case(*case)
+        test_register_edge_case(*case)
 
     app_test_instance.quit_driver()
