@@ -154,7 +154,7 @@ fun CourseScreen(navController: NavController) {
 
         Spacer(Modifier.height(8.dp))
 
-        // Description
+        // Description Course
         Text(
             text = "Ready to learn? Choose your course and start your journey! " +
                     "Select a topic that interests you and dive into a new adventure in coding",
@@ -200,6 +200,7 @@ fun CourseScreen(navController: NavController) {
 
             Spacer(Modifier.height(8.dp))
 
+            // Description Test
             Text(
                 text = "Ready to test your skills? Choose a test and see how much you've learned. " +
                         "Challenge yourself and level up!",
@@ -254,10 +255,11 @@ private fun CourseCard(course: Course, onClick: () -> Unit) {
                 IconButton(
                     onClick = { /* TODO */ },
                     modifier = Modifier.align(Alignment.TopEnd)
+                    .semantics { contentDescription = "like_btn" }
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.FavoriteBorder,
-                        contentDescription = "like_btn",
+                        contentDescription = null,
                         tint = Color.White
                     )
                 }
