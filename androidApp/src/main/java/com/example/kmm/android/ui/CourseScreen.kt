@@ -38,6 +38,8 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -100,13 +102,14 @@ fun CourseScreen(navController: NavController) {
             Text(
                 text  = "Hi, $firstName 👋🏻",
                 fontSize = 32.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.semantics { contentDescription = "greeting_text" }
             )
 
             if (profileFile?.exists() == true) {
                 Image(
                     painter            = rememberAsyncImagePainter(model = profileFile),
-                    contentDescription = "Your profile photo",
+                    contentDescription = "user_icon",
                     modifier           = Modifier
                         .size(60.dp)
                         .clip(CircleShape)
@@ -117,7 +120,7 @@ fun CourseScreen(navController: NavController) {
             } else {
                 Icon(
                     imageVector       = Icons.Default.Image,
-                    contentDescription= "Default avatar",
+                    contentDescription= "user_icon",
                     tint              = MaterialTheme.colorScheme.onBackground,
                     modifier          = Modifier
                         .size(60.dp)
@@ -138,22 +141,25 @@ fun CourseScreen(navController: NavController) {
             Text(
                 text = "Course",
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.semantics { contentDescription = "course_text" }
             )
             Text(
                 text = "see all",
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier.clickable { /* TODO */ }
+                    .semantics { contentDescription = "see_all_courses_btn" }
             )
         }
 
         Spacer(Modifier.height(8.dp))
 
-        // Description
+        // Description Course
         Text(
             text = "Ready to learn? Choose your course and start your journey! " +
                     "Select a topic that interests you and dive into a new adventure in coding",
-            fontSize = 18.sp
+            fontSize = 18.sp,
+            modifier = Modifier.semantics { contentDescription = "about_courses" }
         )
 
         Spacer(Modifier.height(24.dp))
@@ -181,21 +187,25 @@ fun CourseScreen(navController: NavController) {
                 Text(
                 text = "Test",
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                    modifier = Modifier.semantics { contentDescription = "test_text" }
                 )
                 Text(
                     text = "see all",
                     textDecoration = TextDecoration.Underline,
                     modifier = Modifier.clickable { /* TODO */ }
+                        .semantics { contentDescription = "see_all_tests_btn" }
                 )
             }
 
             Spacer(Modifier.height(8.dp))
 
+            // Description Test
             Text(
                 text = "Ready to test your skills? Choose a test and see how much you've learned. " +
                         "Challenge yourself and level up!",
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                modifier = Modifier.semantics { contentDescription = "about_tests" }
             )
         }
     }
@@ -245,10 +255,11 @@ private fun CourseCard(course: Course, onClick: () -> Unit) {
                 IconButton(
                     onClick = { /* TODO */ },
                     modifier = Modifier.align(Alignment.TopEnd)
+                    .semantics { contentDescription = "like_btn" }
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.FavoriteBorder,
-                        contentDescription = "Favorite",
+                        contentDescription = null,
                         tint = Color.White
                     )
                 }
