@@ -21,6 +21,7 @@ import com.example.kmm.android.ui.LectureListByCourse
 import com.example.kmm.android.ui.LoginScreen
 import com.example.kmm.android.ui.ProfileMenuScreen
 import com.example.kmm.android.ui.RegisterScreen
+import com.example.kmm.android.ui.SettingsScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +52,9 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("accountDetails") {
                     AccountDetailsScreen()
+                }
+                composable("settings") {
+                    SettingsScreen()
                 }
                 composable(
                     "lectures/{courseId}",
