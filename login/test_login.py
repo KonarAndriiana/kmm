@@ -8,50 +8,49 @@ from clear_and_verify import ClearInput
 from driver_setup import MobileAppTest
 
 
-class LoginTest(MobileAppTest):
-    def perform_login(self, email, password):
-        WebDriverWait(self.driver, 10)
+def perform_login(driver, email, password):
+    WebDriverWait(driver, 10)
 
-        email_input = self.driver.find_element(By.XPATH,
-                                               "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[1]")
-        if not ClearInput.clear_and_verify(email_input):
-            raise AssertionError("Email field could not be cleared.")
-        email_input.send_keys(email)
+    email_input = driver.find_element(By.XPATH,
+                                      "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[1]")
+    if not ClearInput.clear_and_verify(email_input):
+        raise AssertionError("Email field could not be cleared.")
+    email_input.send_keys(email)
 
-        password_field = self.driver.find_element(By.XPATH,
-                                                  "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[2]")
-        if not ClearInput.clear_and_verify(password_field):
-            raise AssertionError("Password field could not be cleared.")
-        password_field.clear()
-        password_field.send_keys(password)
+    password_field = driver.find_element(By.XPATH,
+                                         "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[2]")
+    if not ClearInput.clear_and_verify(password_field):
+        raise AssertionError("Password field could not be cleared.")
+    password_field.clear()
+    password_field.send_keys(password)
 
-        login_button = self.driver.find_element(By.ACCESSIBILITY_ID, "login_btn")
-        login_button.click()
+    login_button = driver.find_element(By.ACCESSIBILITY_ID, "login_btn")
+    login_button.click()
 
-        time.sleep(2)
-        try:
-            self.driver.find_element(By.XPATH, "//*[contains(@text, 'Course')]")
-            print("Login successful: 'Course' is visible.")
-        except NoSuchElementException:
-            print("Login failed: 'Course' not found.")
-            raise
+    time.sleep(2)
+    try:
+        driver.find_element(By.XPATH, "//*[contains(@text, 'Course')]")
+        print("Login successful: 'Course' is visible.")
+    except NoSuchElementException:
+        print("Login failed: 'Course' not found.")
+        raise
 
 
 @pytest.fixture
 def app_test():
-    test = LoginTest("emulator-5554", "com.example.kmm.android", ".MainActivity")
+    test = MobileAppTest("emulator-5554", "com.example.kmm.android", ".MainActivity")
     test.start_driver()
     yield test
     test.quit_driver()
 
 
 def test_login_flow(app_test):
-    app_test.perform_login("szilard.vysoky@gmail.com", "admiN1")
+    perform_login(app_test.driver, "patriklisivka95@gmail.com", "Test1234")
     print("Login test prebehol úspešne!")
 
 
 if __name__ == "__main__":
-    test_instance = LoginTest("emulator-5554", "com.example.kmm.android", ".MainActivity")
+    test_instance = MobileAppTest("emulator-5554", "com.example.kmm.android", ".MainActivity")
     test_instance.start_driver()
-    test_instance.perform_login("szilard.vysoky@gmail.com", "admiN1")
+    perform_login(test_instance.driver, "patriklisivka95@gmail.com", "Test1234")
     test_instance.quit_driver()

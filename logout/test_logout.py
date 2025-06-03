@@ -1,9 +1,9 @@
 import time
 import pytest
-from selenium.common import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
-from login import test_login
+from login.test_login import perform_login
 
 
 @pytest.fixture
@@ -17,9 +17,15 @@ def app_test():
 
 
 def test_logout(app_test):
-    test_login.LoginTest.perform_login("szilard.vysoky@gmail.com", "admiN1")
+    perform_login(app_test.driver, "patriklisivka95@gmail.com", "Test1234")
 
-    logout_button = app_test.driver.find_element(By.ACCESSIBILITY_ID, "logout_btn")
+    time.sleep(2)
+    user_icon = app_test.driver.find_element(By.ACCESSIBILITY_ID, "user_icon")
+    user_icon.click()
+    time.sleep(2)
+
+    # logout_button = app_test.driver.find_element(By.ACCESSIBILITY_ID, "logout_btn")
+    logout_button = app_test.driver.find_element(By.XPATH, "//*[@text='Log Out']")
     logout_button.click()
     time.sleep(2)
 

@@ -1,10 +1,9 @@
 import time
 
-
 class ClearInput:
 
-
-    def clear_and_verify(self, element):
+    @staticmethod
+    def clear_and_verify(element):
         max_attempts = 5
         for attempt in range(max_attempts):
             element.clear()
