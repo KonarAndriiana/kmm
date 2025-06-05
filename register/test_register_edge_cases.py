@@ -4,59 +4,60 @@ from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
+from clear_and_verify import ClearInput
 from driver_setup import MobileAppTest
 
 
-def test_register_edge_case(self, first_name, last_name, email, password, confirm_password, expected_error):
+def run_register_edge_case(app_test, first_name, last_name, email, password, confirm_password, expected_error):
     print(f"\nTesting registration with First Name: '{first_name}', Last Name: '{last_name}', "
           f"Email: '{email}', Password: '{password}', Confirm Password: '{confirm_password}'")
 
-    wait = WebDriverWait(self.driver, 10)
+    WebDriverWait(app_test.driver, 10)
     time.sleep(2)
 
     try:
-        self.driver.find_element(By.ACCESSIBILITY_ID, "create_acc_text")
+        app_test.driver.find_element(By.ACCESSIBILITY_ID, "create_acc_text")
     except NoSuchElementException:
         print("Navigating to Sign Up page...")
-        self.driver.find_element(By.ACCESSIBILITY_ID, "sign_up_redirect").click()
+        app_test.driver.find_element(By.ACCESSIBILITY_ID, "sign_up_redirect").click()
         time.sleep(2)
 
-    first_name_input = self.driver.find_element(By.XPATH,
-                                                "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[1]")
-    if not self.clear_and_verify(first_name_input):
-        raise AssertionError("Email field could not be cleared.")
+    first_name_input = app_test.driver.find_element(By.XPATH,
+                                                    "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[1]")
+    if not ClearInput.clear_and_verify(first_name_input):
+        raise AssertionError("First name field could not be cleared.")
     first_name_input.send_keys(first_name)
 
-    last_name_input = self.driver.find_element(By.XPATH,
-                                               "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[2]")
-    if not self.clear_and_verify(last_name_input):
-        raise AssertionError("Email field could not be cleared.")
+    last_name_input = app_test.driver.find_element(By.XPATH,
+                                                   "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[2]")
+    if not ClearInput.clear_and_verify(last_name_input):
+        raise AssertionError("Last name field could not be cleared.")
     last_name_input.send_keys(last_name)
 
-    email_input = self.driver.find_element(By.XPATH,
-                                           "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[3]")
-    if not self.clear_and_verify(email_input):
+    email_input = app_test.driver.find_element(By.XPATH,
+                                               "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[3]")
+    if not ClearInput.clear_and_verify(email_input):
         raise AssertionError("Email field could not be cleared.")
     email_input.send_keys(email)
 
-    password_input = self.driver.find_element(By.XPATH,
-                                              "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[4]")
-    if not self.clear_and_verify(password_input):
-        raise AssertionError("Email field could not be cleared.")
+    password_input = app_test.driver.find_element(By.XPATH,
+                                                  "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[4]")
+    if not ClearInput.clear_and_verify(password_input):
+        raise AssertionError("Password field could not be cleared.")
     password_input.send_keys(password)
 
-    confirm_password_input = self.driver.find_element(By.XPATH,
-                                                      "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[5]")
-    if not self.clear_and_verify(confirm_password_input):
-        raise AssertionError("Email field could not be cleared.")
+    confirm_password_input = app_test.driver.find_element(By.XPATH,
+                                                          "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[5]")
+    if not ClearInput.clear_and_verify(confirm_password_input):
+        raise AssertionError("Confirm password field could not be cleared.")
     confirm_password_input.send_keys(confirm_password)
 
     print("Clicking the 'Sign Up' button...")
-    self.driver.find_element(By.ACCESSIBILITY_ID, "sign_up_btn").click()
+    app_test.driver.find_element(By.ACCESSIBILITY_ID, "sign_up_btn").click()
     time.sleep(2)
 
     try:
-        error_message = self.driver.find_element(By.ACCESSIBILITY_ID, "error_msg")
+        error_message = app_test.driver.find_element(By.ACCESSIBILITY_ID, "error_msg")
         actual_error_text = error_message.text
 
         if expected_error in actual_error_text:
@@ -73,8 +74,7 @@ def test_register_edge_case(self, first_name, last_name, email, password, confir
 
 @pytest.fixture
 def app_test():
-    test = MobileAppTest("emulator-5554", "com.google.android.apps.nexuslauncher",
-                         "com.google.android.apps.nexuslauncher.NexusLauncherActivity")
+    test = MobileAppTest("emulator-5554", "com.example.kmm.android", ".MainActivity")
     test.start_driver()
     yield test
     test.quit_driver()
@@ -86,7 +86,7 @@ def app_test():
     ("Test", "User", "testuser9.com", "Test1234", "Test1234", "Please enter a valid email address"),
 ])
 def test_invalid_email_format(app_test, first_name, last_name, email, password, confirm_password, expected_error):
-    test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
+    run_register_edge_case(app_test, first_name, last_name, email, password, confirm_password, expected_error)
 
 
 @pytest.mark.parametrize("first_name, last_name, email, password, confirm_password, expected_error", [
@@ -101,21 +101,21 @@ def test_invalid_email_format(app_test, first_name, last_name, email, password, 
     ("Test", "User", "testuser7@example.com", "Pass1", "Pass1", "Password must be at least 6 characters long"),
 ])
 def test_password_validation(app_test, first_name, last_name, email, password, confirm_password, expected_error):
-    test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
+    run_register_edge_case(app_test, first_name, last_name, email, password, confirm_password, expected_error)
 
 
 @pytest.mark.parametrize("first_name, last_name, email, password, confirm_password, expected_error", [
     ("", "", "", "", "", "All fields must be completed")
 ])
 def test_all_fields_empty(app_test, first_name, last_name, email, password, confirm_password, expected_error):
-    test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
+    run_register_edge_case(app_test, first_name, last_name, email, password, confirm_password, expected_error)
 
 
 @pytest.mark.parametrize("first_name, last_name, email, password, confirm_password, expected_error", [
     ("Test", "User", "testuser10@example.com", "", "", "Password cannot be empty"),
 ])
 def test_empty_fields(app_test, first_name, last_name, email, password, confirm_password, expected_error):
-    test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
+    run_register_edge_case(app_test, first_name, last_name, email, password, confirm_password, expected_error)
 
 
 @pytest.mark.parametrize("first_name, last_name, email, password, confirm_password, expected_error", [
@@ -123,14 +123,14 @@ def test_empty_fields(app_test, first_name, last_name, email, password, confirm_
     ("Test", "User", "testuser12@example.com", "AnotherPass1", "AnotherPass2", "Passwords do not match"),
 ])
 def test_password_mismatch(app_test, first_name, last_name, email, password, confirm_password, expected_error):
-    test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
+    run_register_edge_case(app_test, first_name, last_name, email, password, confirm_password, expected_error)
 
 
 @pytest.mark.parametrize("first_name, last_name, email, password, confirm_password, expected_error", [
     ("Test", "User", "testuser1@example.com", "Test1234", "Test1234", "This email is already registered"),
 ])
 def test_existing_user(app_test, first_name, last_name, email, password, confirm_password, expected_error):
-    test_register_edge_case(first_name, last_name, email, password, confirm_password, expected_error)
+    run_register_edge_case(app_test, first_name, last_name, email, password, confirm_password, expected_error)
 
 
 if __name__ == "__main__":
@@ -146,6 +146,6 @@ if __name__ == "__main__":
     ]
 
     for case in edge_cases:
-        test_register_edge_case(*case)
+        run_register_edge_case(app_test_instance, *case)
 
     app_test_instance.quit_driver()

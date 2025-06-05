@@ -2,15 +2,14 @@ import time
 import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.common import NoSuchElementException
+
+from driver_setup import MobileAppTest
 
 
 @pytest.fixture
 def app_test():
-    from login.test_login import MobileAppTest
-    test = MobileAppTest("emulator-5554", "com.google.android.apps.nexuslauncher",
-                         "com.google.android.apps.nexuslauncher.NexusLauncherActivity")
+    test = MobileAppTest("emulator-5554", "com.example.kmm.android", ".MainActivity")
     test.start_driver()
     yield test
     test.quit_driver()

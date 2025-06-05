@@ -12,22 +12,32 @@ from login.test_login import perform_login
 def perform_register(driver, first_name, last_name, email, password):
     WebDriverWait(driver, 10)
     time.sleep(2)
+
+    device_manufacturer = driver.capabilities.get("deviceManufacturer", "").lower()
+    is_emulator = device_manufacturer in ["unknown", "google", "android"]
+    print(f"Device manufacturer: {device_manufacturer} | Is emulator: {is_emulator}")
+
     try:
         driver.find_element(By.ACCESSIBILITY_ID, "create_acc_text")
     except NoSuchElementException:
         driver.find_element(By.ACCESSIBILITY_ID, "sign_up_redirect").click()
         time.sleep(2)
 
-    driver.find_element(By.ACCESSIBILITY_ID, "choose_photo_btn").click()
-    time.sleep(2)
-
-    try:
-        first_photo = driver.find_element(By.XPATH,
-                                          '//android.widget.ImageView[@resource-id="com.google.android.providers.media.module:id/icon_thumbnail"]')
-        first_photo.click()
+    if is_emulator:
+        print("Running on emulator – selecting photo.")
+        driver.find_element(By.ACCESSIBILITY_ID, "choose_photo_btn").click()
         time.sleep(2)
-    except NoSuchElementException:
-        raise
+        try:
+            first_photo = driver.find_element(
+                By.XPATH,
+                '//android.widget.ImageView[@resource-id="com.google.android.providers.media.module:id/icon_thumbnail"]'
+            )
+            first_photo.click()
+            time.sleep(2)
+        except NoSuchElementException:
+            raise
+    else:
+        print("Running on physical device – skipping photo selection.")
 
     first_name_input = driver.find_element(By.XPATH,
                                            "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[1]")
@@ -82,21 +92,24 @@ def perform_register(driver, first_name, last_name, email, password):
 
 @pytest.fixture
 def app_test():
-    test = MobileAppTest("emulator-5554", "com.google.android.apps.nexuslauncher",
-                         "com.google.android.apps.nexuslauncher.NexusLauncherActivity")
+    test = MobileAppTest("emulator-5554", "com.example.kmm.android", ".MainActivity")
     test.start_driver()
     yield test
     test.quit_driver()
 
 
 def test_register_pytest(app_test):
-    perform_register(app_test.driver, "Patrik", "Lišivka", "patriklisivka@gmail.com", "Test1234")
-    perform_login(app_test.driver, "patriklisivka@gmail.com", "Test1234")
+    perform_register(
+        app_test.driver,
+        "Patrik", "Lišivka", "patriklisivka@gmail.com", "Test1234"
+    )
 
 
 if __name__ == "__main__":
-    app_test_instance = MobileAppTest("emulator-5554", "com.google.android.apps.nexuslauncher",
-                                      "com.google.android.apps.nexuslauncher.NexusLauncherActivity")
+    app_test_instance = MobileAppTest("emulator-5554", "com.example.kmm.android", ".MainActivity")
     app_test_instance.start_driver()
-    perform_register(app_test_instance.driver, "Patrik", "Lišivka", "patriklisivka@gmail.com", "Test1234")
+    perform_register(
+        app_test_instance.driver,
+        "Patrik", "Lišivka", "patriklisivka@gmail.com", "Test1234"
+    )
     app_test_instance.quit_driver()

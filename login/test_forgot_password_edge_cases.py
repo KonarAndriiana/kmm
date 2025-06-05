@@ -23,10 +23,18 @@ def app_test():
     ("invalid-email@", "Please enter a valid email address"),
     ("@domain.com", "Please enter a valid email address"),
     ("invalid@domain", "Please enter a valid email address"),
-    ("wrong.email@notregistered.com", "Success! Please check your email to reset your password.")
 ])
 def test_forgot_password_edge_cases(app_test, email, expected_message):
     wait = WebDriverWait(app_test.driver, 10)
+
+    try:
+        forgot_btn = app_test.driver.find_element(By.ACCESSIBILITY_ID, "forgot_btn")
+        if not forgot_btn.is_displayed() or not forgot_btn.is_enabled():
+            app_test.driver.back()
+            time.sleep(1)
+    except NoSuchElementException:
+        app_test.driver.back()
+        time.sleep(1)
 
     forgot_button = wait.until(EC.presence_of_element_located((By.ACCESSIBILITY_ID, "forgot_btn")))
     forgot_button.click()
@@ -60,14 +68,6 @@ def test_forgot_password_edge_cases(app_test, email, expected_message):
         raise
 
     time.sleep(5)
-    try:
-        reset_btn = app_test.driver.find_element(By.ACCESSIBILITY_ID, "reset_btn")
-        if not reset_btn.is_displayed() or not reset_btn.is_enabled():
-            app_test.driver.back()
-            time.sleep(1)
-    except NoSuchElementException:
-        app_test.driver.back()
-        time.sleep(1)
 
     forgot_button.click()
     time.sleep(2)

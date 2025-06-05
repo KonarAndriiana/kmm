@@ -7,7 +7,7 @@ from clear_and_verify import ClearInput
 from driver_setup import MobileAppTest
 
 
-def test_login(driver, email, password, expected_error_message):
+def perform_login(driver, email, password, expected_error_message):
     print(f"\nTesting with email: '{email}' and password: '{password}'")
 
     email_input = driver.find_element(By.XPATH,
@@ -57,7 +57,7 @@ def app_test():
     ("", "admiN1", "Email cannot be empty"),
 ])
 def test_invalid_email(app_test, email, password, expected_error):
-    test_login(app_test.driver, email, password, expected_error)
+    perform_login(app_test.driver, email, password, expected_error)
 
 
 @pytest.mark.parametrize("email, password, expected_error", [
@@ -66,7 +66,7 @@ def test_invalid_email(app_test, email, password, expected_error):
     ("szilard.visoky@gmail.com", "", "Password cannot be empty"),
 ])
 def test_invalid_password(app_test, email, password, expected_error):
-    test_login(app_test.driver, email, password, expected_error)
+    perform_login(app_test.driver, email, password, expected_error)
 
 
 @pytest.mark.parametrize("email, password, expected_error", [
@@ -74,7 +74,7 @@ def test_invalid_password(app_test, email, password, expected_error):
     ("szilard@", "admiN1", "Please enter a valid email address"),
 ])
 def test_invalid_email_format(app_test, email, password, expected_error):
-    test_login(app_test.driver, email, password, expected_error)
+    perform_login(app_test.driver, email, password, expected_error)
 
 
 @pytest.mark.parametrize("email, password, expected_error", [
@@ -83,7 +83,7 @@ def test_invalid_email_format(app_test, email, password, expected_error):
     ("szilard.visoky@gmail.com", "", "Password cannot be empty"),
 ])
 def test_empty_fields(app_test, email, password, expected_error):
-    test_login(app_test.driver, email, password, expected_error)
+    perform_login(app_test.driver, email, password, expected_error)
 
 
 if __name__ == "__main__":
@@ -97,6 +97,6 @@ if __name__ == "__main__":
     ]
 
     for email, password, expected in test_cases:
-        test_login(app_test_instance.driver, email, password, expected)
+        perform_login(app_test_instance.driver, email, password, expected)
 
     app_test_instance.quit_driver()
