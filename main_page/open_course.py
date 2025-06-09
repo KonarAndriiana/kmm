@@ -18,25 +18,34 @@ def is_logged_in(driver):
         return False
 
 
-def check_courses(driver):
+def open_it_security_course(driver):
     time.sleep(2)
-
     try:
-        see_all_btn = driver.find_element(By.ACCESSIBILITY_ID, "see_all_courses_btn")
-        see_all_btn.click()
-        print("Clicked on 'See All Courses' button.")
+        it_security_course = driver.find_element(By.XPATH, "//*[contains(@text, 'IT security')]")
+        it_security_course.click()
+        print("Clicked on 'IT security' course.")
         time.sleep(3)
-
-        like_buttons = driver.find_elements(By.ACCESSIBILITY_ID, "like_btn")
-        num_courses = len(like_buttons)
-
-        print(f"Number of courses found (based on like buttons): {num_courses}")
-
-        if num_courses == 0:
-            raise AssertionError("No courses found!")
     except NoSuchElementException:
-        print("Error: Could not find courses or like buttons.")
+        print("Could not find 'IT security' course.")
         raise
+
+
+def count_lectures(driver):
+    time.sleep(2)
+    all_elements = driver.find_elements(By.XPATH, "//*")
+    lecture_count = 0
+
+    for element in all_elements:
+        try:
+            text = element.text.strip()
+            if "lecture" in text.lower():
+                lecture_count += 1
+        except Exception:
+            continue
+
+    print(f"Number of lecture elements found: {lecture_count}")
+    if lecture_count == 0:
+        raise AssertionError("No lectures found!")
 
 
 @pytest.fixture
@@ -47,12 +56,12 @@ def app_test():
     test.quit_driver()
 
 
-def test_course_list(app_test):
+def test_lecture_list(app_test):
     if not is_logged_in(app_test.driver):
         perform_login(app_test.driver, "patriklisivka95@gmail.com", "Test1234")
 
-    print("Proceeding to check course list.")
-    check_courses(app_test.driver)
+    open_it_security_course(app_test.driver)
+    count_lectures(app_test.driver)
 
 
 if __name__ == "__main__":
@@ -60,5 +69,6 @@ if __name__ == "__main__":
     test_instance.start_driver()
     if not is_logged_in(test_instance.driver):
         perform_login(test_instance.driver, "patriklisivka95@gmail.com", "Test1234")
-    check_courses(test_instance.driver)
+    open_it_security_course(test_instance.driver)
+    count_lectures(test_instance.driver)
     test_instance.quit_driver()
