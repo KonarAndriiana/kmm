@@ -29,8 +29,19 @@ def perform_login(driver, email, password):
 
     time.sleep(2)
     try:
-        driver.find_element(By.XPATH, "//*[contains(@text, 'Course')]")
-        print("Login successful: 'Course' is visible.")
+        driver.find_element(By.ACCESSIBILITY_ID, "test_text")
+        driver.find_element(By.ACCESSIBILITY_ID, "course_text")
+        driver.find_element(By.ACCESSIBILITY_ID, "about_courses")
+        driver.find_element(By.ACCESSIBILITY_ID, "about_tests")
+        greeting_element = driver.find_element(By.ACCESSIBILITY_ID, "greeting_text")
+        greeting_text = greeting_element.text.strip()
+
+        if greeting_text.startswith("Hi,") and len(greeting_text) > 4:
+            name = greeting_text[4:].split(" ")[0]
+            print(f"Login successful: My name '{name}' is visible")
+        else:
+            print("Login failed or name not visible")
+
     except NoSuchElementException:
         print("Login failed: 'Course' not found.")
         raise
