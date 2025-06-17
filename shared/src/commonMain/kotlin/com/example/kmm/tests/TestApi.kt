@@ -9,14 +9,14 @@ class TestApi(
 ) {
     suspend fun getTests(): List<TestSummary> {
         val resp: TestsResponse = client
-            .get("https://raw.githubusercontent.com/KonarAndriiana/kmm/refs/heads/Android-App/tests.json")
+            .get("https://raw.githubusercontent.com/KonarAndriiana/kmm/refs/heads/main/tests.json")
             .body()
         return resp.tests
     }
 
     suspend fun getTestDetail(id: String): TestDetail? {
         val resp: TestDetailsResponse = client
-            .get("https://raw.githubusercontent.com/KonarAndriiana/kmm/refs/heads/Android-App/testsDetails.json")
+            .get("https://raw.githubusercontent.com/KonarAndriiana/kmm/refs/heads/main/testsDetails.json")
             .body()
         return resp.testDetails.singleOrNull { it.id == id }
     }
