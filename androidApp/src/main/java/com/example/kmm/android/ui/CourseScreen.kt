@@ -55,7 +55,9 @@ import com.example.kmm.android.R
 import com.example.kmm.android.auth.AuthViewModel
 import com.example.kmm.android.auth.AuthViewModelFactory
 import com.example.kmm.android.course.CourseViewModel
+import com.example.kmm.android.test.TestTopicViewModel
 import com.example.kmm.course.Course
+import com.example.kmm.tests.TestTopic
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
 import java.io.File
@@ -63,14 +65,17 @@ import java.io.File
 @Composable
 fun CourseScreen(navController: NavController) {
     val courseViewModel: CourseViewModel = viewModel()
+    val testTopicViewModel: TestTopicViewModel = viewModel()
     val authViewModel: AuthViewModel = viewModel(factory = AuthViewModelFactory())
     val courses by courseViewModel.courseList.collectAsState()
+    val testTopics by testTopicViewModel.topics.collectAsState()
     val firstName by authViewModel.firstName.collectAsState()
 
     val context = LocalContext.current
     LaunchedEffect(Unit) {
         // load courses
         courseViewModel.fetchCourses()
+        testTopicViewModel.fetchTopics()
         // preload drawables
         context.imageLoader.enqueue(
             ImageRequest.Builder(context)
@@ -95,7 +100,7 @@ fun CourseScreen(navController: NavController) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp, bottom = 72.dp),
+                .padding(top = 16.dp, bottom = 48.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment   = Alignment.CenterVertically
         ) {
@@ -132,7 +137,7 @@ fun CourseScreen(navController: NavController) {
             }
         }
 
-        // Header + "see all"
+        // Course Header + "see all"
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -194,7 +199,8 @@ fun CourseScreen(navController: NavController) {
                 Text(
                     text = "see all",
                     textDecoration = TextDecoration.Underline,
-                    modifier = Modifier.clickable { /* TODO */ }
+                    modifier = Modifier
+                        .clickable { navController.navigate("tests") }
                         .semantics { contentDescription = "see_all_tests_btn" }
                 )
             }
@@ -208,8 +214,19 @@ fun CourseScreen(navController: NavController) {
                 fontSize = 18.sp,
                 modifier = Modifier.semantics { contentDescription = "about_tests" }
             )
+
+        Spacer(Modifier.height(24.dp))
+
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
+            items(testTopics) { topic ->
+                TestTopicCard(topic = topic) {
+                    navController.navigate("tests/${topic.id}")
+                }
+            }
         }
     }
+}
+
 
 
 @Composable
@@ -285,6 +302,82 @@ private fun CourseCard(course: Course, onClick: () -> Unit) {
                     ) {
                         Text(
                             text = course.specification,
+                            color = Color.Black,
+                            fontSize = 12.sp
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+@Composable
+private fun TestTopicCard(topic: TestTopic, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .offset(x = 2.dp, y = 2.dp)
+            .shadow(4.dp, RoundedCornerShape(16.dp), clip = false)
+            .offset(x = (-2).dp, y = (-2).dp)
+            .size(width = 240.dp, height = 160.dp)
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(16.dp))
+                .clickable(onClick = onClick),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+        ) {
+            Box {
+                // same placeholder image or swap for a test-specific one
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(R.drawable.language_1)
+                        .size(width = 240, height = 160)
+                        .memoryCachePolicy(CachePolicy.ENABLED)
+                        .build(),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+                Text(
+                    text = topic.level,
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .align(Alignment.TopStart)
+                )
+                IconButton(
+                    onClick = { /* TODO */ },
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .semantics { contentDescription = "like_btn" }
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.FavoriteBorder,
+                        contentDescription = null,
+                        tint = Color.White
+                    )
+                }
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(16.dp)
+                ) {
+                    Text(
+                        text = topic.name,
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    Box(
+                        modifier = Modifier
+                            .background(Color.White, RoundedCornerShape(12.dp))
+                            .padding(horizontal = 16.dp, vertical = 4.dp)
+                    ) {
+                        Text(
+                            text = topic.specification,
                             color = Color.Black,
                             fontSize = 12.sp
                         )

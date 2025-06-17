@@ -21,6 +21,10 @@ import com.example.kmm.android.ui.LectureListByCourse
 import com.example.kmm.android.ui.LoginScreen
 import com.example.kmm.android.ui.ProfileMenuScreen
 import com.example.kmm.android.ui.RegisterScreen
+import com.example.kmm.android.ui.SettingsScreen
+import com.example.kmm.android.ui.TestDetailScreen
+import com.example.kmm.android.ui.TestListByTopic
+import com.example.kmm.android.ui.TestsScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,11 +50,20 @@ class MainActivity : ComponentActivity() {
                 composable("allCourses") {
                     CoursesScreen(navController)
                 }
+                composable("tests") {
+                    CourseScreen(navController)
+                }
+                composable("tests") {
+                    TestsScreen(navController)
+                }
                 composable("profileMenu") {
                     ProfileMenuScreen(navController)
                 }
                 composable("accountDetails") {
                     AccountDetailsScreen()
+                }
+                composable("settings") {
+                    SettingsScreen()
                 }
                 composable(
                     "lectures/{courseId}",
@@ -76,6 +89,28 @@ class MainActivity : ComponentActivity() {
                         LectureDetailsScreen(lectureId = lectureId)
                     }
                 }
+
+                composable(
+                    "tests/{topicId}",
+                    arguments = listOf(navArgument("topicId") { type = NavType.StringType })
+                ) { backStack ->
+                    backStack.arguments?.getString("topicId")?.let { topicId ->
+                        TestListByTopic(
+                            topicId = topicId,
+                            navController = navController
+                        )
+                    }
+                }
+
+                composable(
+                    "test/{testId}",
+                    arguments = listOf(navArgument("testId") { type = NavType.StringType })
+                ) { backStack ->
+                    backStack.arguments?.getString("testId")?.let { testId ->
+                        TestDetailScreen(testId = testId)
+                    }
+                }
+
             }
         }
     }

@@ -54,7 +54,7 @@ fun AccountDetailsScreen(
             .fillMaxSize()
             .background(Color.White)
             .padding(32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.Start
     ) {
 
         Spacer(Modifier.height(24.dp))
@@ -62,6 +62,7 @@ fun AccountDetailsScreen(
         // profile photo
         Box(
             modifier = Modifier
+                .align(Alignment.CenterHorizontally)
                 .size(112.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surfaceVariant),

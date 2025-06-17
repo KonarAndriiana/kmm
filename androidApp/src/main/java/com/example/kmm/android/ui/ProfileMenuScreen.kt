@@ -76,7 +76,7 @@ fun ProfileMenuScreen(
 
         val items = listOf(
             MenuItem("Account")  { navController.navigate("accountDetails") },
-            MenuItem("Settings") { /* no-op for now */              },
+            MenuItem("Settings") { navController.navigate("settings") },
             MenuItem("Log Out")  {
                 authViewModel.logout()
                 navController.navigate("login") { popUpTo("courseList") { inclusive = true } }
