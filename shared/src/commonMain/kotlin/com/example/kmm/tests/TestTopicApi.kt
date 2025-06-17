@@ -9,7 +9,7 @@ class TestTopicApi(
 ) {
     suspend fun getTestTopics(): List<TestTopic> {
         val resp: TestTopicsResponse = client
-            .get("https://raw.githubusercontent.com/KonarAndriiana/kmm/refs/heads/Android-App/testTopics.json")
+            .get("https://raw.githubusercontent.com/KonarAndriiana/kmm/refs/heads/main/testTopics.json")
             .body()
         return resp.testTopics
     }
