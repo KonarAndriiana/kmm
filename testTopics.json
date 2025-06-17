@@ -2,8 +2,8 @@
   "testTopics": [
     {
       "id": "a12f3b4c-56d7-4e8f-9a0b-c1d2e3f4a5b6",
-      "name": "C++ Basics",
-      "testDescription": "Basic C++ course",
+      "name": "C++ basics",
+      "testDescription": "Basic C++",
       "level": "Beginner",
       "specification": "Backend"
     },
